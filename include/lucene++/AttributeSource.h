@@ -8,6 +8,7 @@
 #define ATTRIBUTESOURCE_H
 
 #include "LuceneObject.h"
+#include <stdexcept>
 
 namespace Lucene {
 
@@ -68,13 +69,13 @@ public:
     /// This method first checks if an instance of that class is already in this AttributeSource and returns it.
     /// Otherwise a new instance is created, added to this AttributeSource and returned.
     template <class ATTR>
-    boost::shared_ptr<ATTR> addAttribute() {
+    std::shared_ptr<ATTR> addAttribute() {
         String className(ATTR::_getClassName());
-        boost::shared_ptr<ATTR> attrImpl(boost::dynamic_pointer_cast<ATTR>(getAttribute(className)));
+        std::shared_ptr<ATTR> attrImpl(std::dynamic_pointer_cast<ATTR>(getAttribute(className)));
         if (!attrImpl) {
-            attrImpl = boost::dynamic_pointer_cast<ATTR>(factory->createInstance<ATTR>(className));
+            attrImpl = std::dynamic_pointer_cast<ATTR>(factory->createInstance<ATTR>(className));
             if (!attrImpl) {
-                boost::throw_exception(IllegalArgumentException(L"Could not instantiate implementing class for " + className));
+                throw std::invalid_argument(L"Could not instantiate implementing class for " + className);
             }
             addAttribute(className, attrImpl);
         }
@@ -95,11 +96,11 @@ public:
 
     /// Returns the instance of the passed in Attribute contained in this AttributeSource.
     template <class ATTR>
-    boost::shared_ptr<ATTR> getAttribute() {
+    std::shared_ptr<ATTR> getAttribute() {
         String className(ATTR::_getClassName());
-        boost::shared_ptr<ATTR> attr(boost::dynamic_pointer_cast<ATTR>(getAttribute(className)));
+        std::shared_ptr<ATTR> attr(std::dynamic_pointer_cast<ATTR>(getAttribute(className)));
         if (!attr) {
-            boost::throw_exception(IllegalArgumentException(L"This AttributeSource does not have the attribute '" + className + L"'."));
+            throw std::invalid_argument(L"This AttributeSource does not have the attribute '" + className + L"'.");
         }
         return attr;
     }

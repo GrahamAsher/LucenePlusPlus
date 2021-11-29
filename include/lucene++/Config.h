@@ -17,11 +17,6 @@
 #endif
 #endif
 
-
-// Define to enable boost integer types
-#@USE_BOOST_INTEGER@ LPP_USE_BOOST_INTEGER
-
-
 // Generic helper definitions for shared library support
 #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
   #define LPP_IMPORT __declspec(dllimport)
@@ -40,8 +35,7 @@
 #endif
 
 // bulding shared?
-#@LPP_SHARED_DLL@ LPP_SHARED_LIB
-
+// #define LPP_SHARED_LIB
 
 // setup library binds
 #ifdef LPP_SHARED_LIB
@@ -100,20 +94,10 @@
 
 
 // Define to enable cyclic checking in debug builds
-#@USE_CYCLIC_CHECK@ LPP_USE_CYCLIC_CHECK
+// #define LPP_USE_CYCLIC_CHECK
 
 
-// Make internal bitset storage public
-#define BOOST_DYNAMIC_BITSET_DONT_USE_FRIENDS
-#define BOOST_FILESYSTEM_VERSION 3
-
-
-// Use windows definitions
-#if defined(_WIN32) || defined(_WIN64)
-  #define BOOST_USE_WINDOWS_H
-#endif
-
-// Disable deprication warnings in windows
+// Disable deprecation warnings in Windows
 #if defined(_WIN32) || defined(_WIN64)
   #define _CRT_SECURE_NO_WARNINGS
 #endif

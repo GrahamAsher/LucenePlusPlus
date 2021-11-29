@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{d801806d-a201-4dd4-817c-86ba044334ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\analysis">
+      <UniqueIdentifier>{cb4eec68-648f-4af8-90bd-2af4865cc9f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\analysis\standard">
+      <UniqueIdentifier>{4eabaee4-43a9-4ced-bf8d-76f64c2dc5e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp">
+      <Filter>core\analysis\standard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\standard\StandardFilter.cpp">
+      <Filter>core\analysis\standard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\standard\StandardTokenizer.cpp">
+      <Filter>core\analysis\standard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\standard\StandardTokenizerImpl.cpp">
+      <Filter>core\analysis\standard</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -7,17 +7,17 @@
 #ifndef HASHSET_H
 #define HASHSET_H
 
-#include <boost/unordered_set.hpp>
+#include <unordered_set>
 #include "LuceneSync.h"
 
 namespace Lucene {
 
 /// Utility template class to handle hash set collections that can be safely copied and shared
-template < class TYPE, class HASH = boost::hash<TYPE>, class EQUAL = std::equal_to<TYPE> >
+template < class TYPE, class HASH = std::hash<TYPE>, class EQUAL = std::equal_to<TYPE> >
 class HashSet : public LuceneSync {
 public:
     typedef HashSet<TYPE, HASH, EQUAL> this_type;
-    typedef boost::unordered_set<TYPE, HASH, EQUAL> set_type;
+    typedef std::unordered_set<TYPE, HASH, EQUAL> set_type;
     typedef typename set_type::iterator iterator;
     typedef typename set_type::const_iterator const_iterator;
     typedef TYPE value_type;
@@ -26,7 +26,7 @@ public:
     }
 
 protected:
-    boost::shared_ptr<set_type> setContainer;
+    std::shared_ptr<set_type> setContainer;
 
 public:
     static this_type newInstance() {

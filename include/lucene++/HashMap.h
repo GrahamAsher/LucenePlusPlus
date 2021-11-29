@@ -7,18 +7,18 @@
 #ifndef HASHMAP_H
 #define HASHMAP_H
 
-#include <boost/unordered_map.hpp>
+#include <unordered_map>
 #include "LuceneSync.h"
 
 namespace Lucene {
 
 /// Utility template class to handle hash maps that can be safely copied and shared
-template < class KEY, class VALUE, class HASH = boost::hash<KEY>, class EQUAL = std::equal_to<KEY> >
+template < class KEY, class VALUE, class HASH = std::hash<KEY>, class EQUAL = std::equal_to<KEY> >
 class HashMap : public LuceneSync {
 public:
     typedef HashMap<KEY, VALUE, HASH, EQUAL> this_type;
     typedef std::pair<KEY, VALUE> key_value;
-    typedef boost::unordered_map<KEY, VALUE, HASH, EQUAL> map_type;
+    typedef std::unordered_map<KEY, VALUE, HASH, EQUAL> map_type;
     typedef typename map_type::iterator iterator;
     typedef typename map_type::const_iterator const_iterator;
     typedef KEY key_type;
@@ -28,7 +28,7 @@ public:
     }
 
 protected:
-    boost::shared_ptr<map_type> mapContainer;
+    std::shared_ptr<map_type> mapContainer;
 
 public:
     static this_type newInstance() {
@@ -126,12 +126,12 @@ public:
 };
 
 /// Utility template class to handle weak keyed maps
-template < class KEY, class VALUE, class HASH = boost::hash<KEY>, class EQUAL = std::equal_to<KEY> >
+template < class KEY, class VALUE, class HASH = std::hash<KEY>, class EQUAL = std::equal_to<KEY> >
 class WeakHashMap : public HashMap<KEY, VALUE, HASH, EQUAL> {
 public:
     typedef WeakHashMap<KEY, VALUE, HASH, EQUAL> this_type;
     typedef std::pair<KEY, VALUE> key_value;
-    typedef typename boost::unordered_map<KEY, VALUE, HASH, EQUAL> map_type;
+    typedef typename std::unordered_map<KEY, VALUE, HASH, EQUAL> map_type;
     typedef typename map_type::iterator iterator;
 
     static this_type newInstance() {
