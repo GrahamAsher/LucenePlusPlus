@@ -9,6 +9,7 @@
 
 #include "LuceneObject.h"
 #include <stdexcept>
+#include <codecvt>
 
 namespace Lucene {
 
@@ -75,7 +76,8 @@ public:
         if (!attrImpl) {
             attrImpl = std::dynamic_pointer_cast<ATTR>(factory->createInstance<ATTR>(className));
             if (!attrImpl) {
-                throw std::invalid_argument(L"Could not instantiate implementing class for " + className);
+                std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+                throw std::invalid_argument("Could not instantiate implementing class for " + converter.to_bytes(className) + ".");
             }
             addAttribute(className, attrImpl);
         }
@@ -100,7 +102,8 @@ public:
         String className(ATTR::_getClassName());
         std::shared_ptr<ATTR> attr(std::dynamic_pointer_cast<ATTR>(getAttribute(className)));
         if (!attr) {
-            throw std::invalid_argument(L"This AttributeSource does not have the attribute '" + className + L"'.");
+            std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+            throw std::invalid_argument("This AttributeSource does not have the attribute '" + converter.to_bytes(className) + "'.");
         }
         return attr;
     }
