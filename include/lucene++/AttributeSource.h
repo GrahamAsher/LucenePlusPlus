@@ -76,8 +76,7 @@ public:
         if (!attrImpl) {
             attrImpl = std::dynamic_pointer_cast<ATTR>(factory->createInstance<ATTR>(className));
             if (!attrImpl) {
-                std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-                throw std::invalid_argument("Could not instantiate implementing class for " + converter.to_bytes(className) + ".");
+                throw IllegalArgumentException(L"Could not instantiate implementing class for " + className + L".");
             }
             addAttribute(className, attrImpl);
         }
@@ -102,8 +101,7 @@ public:
         String className(ATTR::_getClassName());
         std::shared_ptr<ATTR> attr(std::dynamic_pointer_cast<ATTR>(getAttribute(className)));
         if (!attr) {
-            std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-            throw std::invalid_argument("This AttributeSource does not have the attribute '" + converter.to_bytes(className) + "'.");
+            throw IllegalArgumentException(L"This AttributeSource does not have the attribute '" + className + L"'.");
         }
         return attr;
     }

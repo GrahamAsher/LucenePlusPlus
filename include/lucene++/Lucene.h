@@ -27,19 +27,6 @@
 #include "LuceneTypes.h"
 #include "LuceneAllocator.h"
 
-namespace boost
-    {
-	//namespace interprocess
-    //  {
-	//	class file_lock;
-	//	}
-
-	//namespace posix_time
-	//	{
-	//	class ptime;
-	//	}
-	}
-
 namespace Lucene
     {
     typedef std::basic_string< char, std::char_traits<char> > SingleString;

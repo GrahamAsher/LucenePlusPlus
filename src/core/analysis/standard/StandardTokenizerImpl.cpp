@@ -12,7 +12,7 @@
 #include "TermAttribute.h"
 #include "MiscUtils.h"
 
-#include <boost/thread/once.hpp>
+#include <mutex>
 
 namespace Lucene {
 
@@ -218,8 +218,8 @@ void StandardTokenizerImpl::ZZ_CMAP_INIT() {
 }
 
 const wchar_t* StandardTokenizerImpl::ZZ_CMAP() {
-    static boost::once_flag once = BOOST_ONCE_INIT;
-    boost::call_once(once, ZZ_CMAP_INIT);
+    static std::once_flag once;
+    std::call_once(once, ZZ_CMAP_INIT);
     return _ZZ_CMAP.get();
 }
 
@@ -239,8 +239,8 @@ void StandardTokenizerImpl::ZZ_ACTION_INIT() {
 }
 
 const int32_t* StandardTokenizerImpl::ZZ_ACTION() {
-    static boost::once_flag once = BOOST_ONCE_INIT;
-    boost::call_once(once, ZZ_ACTION_INIT);
+    static std::once_flag once;
+    std::call_once(once, ZZ_ACTION_INIT);
     return _ZZ_ACTION.get();
 }
 
@@ -257,8 +257,8 @@ void StandardTokenizerImpl::ZZ_ROWMAP_INIT() {
 }
 
 const int32_t* StandardTokenizerImpl::ZZ_ROWMAP() {
-    static boost::once_flag once = BOOST_ONCE_INIT;
-    boost::call_once(once, ZZ_ROWMAP_INIT);
+    static std::once_flag once;
+    std::call_once(once, ZZ_ROWMAP_INIT);
     return _ZZ_ROWMAP.get();
 }
 
@@ -279,8 +279,8 @@ void StandardTokenizerImpl::ZZ_TRANS_INIT() {
 }
 
 const int32_t* StandardTokenizerImpl::ZZ_TRANS() {
-    static boost::once_flag once = BOOST_ONCE_INIT;
-    boost::call_once(once, ZZ_TRANS_INIT);
+    static std::once_flag once;
+    std::call_once(once, ZZ_TRANS_INIT);
     return _ZZ_TRANS.get();
 }
 
@@ -300,8 +300,8 @@ void StandardTokenizerImpl::ZZ_ATTRIBUTE_INIT() {
 }
 
 const int32_t* StandardTokenizerImpl::ZZ_ATTRIBUTE() {
-    static boost::once_flag once = BOOST_ONCE_INIT;
-    boost::call_once(once, ZZ_ATTRIBUTE_INIT);
+    static std::once_flag once;
+    std::call_once(once, ZZ_ATTRIBUTE_INIT);
     return _ZZ_ATTRIBUTE.get();
 }
 
@@ -399,7 +399,7 @@ int32_t StandardTokenizerImpl::yylength() {
 }
 
 void StandardTokenizerImpl::zzScanError(int32_t errorCode) {
-    boost::throw_exception(ParseException(ZZ_ERROR_MSG[errorCode]));
+    throw ParseException(ZZ_ERROR_MSG[errorCode]);
 }
 
 void StandardTokenizerImpl::yypushback(int32_t number) {
