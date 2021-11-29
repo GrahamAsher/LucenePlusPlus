@@ -31,7 +31,7 @@ NumericTokenStream::NumericTokenStream(int32_t precisionStep) {
     this->posIncrAtt = addAttribute<PositionIncrementAttribute>();
     this->precisionStep = precisionStep;
     if (precisionStep < 1) {
-        boost::throw_exception(IllegalArgumentException(L"precisionStep must be >=1"));
+        throw IllegalArgumentException(L"precisionStep must be >=1");
     }
 }
 
@@ -43,7 +43,7 @@ NumericTokenStream::NumericTokenStream(const AttributeSourcePtr& source, int32_t
     this->posIncrAtt = addAttribute<PositionIncrementAttribute>();
     this->precisionStep = precisionStep;
     if (precisionStep < 1) {
-        boost::throw_exception(IllegalArgumentException(L"precisionStep must be >=1"));
+        throw IllegalArgumentException(L"precisionStep must be >=1");
     }
 }
 
@@ -55,7 +55,7 @@ NumericTokenStream::NumericTokenStream(const AttributeFactoryPtr& factory, int32
     this->posIncrAtt = addAttribute<PositionIncrementAttribute>();
     this->precisionStep = precisionStep;
     if (precisionStep < 1) {
-        boost::throw_exception(IllegalArgumentException(L"precisionStep must be >=1"));
+        throw IllegalArgumentException(L"precisionStep must be >=1");
     }
 }
 
@@ -95,14 +95,14 @@ NumericTokenStreamPtr NumericTokenStream::setDoubleValue(double value) {
 
 void NumericTokenStream::reset() {
     if (valSize == 0) {
-        boost::throw_exception(IllegalStateException(L"call setValue() before usage"));
+        throw IllegalStateException(L"call setValue() before usage");
     }
     shift = 0;
 }
 
 bool NumericTokenStream::incrementToken() {
     if (valSize == 0) {
-        boost::throw_exception(IllegalStateException(L"call setValue() before usage"));
+        throw IllegalStateException(L"call setValue() before usage");
     }
     if (shift >= valSize) {
         return false;
@@ -121,7 +121,7 @@ bool NumericTokenStream::incrementToken() {
         break;
     default:
         // should not happen
-        boost::throw_exception(IllegalArgumentException(L"valSize must be 32 or 64"));
+        throw IllegalArgumentException(L"valSize must be 32 or 64");
     }
 
     typeAtt->setType(shift == 0 ? TOKEN_TYPE_FULL_PREC() : TOKEN_TYPE_LOWER_PREC());

@@ -30,7 +30,7 @@ void NormalizeCharMap::add(const String& singleMatch, const String& replacement)
         currMap = map;
     }
     if (!currMap->normStr.empty()) {
-        boost::throw_exception(RuntimeException(L"MappingCharFilter: there is already a mapping for " + singleMatch));
+        throw RuntimeException(L"MappingCharFilter: there is already a mapping for " + singleMatch);
     }
     currMap->normStr = replacement;
     currMap->diff = (int32_t)(singleMatch.length() - replacement.length());

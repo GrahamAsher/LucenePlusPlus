@@ -147,10 +147,49 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\core\analysis\Analyzer.cpp" />
+    <ClCompile Include="..\src\core\analysis\ASCIIFoldingFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\BaseCharFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\CachingTokenFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\CharArraySet.cpp" />
+    <ClCompile Include="..\src\core\analysis\CharFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\CharReader.cpp" />
+    <ClCompile Include="..\src\core\analysis\CharStream.cpp" />
+    <ClCompile Include="..\src\core\analysis\CharTokenizer.cpp" />
+    <ClCompile Include="..\src\core\analysis\ISOLatin1AccentFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\KeywordAnalyzer.cpp" />
+    <ClCompile Include="..\src\core\analysis\KeywordTokenizer.cpp" />
+    <ClCompile Include="..\src\core\analysis\LengthFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\LetterTokenizer.cpp" />
+    <ClCompile Include="..\src\core\analysis\LowerCaseFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\LowerCaseTokenizer.cpp" />
+    <ClCompile Include="..\src\core\analysis\MappingCharFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\NormalizeCharMap.cpp" />
+    <ClCompile Include="..\src\core\analysis\NumericTokenStream.cpp" />
+    <ClCompile Include="..\src\core\analysis\PerFieldAnalyzerWrapper.cpp" />
+    <ClCompile Include="..\src\core\analysis\PorterStemFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\PorterStemmer.cpp" />
+    <ClCompile Include="..\src\core\analysis\SimpleAnalyzer.cpp" />
     <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp" />
     <ClCompile Include="..\src\core\analysis\standard\StandardFilter.cpp" />
     <ClCompile Include="..\src\core\analysis\standard\StandardTokenizer.cpp" />
     <ClCompile Include="..\src\core\analysis\standard\StandardTokenizerImpl.cpp" />
+    <ClCompile Include="..\src\core\analysis\StopAnalyzer.cpp" />
+    <ClCompile Include="..\src\core\analysis\StopFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\TeeSinkTokenFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\Token.cpp" />
+    <ClCompile Include="..\src\core\analysis\tokenattributes\FlagsAttribute.cpp" />
+    <ClCompile Include="..\src\core\analysis\tokenattributes\OffsetAttribute.cpp" />
+    <ClCompile Include="..\src\core\analysis\tokenattributes\PayloadAttribute.cpp" />
+    <ClCompile Include="..\src\core\analysis\tokenattributes\PositionIncrementAttribute.cpp" />
+    <ClCompile Include="..\src\core\analysis\tokenattributes\TermAttribute.cpp" />
+    <ClCompile Include="..\src\core\analysis\tokenattributes\TypeAttribute.cpp" />
+    <ClCompile Include="..\src\core\analysis\TokenFilter.cpp" />
+    <ClCompile Include="..\src\core\analysis\Tokenizer.cpp" />
+    <ClCompile Include="..\src\core\analysis\TokenStream.cpp" />
+    <ClCompile Include="..\src\core\analysis\WhitespaceAnalyzer.cpp" />
+    <ClCompile Include="..\src\core\analysis\WhitespaceTokenizer.cpp" />
+    <ClCompile Include="..\src\core\analysis\WordlistLoader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

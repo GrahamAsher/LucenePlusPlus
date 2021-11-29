@@ -10,6 +10,9 @@
     <Filter Include="core\analysis\standard">
       <UniqueIdentifier>{4eabaee4-43a9-4ced-bf8d-76f64c2dc5e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\analysis\tokenattributes">
+      <UniqueIdentifier>{154e83bc-7046-4cf2-bc0d-76e11c94bb2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp">
@@ -23,6 +26,123 @@
     </ClCompile>
     <ClCompile Include="..\src\core\analysis\standard\StandardTokenizerImpl.cpp">
       <Filter>core\analysis\standard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\tokenattributes\FlagsAttribute.cpp">
+      <Filter>core\analysis\tokenattributes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\tokenattributes\OffsetAttribute.cpp">
+      <Filter>core\analysis\tokenattributes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\tokenattributes\PayloadAttribute.cpp">
+      <Filter>core\analysis\tokenattributes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\tokenattributes\PositionIncrementAttribute.cpp">
+      <Filter>core\analysis\tokenattributes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\tokenattributes\TermAttribute.cpp">
+      <Filter>core\analysis\tokenattributes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\tokenattributes\TypeAttribute.cpp">
+      <Filter>core\analysis\tokenattributes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\Analyzer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\ASCIIFoldingFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\BaseCharFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\CachingTokenFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\CharArraySet.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\CharFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\CharReader.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\CharStream.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\CharTokenizer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\ISOLatin1AccentFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\KeywordAnalyzer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\KeywordTokenizer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\LengthFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\LetterTokenizer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\LowerCaseFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\LowerCaseTokenizer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\MappingCharFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\NormalizeCharMap.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\NumericTokenStream.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\PerFieldAnalyzerWrapper.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\PorterStemFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\PorterStemmer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\SimpleAnalyzer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\StopAnalyzer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\StopFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\TeeSinkTokenFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\Token.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\TokenFilter.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\Tokenizer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\TokenStream.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\WhitespaceAnalyzer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\WhitespaceTokenizer.cpp">
+      <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\analysis\WordlistLoader.cpp">
+      <Filter>core\analysis</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -24,7 +24,7 @@ protected:
 
 public:
     /// Return given time in milliseconds.
-    static uint64_t getTimeMillis(boost::posix_time::ptime time);
+    static uint64_t getTimeMillis(std::time_t time);
 
     /// Returns the current time in milliseconds.
     static uint64_t currentTimeMillis();

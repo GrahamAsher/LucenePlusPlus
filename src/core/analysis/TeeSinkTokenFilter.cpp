@@ -35,7 +35,7 @@ SinkTokenStreamPtr TeeSinkTokenFilter::newSinkTokenStream(const SinkFilterPtr& f
 void TeeSinkTokenFilter::addSinkTokenStream(const SinkTokenStreamPtr& sink) {
     // check that sink has correct factory
     if (this->getAttributeFactory() != sink->getAttributeFactory()) {
-        boost::throw_exception(IllegalArgumentException(L"The supplied sink is not compatible to this tee."));
+        throw IllegalArgumentException(L"The supplied sink is not compatible to this tee.");
     }
     // add eventually missing attribute impls to the existing sink
     Collection<AttributePtr> attrImpls(this->cloneAttributes()->getAttributes());
@@ -110,7 +110,7 @@ bool SinkTokenStream::accept(const AttributeSourcePtr& source) {
 
 void SinkTokenStream::addState(const AttributeSourceStatePtr& state) {
     if (initIterator) {
-        boost::throw_exception(IllegalStateException(L"The tee must be consumed before sinks are consumed."));
+        throw IllegalStateException(L"The tee must be consumed before sinks are consumed.");
     }
     cachedStates.add(state);
 }
