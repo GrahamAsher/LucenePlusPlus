@@ -13,6 +13,9 @@
     <Filter Include="core\analysis\tokenattributes">
       <UniqueIdentifier>{154e83bc-7046-4cf2-bc0d-76e11c94bb2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{b1ece147-5c2b-4a5e-9f18-679167847326}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp">
@@ -144,5 +147,1182 @@
     <ClCompile Include="..\src\core\analysis\WordlistLoader.cpp">
       <Filter>core\analysis</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\lucene++\AbstractAllTermDocs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\AbstractField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\AllTermDocs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Analyzer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Array.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ASCIIFoldingFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Attribute.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\AttributeSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\AveragePayloadFunction.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Base64.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BaseCharFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BitSet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BitUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BitVector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BooleanClause.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BooleanQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BooleanScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BooleanScorer2.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BufferedDeletes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BufferedIndexInput.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BufferedIndexOutput.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\BufferedReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ByteBlockPool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ByteFieldSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ByteSliceReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ByteSliceWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CachingSpanFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CachingTokenFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CachingWrapperFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CharArraySet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CharBlockPool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CharFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CharFolder.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CharReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CharStream.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CharTokenizer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CheckIndex.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ChecksumIndexInput.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ChecksumIndexOutput.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CloseableThreadLocal.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Collator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Collection.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Collector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ComplexExplanation.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CompoundFileReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CompoundFileWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CompressionTools.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ConcurrentMergeScheduler.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Config.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ConjunctionScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Constants.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ConstantScoreQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CustomScoreProvider.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CustomScoreQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\CycleCheck.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DateField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DateTools.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DefaultSimilarity.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DefaultSkipListReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DefaultSkipListWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Directory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DirectoryReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DisjunctionMaxQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DisjunctionMaxScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DisjunctionSumScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocConsumer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocConsumerPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocFieldConsumer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocFieldConsumerPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocFieldConsumerPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocFieldConsumers.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocFieldConsumersPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocFieldConsumersPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocFieldProcessor.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocFieldProcessorPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocFieldProcessorPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocIdBitSet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocIdSet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocIdSetIterator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocInverter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocInverterPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocInverterPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Document.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocumentsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocumentsWriterThreadState.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DocValues.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\DoubleFieldSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ExactPhraseScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Explanation.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FastCharStream.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Field.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Fieldable.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldCache.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldCacheImpl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldCacheRangeFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldCacheSanityChecker.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldCacheSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldCacheTermsFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldComparator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldComparatorSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldDoc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldDocSortedHitQueue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldInfo.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldInfos.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldInvertState.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldMaskingSpanQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldScoreQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldSelector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldSortedTermVectorMapper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldsReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FieldValueHitQueue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FileReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FileSwitchDirectory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FileUtils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Filter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FilteredDocIdSet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FilteredDocIdSetIterator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FilteredQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FilteredTermEnum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FilterIndexReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FilterManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FlagsAttribute.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FormatPostingsDocsConsumer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FormatPostingsDocsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FormatPostingsFieldsConsumer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FormatPostingsFieldsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FormatPostingsPositionsConsumer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FormatPostingsPositionsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FormatPostingsTermsConsumer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FormatPostingsTermsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FreqProxFieldMergeState.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FreqProxTermsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FreqProxTermsWriterPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FreqProxTermsWriterPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FSDirectory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FSLockFactory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FuzzyQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\FuzzyTermEnum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\HashMap.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\HashSet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\HitQueue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\HitQueueBase.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexCommit.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexDeletionPolicy.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexFileDeleter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexFileNameFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexFileNames.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexInput.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexOutput.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexSearcher.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IndexWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\InfoStream.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\InputStreamReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IntBlockPool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\IntFieldSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\InvertedDocConsumer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\InvertedDocConsumerPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\InvertedDocConsumerPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\InvertedDocEndConsumer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\InvertedDocEndConsumerPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\InvertedDocEndConsumerPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ISOLatin1AccentFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\KeepOnlyLastCommitDeletionPolicy.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\KeywordAnalyzer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\KeywordTokenizer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LengthFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LetterTokenizer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LoadFirstFieldSelector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Lock.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LockFactory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LogByteSizeMergePolicy.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LogDocMergePolicy.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LogMergePolicy.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LowerCaseFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LowerCaseTokenizer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Lucene.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LuceneAllocator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LuceneException.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LuceneFactory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LuceneHeaders.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LuceneObject.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LuceneSignal.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LuceneSync.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LuceneThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\LuceneTypes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Map.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MapFieldSelector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MapOfSets.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MappingCharFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MatchAllDocsQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MaxPayloadFunction.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MergeDocIDRemapper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MergePolicy.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MergeScheduler.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MinPayloadFunction.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MiscUtils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MMapDirectory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MultiFieldQueryParser.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MultiLevelSkipListReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MultiLevelSkipListWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MultiPhraseQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MultipleTermPositions.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MultiReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MultiSearcher.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MultiTermQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\MultiTermQueryWrapperFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NativeFSLockFactory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NearSpansOrdered.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NearSpansUnordered.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NoLockFactory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NormalizeCharMap.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NormsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NormsWriterPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NormsWriterPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NumberTools.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NumericField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NumericRangeFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NumericRangeQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NumericTokenStream.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\NumericUtils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\OffsetAttribute.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\OpenBitSet.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\OpenBitSetDISI.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\OpenBitSetIterator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\OrdFieldSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ParallelMultiSearcher.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ParallelReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Payload.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PayloadAttribute.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PayloadFunction.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PayloadNearQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PayloadSpanUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PayloadTermQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PerFieldAnalyzerWrapper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PhrasePositions.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PhraseQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PhraseQueue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PhraseScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PorterStemFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PorterStemmer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PositionBasedTermVectorMapper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PositionIncrementAttribute.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PositiveScoresOnlyCollector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PrefixFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PrefixQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PrefixTermEnum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\PriorityQueue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Query.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\QueryParseError.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\QueryParser.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\QueryParserCharStream.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\QueryParserConstants.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\QueryParserToken.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\QueryParserTokenManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\QueryTermVector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\QueryWrapperFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\RAMDirectory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\RAMFile.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\RAMInputStream.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\RAMOutputStream.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Random.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\RawPostingList.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Reader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ReaderUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ReadOnlyDirectoryReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ReadOnlySegmentReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ReqExclScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ReqOptSumScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ReusableStringReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ReverseOrdFieldSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ScoreCachingWrappingScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ScoreDoc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Scorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ScorerDocQueue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Searchable.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Searcher.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentInfo.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentInfoCollection.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentInfos.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentMergeInfo.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentMergeQueue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentMerger.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentTermDocs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentTermEnum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentTermPositions.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentTermPositionVector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentTermVector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SegmentWriteState.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SerialMergeScheduler.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Set.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SetBasedFieldSelector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Similarity.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SimilarityDelegator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SimpleAnalyzer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SimpleFSDirectory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SimpleFSLockFactory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SimpleLRUCache.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SingleInstanceLockFactory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SingleTermEnum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SloppyPhraseScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SmallDouble.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SnapshotDeletionPolicy.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Sort.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SortedTermVectorMapper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SortedVIntList.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SortField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanFilterResult.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanFirstQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanNearQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanNotQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanOrQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanQueryFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Spans.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanTermQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\SpanWeight.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StandardAnalyzer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StandardFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StandardTokenizer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StandardTokenizerImpl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StopAnalyzer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StopFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StoredFieldsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StoredFieldsWriterPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StringReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\StringUtils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Synchronize.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\targetver.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TeeSinkTokenFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Term.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermAttribute.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermBuffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermDocs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermEnum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermFreqVector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermInfo.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermInfosReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermInfosWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermPositions.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermPositionVector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermRangeFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermRangeQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermRangeTermEnum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermScorer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermsHash.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermsHashConsumer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermsHashConsumerPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermsHashConsumerPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermsHashPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermsHashPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermSpans.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermVectorEntry.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermVectorEntryFreqSortedComparator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermVectorMapper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermVectorOffsetInfo.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermVectorsReader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermVectorsTermsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermVectorsTermsWriterPerField.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermVectorsTermsWriterPerThread.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TermVectorsWriter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TestPoint.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ThreadPool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TimeLimitingCollector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Token.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TokenFilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Tokenizer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TokenStream.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TopDocs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TopDocsCollector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TopFieldCollector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TopFieldDocs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TopScoreDocCollector.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\TypeAttribute.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\UnicodeUtils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\UTF8Stream.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ValueSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\ValueSourceQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\VariantUtils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\Weight.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\WhitespaceAnalyzer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\WhitespaceTokenizer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\WildcardQuery.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\WildcardTermEnum.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\lucene++\WordlistLoader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\include\lucene++\CMakeLists.txt">
+      <Filter>include</Filter>
+    </Text>
   </ItemGroup>
 </Project>
