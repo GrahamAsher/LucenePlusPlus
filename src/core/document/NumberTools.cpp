@@ -70,7 +70,7 @@ String NumberTools::longToString(int64_t l) {
 
 int64_t NumberTools::stringToLong(const String& str) {
     if ((int32_t)str.length() != STR_SIZE()) {
-        boost::throw_exception(NumberFormatException(L"string is the wrong size"));
+        throw NumberFormatException(L"string is the wrong size");
     }
 
     if (str == MIN_STRING_VALUE()) {
@@ -85,7 +85,7 @@ int64_t NumberTools::stringToLong(const String& str) {
     } else if (prefix == NEGATIVE_PREFIX) {
         l = l - std::numeric_limits<int64_t>::max() - 1;
     } else {
-        boost::throw_exception(NumberFormatException(L"string does not begin with the correct prefix"));
+        throw NumberFormatException(L"string does not begin with the correct prefix");
     }
 
     return l;

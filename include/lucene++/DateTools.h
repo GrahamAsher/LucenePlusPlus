@@ -47,7 +47,9 @@ public:
         DATEORDER_LOCALE,
         DATEORDER_YMD,
         DATEORDER_DMY,
-        DATEORDER_MDY
+        DATEORDER_MDY,
+        DATEORDER_YDM,
+        DATEORDER_NONE
     };
 
 protected:
@@ -58,7 +60,7 @@ public:
     /// @param date the date to be converted
     /// @param resolution the desired resolution
     /// @return a string in format yyyyMMddHHmmssSSS or shorter, depending on resolution; using GMT as timezone
-    static String dateToString(const boost::posix_time::ptime& date, Resolution resolution);
+    static String dateToString(boost_copy::ptime date, Resolution resolution);
 
     /// Converts a millisecond time to a string suitable for indexing.
     /// @param time the date expressed as milliseconds since January 1, 1970, 00:00:00 GMT
@@ -75,13 +77,13 @@ public:
     /// Converts a string produced by timeToString or dateToString back to a time, represented as a ptime object.
     /// @param dateString the date string to be converted
     /// @return the parsed time as a ptime object
-    static boost::posix_time::ptime stringToDate(const String& dateString);
+    static boost_copy::ptime stringToDate(const String& dateString);
 
     /// Limit a date's resolution. For example, the date 2004-09-21 13:50:11 will be changed to 2004-09-01 00:00:00
     /// when using Resolution.MONTH.
     /// @param resolution The desired resolution of the date to be returned
     /// @return the date with all values more precise than resolution set to 0 or 1
-    static boost::posix_time::ptime round(const boost::posix_time::ptime& date, Resolution resolution);
+    static boost_copy::ptime round(boost_copy::ptime date, Resolution resolution);
 
     /// Limit a date's resolution. For example, the date 1095767411000 (which represents 2004-09-21 13:50:11) will
     /// be changed to 1093989600000 (2004-09-01 00:00:00) when using Resolution.MONTH.
@@ -100,7 +102,7 @@ public:
     /// @param dateString the date string to be converted
     /// @param locale the locale to use for parsing
     /// @return the parsed time as a ptime object
-    static boost::posix_time::ptime parseDate(const String& dateString, std::locale locale = std::locale());
+    static boost_copy::ptime parseDate(const String& dateString, std::locale locale = std::locale());
 };
 
 }

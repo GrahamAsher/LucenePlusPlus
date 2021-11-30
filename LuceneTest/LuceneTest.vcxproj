@@ -190,6 +190,19 @@
     <ClCompile Include="..\src\core\analysis\WhitespaceAnalyzer.cpp" />
     <ClCompile Include="..\src\core\analysis\WhitespaceTokenizer.cpp" />
     <ClCompile Include="..\src\core\analysis\WordlistLoader.cpp" />
+    <ClCompile Include="..\src\core\document\AbstractField.cpp" />
+    <ClCompile Include="..\src\core\document\CompressionTools.cpp" />
+    <ClCompile Include="..\src\core\document\DateField.cpp" />
+    <ClCompile Include="..\src\core\document\DateTools.cpp" />
+    <ClCompile Include="..\src\core\document\Document.cpp" />
+    <ClCompile Include="..\src\core\document\Field.cpp" />
+    <ClCompile Include="..\src\core\document\Fieldable.cpp" />
+    <ClCompile Include="..\src\core\document\FieldSelector.cpp" />
+    <ClCompile Include="..\src\core\document\LoadFirstFieldSelector.cpp" />
+    <ClCompile Include="..\src\core\document\MapFieldSelector.cpp" />
+    <ClCompile Include="..\src\core\document\NumberTools.cpp" />
+    <ClCompile Include="..\src\core\document\NumericField.cpp" />
+    <ClCompile Include="..\src\core\document\SetBasedFieldSelector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\lucene++\AbstractAllTermDocs.h" />

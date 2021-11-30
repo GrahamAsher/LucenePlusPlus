@@ -7,8 +7,7 @@
 #ifndef VARIANTUTILS_H
 #define VARIANTUTILS_H
 
-#include <boost/any.hpp>
-#include <boost/version.hpp>
+#include <any>
 #include "Lucene.h"
 #include "MiscUtils.h"
 
@@ -16,31 +15,29 @@ namespace Lucene {
 
 class LPPAPI VariantUtils {
 public:
-    template <typename TYPE>
-    static TYPE get(const boost::any& var) {
-        return var.type() == typeid(TYPE) ? boost::any_cast<TYPE>(var) : TYPE();
-    }
+    template <typename TYPE> static TYPE get(const std::any& var)
+        {
+        return var.type() == typeid(TYPE) ? std::any_cast<TYPE>(var) : TYPE();
+        }
 
-    template <typename TYPE, typename VAR>
-    static TYPE get(VAR var) {
-#if BOOST_VERSION < 105800
-        return var.type() == typeid(TYPE) ? boost::get<TYPE>(var) : TYPE();
-#else
-        return var.type() == typeid(TYPE) ? boost::relaxed_get<TYPE>(var) : TYPE();
-#endif
-    }
+    template <typename TYPE,typename VAR> static TYPE get(VAR var)
+        {
+        if (std::holds_alternative<TYPE>(var))
+            return std::get<TYPE>(var);
+        return TYPE();
+        }
 
-    template <typename TYPE, typename VAR>
-    static bool typeOf(VAR var) {
-        return (var.type() == typeid(TYPE));
-    }
+    template <typename TYPE, typename VAR> static bool typeOf(VAR var)
+        {
+        return std::holds_alternative<TYPE>(var);
+        }
 
     static VariantNull null() {
         return VariantNull();
     }
 
-    static bool isNull(const boost::any& var) {
-        return var.empty();
+    static bool isNull(const std::any& var) {
+        return !var.has_value();
     }
 
     template <typename VAR>

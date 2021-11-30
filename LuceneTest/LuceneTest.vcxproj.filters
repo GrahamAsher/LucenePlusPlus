@@ -16,6 +16,9 @@
     <Filter Include="include">
       <UniqueIdentifier>{b1ece147-5c2b-4a5e-9f18-679167847326}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\document">
+      <UniqueIdentifier>{d38ebb50-5be1-449b-9465-9f96f0218996}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp">
@@ -146,6 +149,45 @@
     </ClCompile>
     <ClCompile Include="..\src\core\analysis\WordlistLoader.cpp">
       <Filter>core\analysis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\AbstractField.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\CompressionTools.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\DateField.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\DateTools.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\Document.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\Field.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\Fieldable.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\FieldSelector.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\LoadFirstFieldSelector.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\MapFieldSelector.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\NumberTools.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\NumericField.cpp">
+      <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\document\SetBasedFieldSelector.cpp">
+      <Filter>core\document</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

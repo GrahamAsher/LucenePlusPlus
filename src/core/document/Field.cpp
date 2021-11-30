@@ -46,13 +46,13 @@ Field::Field(const String& name, ByteArray value, int32_t offset, int32_t length
 
 void Field::ConstructField(const String& name, const String& value, Store store, Index index, TermVector termVector) {
     if (name.empty() && value.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"name and value cannot both be empty"));
+        throw (IllegalArgumentException(L"name and value cannot both be empty"));
     }
     if (index == INDEX_NO && store == STORE_NO) {
-        boost::throw_exception(IllegalArgumentException(L"it doesn't make sense to have a field that is neither indexed nor stored"));
+        throw (IllegalArgumentException(L"it doesn't make sense to have a field that is neither indexed nor stored"));
     }
     if (index == INDEX_NO && termVector != TERM_VECTOR_NO) {
-        boost::throw_exception(IllegalArgumentException(L"cannot store term vector information for a field that is not indexed"));
+        throw (IllegalArgumentException(L"cannot store term vector information for a field that is not indexed"));
     }
 
     this->_name = name;
@@ -95,7 +95,7 @@ void Field::ConstructField(const String& name, const TokenStreamPtr& tokenStream
 
 void Field::ConstructField(const String& name, ByteArray value, int32_t offset, int32_t length, Store store) {
     if (store == STORE_NO) {
-        boost::throw_exception(IllegalArgumentException(L"binary values can't be unstored"));
+        throw (IllegalArgumentException(L"binary values can't be unstored"));
     }
 
     this->_name = name;
@@ -129,24 +129,24 @@ TokenStreamPtr Field::tokenStreamValue() {
 
 void Field::setValue(const String& value) {
     if (_isBinary) {
-        boost::throw_exception(IllegalArgumentException(L"cannot set a String value on a binary field"));
+        throw (IllegalArgumentException(L"cannot set a String value on a binary field"));
     }
     fieldsData = value;
 }
 
 void Field::setValue(const ReaderPtr& value) {
     if (_isBinary) {
-        boost::throw_exception(IllegalArgumentException(L"cannot set a Reader value on a binary field"));
+        throw (IllegalArgumentException(L"cannot set a Reader value on a binary field"));
     }
     if (_isStored) {
-        boost::throw_exception(IllegalArgumentException(L"cannot set a Reader value on a stored field"));
+        throw (IllegalArgumentException(L"cannot set a Reader value on a stored field"));
     }
     fieldsData = value;
 }
 
 void Field::setValue(ByteArray value) {
     if (!_isBinary) {
-        boost::throw_exception(IllegalArgumentException(L"cannot set a byte[] value on a non-binary field"));
+        throw (IllegalArgumentException(L"cannot set a byte[] value on a non-binary field"));
     }
     fieldsData = value;
     binaryLength = value.size();
@@ -155,7 +155,7 @@ void Field::setValue(ByteArray value) {
 
 void Field::setValue(ByteArray value, int32_t offset, int32_t length) {
     if (!_isBinary) {
-        boost::throw_exception(IllegalArgumentException(L"cannot set a byte[] value on a non-binary field"));
+        throw (IllegalArgumentException(L"cannot set a byte[] value on a non-binary field"));
     }
     fieldsData = value;
     binaryLength = length;
@@ -177,7 +177,7 @@ bool Field::isStored(Store store) {
         return false;
 
     default:
-        boost::throw_exception(IllegalArgumentException(L"Invalid field store"));
+        throw (IllegalArgumentException(L"Invalid field store"));
         return false;
     }
 }
@@ -200,7 +200,7 @@ bool Field::isIndexed(Index index) {
         return true;
 
     default:
-        boost::throw_exception(IllegalArgumentException(L"Invalid field index"));
+        throw (IllegalArgumentException(L"Invalid field index"));
         return false;
     }
 }
@@ -223,7 +223,7 @@ bool Field::isAnalyzed(Index index) {
         return true;
 
     default:
-        boost::throw_exception(IllegalArgumentException(L"Invalid field index"));
+        throw (IllegalArgumentException(L"Invalid field index"));
         return false;
     }
 }
@@ -246,7 +246,7 @@ bool Field::omitNorms(Index index) {
         return true;
 
     default:
-        boost::throw_exception(IllegalArgumentException(L"Invalid field index"));
+        throw (IllegalArgumentException(L"Invalid field index"));
         return false;
     }
 }
@@ -288,7 +288,7 @@ bool Field::isStored(TermVector termVector) {
         return true;
 
     default:
-        boost::throw_exception(IllegalArgumentException(L"Invalid field term vector"));
+        throw (IllegalArgumentException(L"Invalid field term vector"));
         return false;
     }
 }
@@ -311,7 +311,7 @@ bool Field::withPositions(TermVector termVector) {
         return true;
 
     default:
-        boost::throw_exception(IllegalArgumentException(L"Invalid field term vector"));
+        throw (IllegalArgumentException(L"Invalid field term vector"));
         return false;
     }
 }
@@ -334,7 +334,7 @@ bool Field::withOffsets(TermVector termVector) {
         return true;
 
     default:
-        boost::throw_exception(IllegalArgumentException(L"Invalid field term vector"));
+        throw (IllegalArgumentException(L"Invalid field term vector"));
         return false;
     }
 }

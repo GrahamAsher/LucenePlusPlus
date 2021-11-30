@@ -131,10 +131,12 @@ namespace Lucene
             return s.rfind(t,0) == 0;
             }
 
+        using ptime = double;
         }
-    typedef std::shared_ptr<boost_copy::ifstream> ifstreamPtr;
-    typedef std::shared_ptr<boost_copy::ofstream> ofstreamPtr;
-    typedef std::shared_ptr<std::locale> localePtr;
+
+    using ifstreamPtr = std::shared_ptr<boost_copy::ifstream>;
+    using ofstreamPtr = std::shared_ptr<boost_copy::ofstream>;
+    using localePtr = std::shared_ptr<std::locale>;
     }
 
 #include "LuceneFactory.h"

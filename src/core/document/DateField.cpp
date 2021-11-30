@@ -40,13 +40,14 @@ const String& DateField::MAX_DATE_STRING() {
     return _MAX_DATE_STRING;
 }
 
-String DateField::dateToString(const boost::posix_time::ptime& date) {
+String DateField::dateToString(boost_copy::ptime date)
+    {
     return timeToString(MiscUtils::getTimeMillis(date));
-}
+    }
 
 String DateField::timeToString(int64_t time) {
     if (time < 0) {
-        boost::throw_exception(RuntimeException(L"time '" + StringUtils::toString(time) + L"' is too early, must be >= 0"));
+        throw RuntimeException(L"time '" + StringUtils::toString(time) + L"' is too early, must be >= 0");
     }
 
     String timeString(DATE_LEN(), L'0');
