@@ -34,15 +34,15 @@ HashSet<String> WordlistLoader::getWordSet(const String& wordfile, const String&
 HashSet<String> WordlistLoader::getWordSet(const ReaderPtr& reader, const String& comment) {
     HashSet<String> result(HashSet<String>::newInstance());
     LuceneException finally;
-    BufferedReaderPtr bufferedReader(boost::dynamic_pointer_cast<BufferedReader>(reader));
+    BufferedReaderPtr bufferedReader(std::dynamic_pointer_cast<BufferedReader>(reader));
     try {
         if (!bufferedReader) {
             bufferedReader = newLucene<BufferedReader>(reader);
         }
         String word;
         while (bufferedReader->readLine(word)) {
-            if (comment.empty() || !boost::starts_with(word, comment)) {
-                boost::trim(word);
+            if (comment.empty() || !boost_copy::starts_with(word, comment)) {
+                boost_copy::trim(word);
                 result.add(word);
             }
         }

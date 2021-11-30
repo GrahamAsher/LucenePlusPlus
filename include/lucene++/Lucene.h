@@ -21,6 +21,7 @@
 #include <any>
 #include <functional>
 #include <thread>
+#include <filesystem>
 
 #define SIZEOF_ARRAY(arr) (sizeof(arr) / sizeof((arr)[0]))
 
@@ -39,8 +40,100 @@ namespace Lucene
     //typedef std::shared_ptr<boost::interprocess::file_lock> filelockPtr;
     typedef std::shared_ptr<std::thread> threadPtr;
 
-    //typedef std::shared_ptr<boost::filesystem::ofstream> ofstreamPtr;
-    //typedef std::shared_ptr<boost::filesystem::ifstream> ifstreamPtr;
+    namespace boost_copy
+        {
+        template<class charT,class traits = std::char_traits<charT>> class basic_filebuf: public std::basic_filebuf<charT,traits>
+            {
+            public:
+            basic_filebuf() = default;
+            basic_filebuf(basic_filebuf const&) = delete;
+            basic_filebuf const& operator=(basic_filebuf const&) = delete;
+
+            basic_filebuf<charT,traits>* open(std::filesystem::path const& p,std::ios_base::openmode mode)
+                {
+                return std::basic_filebuf<charT,traits>::open(p.c_str(),mode) ? this : nullptr;
+                }
+            };
+
+        template<class charT,class traits = std::char_traits<charT>> class basic_ifstream: public std::basic_ifstream<charT,traits>
+            {
+            public:
+            basic_ifstream() = default;
+
+            explicit basic_ifstream(std::filesystem::path const& p): std::basic_ifstream<charT,traits>(p.c_str(),std::ios_base::in) { }
+            basic_ifstream(std::filesystem::path const& p,std::ios_base::openmode mode): std::basic_ifstream<charT,traits>(p.c_str(),mode) { }
+
+            basic_ifstream(basic_ifstream const&) = delete;
+            basic_ifstream const& operator=(basic_ifstream const&) = delete;
+
+            public:
+            void open(std::filesystem::path const& p)
+                {
+                std::basic_ifstream<charT,traits>::open(p.c_str(),std::ios_base::in);
+                }
+
+            void open(std::filesystem::path const& p,std::ios_base::openmode mode)
+                {
+                std::basic_ifstream<charT,traits>::open(p.c_str(),mode);
+                }
+            };
+
+        template< class charT,class traits = std::char_traits<charT>> class basic_ofstream:  public std::basic_ofstream<charT,traits>
+            {
+            public:
+            basic_ofstream() = default;
+
+            explicit basic_ofstream(std::filesystem::path const& p): std::basic_ofstream<charT,traits>(p.c_str(),std::ios_base::out) { }
+            basic_ofstream(std::filesystem::path const& p,std::ios_base::openmode mode): std::basic_ofstream<charT,traits>(p.c_str(),mode) { }
+
+            basic_ofstream(basic_ofstream const&) = delete;
+            basic_ofstream const& operator=(basic_ofstream const&) = delete;
+
+            public:
+            void open(std::filesystem::path const& p)
+                {
+                std::basic_ofstream<charT,traits>::open(p.c_str(),std::ios_base::out);
+                }
+
+            void open(std::filesystem::path const& p,std::ios_base::openmode mode)
+                {
+                std::basic_ofstream<charT,traits>::open(p.c_str(),mode);
+                }
+            };
+
+        typedef basic_ifstream<char> ifstream;
+        typedef basic_ofstream<char> ofstream;
+
+        template<class T> inline void ltrim(std::basic_string<T>& s)
+            {
+            auto iter = s.begin();
+            while (iter != s.end() && std::isspace(*iter))
+                ++iter;
+            s.erase(s.begin(),iter);
+            }
+
+        template<class T> inline void rtrim(std::basic_string<T>& s)
+            {
+            auto iter = s.rbegin();
+            while (iter != s.rend() && std::isspace(*iter))
+                ++iter;
+            s.erase(iter.base(),s.end());
+            }
+
+        template<class T> inline void trim(std::basic_string<T>& s)
+            {
+            ltrim(s);
+            rtrim(s);
+            }
+
+        template<class T> inline bool starts_with(const std::basic_string<T>& s,const std::basic_string<T>& t)
+            {
+            return s.rfind(t,0) == 0;
+            }
+
+        }
+    typedef std::shared_ptr<boost_copy::ifstream> ifstreamPtr;
+    typedef std::shared_ptr<boost_copy::ofstream> ofstreamPtr;
     typedef std::shared_ptr<std::locale> localePtr;
     }
 
@@ -115,9 +208,7 @@ struct luceneCompare {
     }
 };
 
-struct blank { };
-
-typedef blank VariantNull;
+typedef std::monostate VariantNull;
 typedef std::variant<String, int32_t, int64_t, double, ReaderPtr, ByteArray, VariantNull> FieldsData;
 typedef std::variant<String, uint8_t, int32_t, int64_t, double, VariantNull> ComparableValue;
 typedef std::variant<int32_t, int64_t, double, VariantNull> NumericValue;
