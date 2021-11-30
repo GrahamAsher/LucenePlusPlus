@@ -105,26 +105,27 @@ boost_copy::ptime DateTools::round(const boost_copy::ptime date, Resolution reso
 
         case RESOLUTION_SECOND:
             tm2.tm_sec = tm.tm_sec;
-            // fall through
+            [[fallthrough]];
 
         case RESOLUTION_MINUTE:
             tm2.tm_min = tm.tm_min;
-            // fall through
+            [[fallthrough]];
 
         case RESOLUTION_HOUR:
             tm2.tm_hour = tm.tm_hour;
-            // fall through
+            [[fallthrough]];
 
         case RESOLUTION_DAY:
             tm2.tm_mday = tm.tm_mday;
-            // fall through
+            [[fallthrough]];
 
         case RESOLUTION_MONTH:
             tm2.tm_mon = tm.tm_mon;
-            // fall through
+            [[fallthrough]];
 
         case RESOLUTION_YEAR:
             tm2.tm_year = tm.tm_year;
+            break;
 
         case RESOLUTION_NULL:
             return 0;
