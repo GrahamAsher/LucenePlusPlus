@@ -103,6 +103,7 @@ namespace Lucene
 
         typedef basic_ifstream<char> ifstream;
         typedef basic_ofstream<char> ofstream;
+        typedef basic_ofstream<wchar_t> wofstream;
 
         template<class T> inline void ltrim(std::basic_string<T>& s)
             {
@@ -216,6 +217,15 @@ typedef std::variant<String, uint8_t, int32_t, int64_t, double, VariantNull> Com
 typedef std::variant<int32_t, int64_t, double, VariantNull> NumericValue;
 typedef std::variant<String, VariantNull> StringValue;
 typedef std::variant<Collection<uint8_t>, Collection<int32_t>, Collection<double>, VariantNull> CollectionValue;
+
+template<typename CHAR_TYPE> inline std::basic_ostream<CHAR_TYPE>& operator<<(std::basic_ostream<CHAR_TYPE>& os,const std::monostate&) { return os; }
+
+// An ostream output operator for std::variant.
+template<typename CHAR_TYPE,typename T,typename... Ts> inline std::basic_ostream<CHAR_TYPE>& operator<<(std::basic_ostream<CHAR_TYPE>& os,const std::variant<T,Ts...>& v)
+    {
+    std::visit([&os](auto&& arg){ os << arg; },v);
+    return os;
+    }
 
 typedef HashSet< SegmentInfoPtr, luceneHash<SegmentInfoPtr>, luceneEquals<SegmentInfoPtr> > SetSegmentInfo;
 typedef HashSet< MergeThreadPtr, luceneHash<MergeThreadPtr>, luceneEquals<MergeThreadPtr> > SetMergeThread;
