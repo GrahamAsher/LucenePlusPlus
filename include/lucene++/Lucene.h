@@ -22,6 +22,8 @@
 #include <functional>
 #include <thread>
 #include <filesystem>
+#include <fstream>
+#include <assert.h>
 
 #define SIZEOF_ARRAY(arr) (sizeof(arr) / sizeof((arr)[0]))
 

@@ -22,22 +22,22 @@ ByteSliceWriter::~ByteSliceWriter() {
 
 void ByteSliceWriter::init(int32_t address) {
     slice = pool->buffers[address >> DocumentsWriter::BYTE_BLOCK_SHIFT];
-    BOOST_ASSERT(slice);
+    assert(slice);
     upto = (address & DocumentsWriter::BYTE_BLOCK_MASK);
     offset0 = address;
-    BOOST_ASSERT(upto < slice.size());
+    assert(upto < slice.size());
 }
 
 void ByteSliceWriter::writeByte(uint8_t b) {
-    BOOST_ASSERT(slice);
+    assert(slice);
     if (slice[upto] != 0) {
         upto = pool->allocSlice(slice, upto);
         slice = pool->buffer;
         offset0 = pool->byteOffset;
-        BOOST_ASSERT(slice);
+        assert(slice);
     }
     slice[upto++] = b;
-    BOOST_ASSERT(upto != slice.size());
+    assert(upto != slice.size());
 }
 
 void ByteSliceWriter::writeBytes(const uint8_t* b, int32_t offset, int32_t length) {
@@ -51,7 +51,7 @@ void ByteSliceWriter::writeBytes(const uint8_t* b, int32_t offset, int32_t lengt
         }
 
         slice[upto++] = b[offset++];
-        BOOST_ASSERT(upto != slice.size());
+        assert(upto != slice.size());
     }
 }
 

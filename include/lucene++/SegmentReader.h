@@ -13,6 +13,10 @@
 namespace Lucene {
 
 class LPPAPI SegmentReader : public IndexReader {
+
+    friend class AllTermDocs;
+    friend class CheckIndex;
+
 public:
     SegmentReader();
     virtual ~SegmentReader();

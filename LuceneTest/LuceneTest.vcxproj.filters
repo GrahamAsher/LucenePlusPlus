@@ -19,6 +19,9 @@
     <Filter Include="core\document">
       <UniqueIdentifier>{d38ebb50-5be1-449b-9465-9f96f0218996}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\index">
+      <UniqueIdentifier>{e58ee03a-fb97-4c87-8d3c-37276db708f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp">
@@ -188,6 +191,387 @@
     </ClCompile>
     <ClCompile Include="..\src\core\document\SetBasedFieldSelector.cpp">
       <Filter>core\document</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\AbstractAllTermDocs.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\AllTermDocs.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\BufferedDeletes.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\ByteBlockPool.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\ByteSliceReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\ByteSliceWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\CharBlockPool.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\CheckIndex.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\CompoundFileReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\CompoundFileWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\ConcurrentMergeScheduler.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DefaultSkipListReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DefaultSkipListWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DirectoryReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocConsumer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocConsumerPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocFieldConsumer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocFieldConsumerPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocFieldConsumerPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocFieldConsumers.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocFieldConsumersPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocFieldConsumersPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocFieldProcessor.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocFieldProcessorPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocFieldProcessorPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocInverter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocInverterPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocInverterPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocumentsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\DocumentsWriterThreadState.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FieldInfo.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FieldInfos.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FieldInvertState.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FieldSortedTermVectorMapper.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FieldsReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FieldsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FilterIndexReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FormatPostingsDocsConsumer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FormatPostingsDocsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FormatPostingsFieldsConsumer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FormatPostingsFieldsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FormatPostingsPositionsConsumer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FormatPostingsPositionsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FormatPostingsTermsConsumer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FormatPostingsTermsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FreqProxFieldMergeState.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FreqProxTermsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FreqProxTermsWriterPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\FreqProxTermsWriterPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\IndexCommit.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\IndexDeletionPolicy.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\IndexFileDeleter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\IndexFileNameFilter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\IndexFileNames.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\IndexReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\IndexWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\IntBlockPool.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\InvertedDocConsumer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\InvertedDocConsumerPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\InvertedDocConsumerPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\InvertedDocEndConsumer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\InvertedDocEndConsumerPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\InvertedDocEndConsumerPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\KeepOnlyLastCommitDeletionPolicy.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\LogByteSizeMergePolicy.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\LogDocMergePolicy.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\LogMergePolicy.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\MergeDocIDRemapper.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\MergePolicy.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\MergeScheduler.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\MultiLevelSkipListReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\MultiLevelSkipListWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\MultipleTermPositions.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\MultiReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\NormsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\NormsWriterPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\NormsWriterPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\ParallelReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\Payload.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\PositionBasedTermVectorMapper.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\RawPostingList.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\ReadOnlyDirectoryReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\ReadOnlySegmentReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\ReusableStringReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentInfo.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentInfoCollection.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentInfos.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentMergeInfo.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentMergeQueue.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentMerger.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentTermDocs.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentTermEnum.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentTermPositions.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentTermPositionVector.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentTermVector.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SegmentWriteState.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SerialMergeScheduler.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SnapshotDeletionPolicy.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\SortedTermVectorMapper.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\StoredFieldsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\StoredFieldsWriterPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\Term.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermBuffer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermDocs.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermEnum.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermFreqVector.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermInfo.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermInfosReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermInfosWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermPositions.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermPositionVector.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermsHash.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermsHashConsumer.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermsHashConsumerPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermsHashConsumerPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermsHashPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermsHashPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermVectorEntry.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermVectorEntryFreqSortedComparator.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermVectorMapper.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermVectorOffsetInfo.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermVectorsReader.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermVectorsTermsWriter.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermVectorsTermsWriterPerField.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermVectorsTermsWriterPerThread.cpp">
+      <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\index\TermVectorsWriter.cpp">
+      <Filter>core\index</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

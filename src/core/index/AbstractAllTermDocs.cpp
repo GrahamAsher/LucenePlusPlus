@@ -21,12 +21,12 @@ void AbstractAllTermDocs::seek(const TermPtr& term) {
     if (!term) {
         _doc = -1;
     } else {
-        boost::throw_exception(UnsupportedOperationException());
+        throw UnsupportedOperationException();
     }
 }
 
 void AbstractAllTermDocs::seek(const TermEnumPtr& termEnum) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw UnsupportedOperationException();
 }
 
 int32_t AbstractAllTermDocs::doc() {

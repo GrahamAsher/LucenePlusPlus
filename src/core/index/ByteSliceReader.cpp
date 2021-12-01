@@ -9,6 +9,7 @@
 #include "DocumentsWriter.h"
 #include "IndexOutput.h"
 #include "MiscUtils.h"
+#include "assert.h"
 
 namespace Lucene {
 
@@ -25,9 +26,9 @@ ByteSliceReader::~ByteSliceReader() {
 }
 
 void ByteSliceReader::init(const ByteBlockPoolPtr& pool, int32_t startIndex, int32_t endIndex) {
-    BOOST_ASSERT(endIndex - startIndex >= 0);
-    BOOST_ASSERT(startIndex >= 0);
-    BOOST_ASSERT(endIndex >= 0);
+    assert(endIndex - startIndex >= 0);
+    assert(startIndex >= 0);
+    assert(endIndex >= 0);
 
     this->pool = pool;
     this->endIndex = endIndex;
@@ -49,13 +50,13 @@ void ByteSliceReader::init(const ByteBlockPoolPtr& pool, int32_t startIndex, int
 }
 
 bool ByteSliceReader::eof() {
-    BOOST_ASSERT(upto + bufferOffset <= endIndex);
+    assert(upto + bufferOffset <= endIndex);
     return (upto + bufferOffset == endIndex);
 }
 
 uint8_t ByteSliceReader::readByte() {
-    BOOST_ASSERT(!eof());
-    BOOST_ASSERT(upto <= limit);
+    assert(!eof());
+    assert(upto <= limit);
     if (upto == limit) {
         nextSlice();
     }
@@ -66,7 +67,7 @@ int64_t ByteSliceReader::writeTo(const IndexOutputPtr& out) {
     int64_t size = 0;
     while (true) {
         if (limit + bufferOffset == endIndex) {
-            BOOST_ASSERT(endIndex - bufferOffset >= upto);
+            assert(endIndex - bufferOffset >= upto);
             out->writeBytes(buffer.get(), upto, limit - upto);
             size += limit - upto;
             break;
@@ -95,7 +96,7 @@ void ByteSliceReader::nextSlice() {
 
     if (nextIndex + newSize >= endIndex) {
         // We are advancing to the final slice
-        BOOST_ASSERT(endIndex - nextIndex > 0);
+        assert(endIndex - nextIndex > 0);
         limit = endIndex - bufferOffset;
     } else {
         // This is not the final slice (subtract 4 for the forwarding address at the end of this new slice)
@@ -122,21 +123,21 @@ void ByteSliceReader::readBytes(uint8_t* b, int32_t offset, int32_t length) {
 }
 
 int64_t ByteSliceReader::getFilePointer() {
-    boost::throw_exception(RuntimeException(L"not implemented"));
+    throw (RuntimeException(L"not implemented"));
     return 0;
 }
 
 int64_t ByteSliceReader::length() {
-    boost::throw_exception(RuntimeException(L"not implemented"));
+    throw (RuntimeException(L"not implemented"));
     return 0;
 }
 
 void ByteSliceReader::seek(int64_t pos) {
-    boost::throw_exception(RuntimeException(L"not implemented"));
+    throw (RuntimeException(L"not implemented"));
 }
 
 void ByteSliceReader::close() {
-    boost::throw_exception(RuntimeException(L"not implemented"));
+    throw (RuntimeException(L"not implemented"));
 }
 
 }

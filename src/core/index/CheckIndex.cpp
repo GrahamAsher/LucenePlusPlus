@@ -146,7 +146,7 @@ IndexStatusPtr CheckIndex::checkIndex(Collection<String> onlySegments) {
         return result;
     }
 
-    result->newSegments = boost::dynamic_pointer_cast<SegmentInfos>(sis->clone());
+    result->newSegments = std::dynamic_pointer_cast<SegmentInfos>(sis->clone());
     result->newSegments->clear();
 
     for (int32_t i = 0; i < numSegments; ++i) {
@@ -206,28 +206,28 @@ IndexStatusPtr CheckIndex::checkIndex(Collection<String> onlySegments) {
             toLoseDocCount = numDocs;
             if (reader->hasDeletions()) {
                 if (reader->deletedDocs->count() != info->getDelCount()) {
-                    boost::throw_exception(RuntimeException(L"delete count mismatch: info=" + StringUtils::toString(info->getDelCount()) +
+                    throw (RuntimeException(L"delete count mismatch: info=" + StringUtils::toString(info->getDelCount()) +
                                                             L" vs deletedDocs.count()=" + StringUtils::toString(reader->deletedDocs->count())));
                 }
                 if (reader->deletedDocs->count() > reader->maxDoc()) {
-                    boost::throw_exception(RuntimeException(L"too many deleted docs: maxDoc()=" + StringUtils::toString(reader->maxDoc()) +
+                    throw (RuntimeException(L"too many deleted docs: maxDoc()=" + StringUtils::toString(reader->maxDoc()) +
                                                             L" vs deletedDocs.count()=" + StringUtils::toString(reader->deletedDocs->count())));
                 }
                 if (info->docCount - numDocs != info->getDelCount()) {
-                    boost::throw_exception(RuntimeException(L"delete count mismatch: info=" + StringUtils::toString(info->getDelCount()) +
+                    throw (RuntimeException(L"delete count mismatch: info=" + StringUtils::toString(info->getDelCount()) +
                                                             L" vs reader=" + StringUtils::toString((info->docCount - numDocs))));
                 }
                 segInfoStat->numDeleted = info->docCount - numDocs;
                 msg(L"OK [" + StringUtils::toString(segInfoStat->numDeleted) + L" deleted docs]");
             } else {
                 if (info->getDelCount() != 0) {
-                    boost::throw_exception(RuntimeException(L"delete count mismatch: info=" + StringUtils::toString(info->getDelCount()) +
+                    throw (RuntimeException(L"delete count mismatch: info=" + StringUtils::toString(info->getDelCount()) +
                                                             L" vs reader=" + StringUtils::toString(info->docCount - numDocs)));
                 }
                 msg(L"OK");
             }
             if (reader->maxDoc() != info->docCount) {
-                boost::throw_exception(RuntimeException(L"SegmentReader.maxDoc() " + StringUtils::toString(reader->maxDoc()) +
+                throw (RuntimeException(L"SegmentReader.maxDoc() " + StringUtils::toString(reader->maxDoc()) +
                                                         L" != SegmentInfos.docCount " + StringUtils::toString(info->docCount)));
             }
             msg(L"    test: fields..............");
@@ -249,13 +249,13 @@ IndexStatusPtr CheckIndex::checkIndex(Collection<String> onlySegments) {
 
             // Rethrow the first exception we encountered.  This will cause stats for failed segments to be incremented properly
             if (!segInfoStat->fieldNormStatus->error.isNull()) {
-                boost::throw_exception(RuntimeException(L"Field Norm test failed"));
+                throw (RuntimeException(L"Field Norm test failed"));
             } else if (!segInfoStat->termIndexStatus->error.isNull()) {
-                boost::throw_exception(RuntimeException(L"Term Index test failed"));
+                throw (RuntimeException(L"Term Index test failed"));
             } else if (!segInfoStat->storedFieldStatus->error.isNull()) {
-                boost::throw_exception(RuntimeException(L"Stored Field test failed"));
+                throw (RuntimeException(L"Stored Field test failed"));
             } else if (!segInfoStat->termVectorStatus->error.isNull()) {
-                boost::throw_exception(RuntimeException(L"Term Vector test failed"));
+                throw (RuntimeException(L"Term Vector test failed"));
             }
 
             msg(L"");
@@ -278,7 +278,7 @@ IndexStatusPtr CheckIndex::checkIndex(Collection<String> onlySegments) {
         }
 
         // Keeper
-        result->newSegments->add(boost::dynamic_pointer_cast<SegmentInfo>(info->clone()));
+        result->newSegments->add(std::dynamic_pointer_cast<SegmentInfo>(info->clone()));
     }
 
     if (result->numBadSegments == 0) {
@@ -344,19 +344,19 @@ TermIndexStatusPtr CheckIndex::testTermIndex(const SegmentInfoPtr& info, const S
                 int32_t doc = termPositions->doc();
                 int32_t freq = termPositions->freq();
                 if (doc <= lastDoc) {
-                    boost::throw_exception(RuntimeException(L"term " + term->toString() +
+                    throw (RuntimeException(L"term " + term->toString() +
                                                             L": doc " + StringUtils::toString(doc) +
                                                             L" <= lastDoc " + StringUtils::toString(lastDoc)));
                 }
                 if (doc >= maxDoc) {
-                    boost::throw_exception(RuntimeException(L"term " + term->toString() +
+                    throw (RuntimeException(L"term " + term->toString() +
                                                             L": doc " + StringUtils::toString(doc) +
                                                             L" >= maxDoc " + StringUtils::toString(maxDoc)));
                 }
 
                 lastDoc = doc;
                 if (freq <= 0) {
-                    boost::throw_exception(RuntimeException(L"term " + term->toString() +
+                    throw (RuntimeException(L"term " + term->toString() +
                                                             L": doc " + StringUtils::toString(doc) +
                                                             L": freq " + StringUtils::toString(freq) +
                                                             L" is out of bounds"));
@@ -367,13 +367,13 @@ TermIndexStatusPtr CheckIndex::testTermIndex(const SegmentInfoPtr& info, const S
                 for (int32_t j = 0; j < freq; ++j) {
                     int32_t pos = termPositions->nextPosition();
                     if (pos < -1) {
-                        boost::throw_exception(RuntimeException(L"term " + term->toString() +
+                        throw (RuntimeException(L"term " + term->toString() +
                                                                 L": doc " + StringUtils::toString(doc) +
                                                                 L": pos " + StringUtils::toString(pos) +
                                                                 L" is out of bounds"));
                     }
                     if (pos < lastPos) {
-                        boost::throw_exception(RuntimeException(L"term " + term->toString() +
+                        throw (RuntimeException(L"term " + term->toString() +
                                                                 L": doc " + StringUtils::toString(doc) +
                                                                 L": pos " + StringUtils::toString(pos) +
                                                                 L" < lastPos " + StringUtils::toString(lastPos)));
@@ -394,7 +394,7 @@ TermIndexStatusPtr CheckIndex::testTermIndex(const SegmentInfoPtr& info, const S
             }
 
             if (freq0 + delCount != docFreq) {
-                boost::throw_exception(RuntimeException(L"term " + term->toString() +
+                throw (RuntimeException(L"term " + term->toString() +
                                                         L"docFreq=" + StringUtils::toString(docFreq) +
                                                         L" != num docs seen " + StringUtils::toString(freq0) +
                                                         L" + num docs deleted " + StringUtils::toString(delCount)));
@@ -428,7 +428,7 @@ StoredFieldStatusPtr CheckIndex::testStoredFields(const SegmentInfoPtr& info, co
 
         // Validate docCount
         if (status->docCount != reader->numDocs()) {
-            boost::throw_exception(RuntimeException(L"docCount=" + StringUtils::toString(status->docCount) +
+            throw (RuntimeException(L"docCount=" + StringUtils::toString(status->docCount) +
                                                     L" but saw " + StringUtils::toString(status->docCount) +
                                                     L" undeleted docs"));
         }
@@ -471,7 +471,7 @@ TermVectorStatusPtr CheckIndex::testTermVectors(const SegmentInfoPtr& info, cons
 
 void CheckIndex::fixIndex(const IndexStatusPtr& result) {
     if (result->partial) {
-        boost::throw_exception(IllegalArgumentException(L"can only fix an index that was fully checked (this status checked a subset of segments)"));
+        throw (IllegalArgumentException(L"can only fix an index that was fully checked (this status checked a subset of segments)"));
     }
     result->newSegments->commit(result->dir);
 }
@@ -482,7 +482,7 @@ bool CheckIndex::testAsserts() {
 }
 
 bool CheckIndex::assertsOn() {
-    BOOST_ASSERT(testAsserts());
+    assert(testAsserts());
     return _assertsOn;
 }
 
