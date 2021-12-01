@@ -107,7 +107,7 @@ bool BooleanScorer::score(const CollectorPtr& collector, int32_t max, int32_t fi
 }
 
 int32_t BooleanScorer::advance(int32_t target) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
     return 0;
 }
 

@@ -48,7 +48,7 @@ void MockRAMOutputStream::writeBytes(const uint8_t* b, int32_t offset, int32_t l
 
     // If MockRAMDir crashed since we were opened, then don't write anything
     if (dir->crashed) {
-        boost::throw_exception(IOException(L"MockRAMDirectory was crashed; cannot write to " + name));
+        throw (IOException(L"MockRAMDirectory was crashed; cannot write to " + name));
     }
 
     // Enforce disk full
@@ -66,7 +66,7 @@ void MockRAMOutputStream::writeBytes(const uint8_t* b, int32_t offset, int32_t l
         if (realUsage > dir->maxUsedSize) {
             dir->maxUsedSize = realUsage;
         }
-        boost::throw_exception(IOException(L"fake disk full at " + StringUtils::toString(dir->getRecomputedActualSizeInBytes()) + L" bytes when writing " + name));
+        throw (IOException(L"fake disk full at " + StringUtils::toString(dir->getRecomputedActualSizeInBytes()) + L" bytes when writing " + name));
     } else {
         RAMOutputStream::writeBytes(b, offset, length);
     }

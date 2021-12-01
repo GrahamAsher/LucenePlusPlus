@@ -32,12 +32,12 @@ void SnapshotDeletionPolicy::onCommit(Collection<IndexCommitPtr> commits) {
 IndexCommitPtr SnapshotDeletionPolicy::snapshot() {
     SyncLock syncLock(this);
     if (!lastCommit) {
-        boost::throw_exception(IllegalStateException(L"no index commits to snapshot"));
+        throw (IllegalStateException(L"no index commits to snapshot"));
     }
     if (_snapshot.empty()) {
         _snapshot = lastCommit->getSegmentsFileName();
     } else {
-        boost::throw_exception(IllegalStateException(L"snapshot is already set; please call release() first"));
+        throw (IllegalStateException(L"snapshot is already set; please call release() first"));
     }
     return lastCommit;
 }
@@ -47,7 +47,7 @@ void SnapshotDeletionPolicy::release() {
     if (!_snapshot.empty()) {
         _snapshot.clear();
     } else {
-        boost::throw_exception(IllegalStateException(L"snapshot was not set; please call snapshot() first"));
+        throw (IllegalStateException(L"snapshot was not set; please call snapshot() first"));
     }
 }
 

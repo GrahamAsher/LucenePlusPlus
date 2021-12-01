@@ -22,7 +22,7 @@ void LuceneObject::initialize() {
 
 LuceneObjectPtr LuceneObject::clone(const LuceneObjectPtr& other) {
     if (!other) {
-        boost::throw_exception(UnsupportedOperationException(L"clone must not be null"));
+        throw (UnsupportedOperationException(L"clone must not be null"));
     }
     return other;
 }

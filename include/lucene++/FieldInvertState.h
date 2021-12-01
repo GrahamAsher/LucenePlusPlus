@@ -17,6 +17,8 @@ class LPPAPI FieldInvertState : public LuceneObject {
 
     friend class DocInverterPerField;
     friend class FreqProxTermsWriterPerField;
+    friend class TermsHashPerField;
+    friend class TermVectorsTermsWriterPerField;
 
 public:
     FieldInvertState(int32_t position = 0, int32_t length = 0, int32_t numOverlap = 0, int32_t offset = 0, double boost = 0);

@@ -52,7 +52,7 @@ LuceneObjectPtr MultiReader::clone(const LuceneObjectPtr& other) {
     try {
         return doReopen(true);
     } catch (LuceneException& e) {
-        boost::throw_exception(RuntimeException(e.getError()));
+        throw (RuntimeException(e.getError()));
     }
     return LuceneObjectPtr();
 }
@@ -68,7 +68,7 @@ IndexReaderPtr MultiReader::doReopen(bool doClone) {
     try {
         for (int32_t i = 0; i < subReaders.size(); ++i) {
             if (doClone) {
-                newSubReaders[i] = boost::dynamic_pointer_cast<IndexReader>(subReaders[i]->clone());
+                newSubReaders[i] = std::dynamic_pointer_cast<IndexReader>(subReaders[i]->clone());
             } else {
                 newSubReaders[i] = subReaders[i]->reopen();
             }
@@ -320,7 +320,7 @@ bool MultiReader::isCurrent() {
 }
 
 int64_t MultiReader::getVersion() {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
     return 0;
 }
 

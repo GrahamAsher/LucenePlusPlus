@@ -40,7 +40,7 @@ ExplanationPtr DocValues::explain(int32_t doc) {
 }
 
 CollectionValue DocValues::getInnerArray() {
-    boost::throw_exception(UnsupportedOperationException(L"This optional method is for test purposes only"));
+    throw (UnsupportedOperationException(L"This optional method is for test purposes only"));
     return VariantUtils::null();
 }
 

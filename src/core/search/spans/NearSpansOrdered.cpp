@@ -12,7 +12,7 @@ namespace Lucene {
 
 NearSpansOrdered::NearSpansOrdered(const SpanNearQueryPtr& spanNearQuery, const IndexReaderPtr& reader, bool collectPayloads) {
     if (spanNearQuery->getClauses().size() < 2) {
-        boost::throw_exception(IllegalArgumentException(L"Less than 2 clauses: " + spanNearQuery->toString()));
+        throw (IllegalArgumentException(L"Less than 2 clauses: " + spanNearQuery->toString()));
     }
     this->firstTime = true;
     this->more = false;
@@ -132,14 +132,14 @@ bool NearSpansOrdered::toSameDoc() {
         }
     }
     for (int32_t i = 0; i < subSpansByDoc.size(); ++i) {
-        BOOST_ASSERT(subSpansByDoc[i]->doc() == maxDoc);
+        assert(subSpansByDoc[i]->doc() == maxDoc);
     }
     inSameDoc = true;
     return true;
 }
 
 bool NearSpansOrdered::docSpansOrdered(const SpansPtr& spans1, const SpansPtr& spans2) {
-    BOOST_ASSERT(spans1->doc() == spans2->doc());
+    assert(spans1->doc() == spans2->doc());
     int32_t start1 = spans1->start();
     int32_t start2 = spans2->start();
     // Do not call docSpansOrdered(int,int,int,int) to avoid invoking .end()
@@ -219,7 +219,7 @@ bool NearSpansOrdered::shrinkToAfterShortestMatch() {
             possibleMatchPayloads.addAll(possiblePayload.begin(), possiblePayload.end());
         }
 
-        BOOST_ASSERT(prevStart <= matchStart);
+        assert(prevStart <= matchStart);
         if (matchStart > prevEnd) { // Only non overlapping spans add to slop.
             matchSlop += (matchStart - prevEnd);
         }

@@ -29,7 +29,7 @@ OneMerge::OneMerge(const SegmentInfosPtr& segments, bool useCompoundFile) {
     aborted = false;
 
     if (segments->empty()) {
-        boost::throw_exception(RuntimeException(L"segments must include at least one segment"));
+        throw (RuntimeException(L"segments must include at least one segment"));
     }
     this->segments = segments;
     this->useCompoundFile = useCompoundFile;
@@ -61,7 +61,7 @@ bool OneMerge::isAborted() {
 void OneMerge::checkAborted(const DirectoryPtr& dir) {
     SyncLock syncLock(this);
     if (aborted) {
-        boost::throw_exception(MergeAbortedException(L"merge is aborted: " + segString(dir)));
+        throw (MergeAbortedException(L"merge is aborted: " + segString(dir)));
     }
 }
 

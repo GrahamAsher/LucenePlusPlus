@@ -31,7 +31,7 @@ void SimpleFSLockFactory::clearLock(const String& lockName) {
     if (FileUtils::isDirectory(lockDir)) {
         String lockPath(FileUtils::joinPath(lockDir, lockPrefix.empty() ? lockName : lockPrefix + L"-" + lockName));
         if (FileUtils::fileExists(lockPath) && !FileUtils::removeFile(lockPath)) {
-            boost::throw_exception(IOException(L"Cannot delete " + lockPath));
+            throw (IOException(L"Cannot delete " + lockPath));
         }
     }
 }
@@ -48,10 +48,10 @@ bool SimpleFSLock::obtain() {
     // Ensure that lockDir exists and is a directory
     if (!FileUtils::fileExists(lockDir)) {
         if (!FileUtils::createDirectory(lockDir)) {
-            boost::throw_exception(RuntimeException(L"Cannot create directory: " + lockDir));
+            throw (RuntimeException(L"Cannot create directory: " + lockDir));
         }
     } else if (!FileUtils::isDirectory(lockDir)) {
-        boost::throw_exception(RuntimeException(L"Found regular file where directory expected: " + lockDir));
+        throw (RuntimeException(L"Found regular file where directory expected: " + lockDir));
     }
     boost::filesystem::ofstream f;
     try {
@@ -64,7 +64,7 @@ bool SimpleFSLock::obtain() {
 void SimpleFSLock::release() {
     String path(FileUtils::joinPath(lockDir, lockFile));
     if (FileUtils::fileExists(path) && !FileUtils::removeFile(path)) {
-        boost::throw_exception(LockReleaseFailedException(L"failed to delete " + path));
+        throw (LockReleaseFailedException(L"failed to delete " + path));
     }
 }
 

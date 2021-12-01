@@ -7,7 +7,6 @@
 #ifndef CHECKSUMINDEXINPUT_H
 #define CHECKSUMINDEXINPUT_H
 
-#include <boost/crc.hpp>
 #include "IndexInput.h"
 
 namespace Lucene {
@@ -23,7 +22,7 @@ public:
 
 protected:
     IndexInputPtr main;
-    boost::crc_32_type checksum;
+    uint32_t checksum;
 
 public:
     /// Reads and returns a single byte.

@@ -35,13 +35,13 @@ void StoredFieldsWriterPerThread::addField(const FieldablePtr& field, const Fiel
         doc = StoredFieldsWriterPtr(_storedFieldsWriter)->getPerDoc();
         doc->docID = docState->docID;
         localFieldsWriter->setFieldsStream(doc->fdt);
-        BOOST_ASSERT(doc->numStoredFields == 0);
-        BOOST_ASSERT(doc->fdt->length() == 0);
-        BOOST_ASSERT(doc->fdt->getFilePointer() == 0);
+        assert(doc->numStoredFields == 0);
+        assert(doc->fdt->length() == 0);
+        assert(doc->fdt->getFilePointer() == 0);
     }
 
     localFieldsWriter->writeField(fieldInfo, field);
-    BOOST_ASSERT(docState->testPoint(L"StoredFieldsWriterPerThread.processFields.writeField"));
+    assert(docState->testPoint(L"StoredFieldsWriterPerThread.processFields.writeField"));
     ++doc->numStoredFields;
 }
 

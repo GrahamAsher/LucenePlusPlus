@@ -27,7 +27,7 @@ int32_t FilteredTermEnum::docFreq() {
     if (!currentTerm) {
         return -1;
     }
-    BOOST_ASSERT(actualEnum);
+    assert(actualEnum);
     return actualEnum->docFreq();
 }
 

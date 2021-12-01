@@ -66,11 +66,11 @@ int32_t FieldCacheTermsFilterDocIdSetIterator::docID() {
 int32_t FieldCacheTermsFilterDocIdSetIterator::nextDoc() {
     try {
         if (++doc >= fcsi->order.size()) {
-            boost::throw_exception(IndexOutOfBoundsException());
+            throw (IndexOutOfBoundsException());
         }
         while (!openBitSet->fastGet(fcsi->order[doc])) {
             if (++doc >= fcsi->order.size()) {
-                boost::throw_exception(IndexOutOfBoundsException());
+                throw (IndexOutOfBoundsException());
             }
         }
     } catch (IndexOutOfBoundsException&) {
@@ -83,11 +83,11 @@ int32_t FieldCacheTermsFilterDocIdSetIterator::advance(int32_t target) {
     try {
         doc = target;
         if (doc < 0 || doc >= fcsi->order.size()) {
-            boost::throw_exception(IndexOutOfBoundsException());
+            throw (IndexOutOfBoundsException());
         }
         while (!openBitSet->fastGet(fcsi->order[doc])) {
             if (++doc >= fcsi->order.size()) {
-                boost::throw_exception(IndexOutOfBoundsException());
+                throw (IndexOutOfBoundsException());
             }
         }
     } catch (IndexOutOfBoundsException&) {

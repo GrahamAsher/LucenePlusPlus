@@ -5,7 +5,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LuceneInc.h"
-#include <boost/algorithm/string.hpp>
 #include "SegmentReader.h"
 #include "_SegmentReader.h"
 #include "IndexFileNames.h"
@@ -93,12 +92,12 @@ void SegmentReader::openDocStores() {
 bool SegmentReader::checkDeletedCounts() {
     int32_t recomputedCount = deletedDocs->getRecomputedCount();
 
-    BOOST_ASSERT(deletedDocs->count() == recomputedCount);
+    assert(deletedDocs->count() == recomputedCount);
 
-    BOOST_ASSERT(si->getDelCount() == recomputedCount);
+    assert(si->getDelCount() == recomputedCount);
 
     // Verify # deletes does not exceed maxDoc for this segment
-    BOOST_ASSERT(si->getDelCount() <= maxDoc());
+    assert(si->getDelCount() <= maxDoc());
 
     return true;
 }
@@ -108,9 +107,9 @@ void SegmentReader::loadDeletedDocs() {
     if (hasDeletions(si)) {
         deletedDocs = newLucene<BitVector>(directory(), si->getDelFileName());
         deletedDocsRef = newLucene<SegmentReaderRef>();
-        BOOST_ASSERT(checkDeletedCounts());
+        assert(checkDeletedCounts());
     } else {
-        BOOST_ASSERT(si->getDelCount() == 0);
+        assert(si->getDelCount() == 0);
     }
 }
 
@@ -121,14 +120,14 @@ ByteArray SegmentReader::cloneNormBytes(ByteArray bytes) {
 }
 
 BitVectorPtr SegmentReader::cloneDeletedDocs(const BitVectorPtr& bv) {
-    return boost::dynamic_pointer_cast<BitVector>(bv->clone());
+    return std::dynamic_pointer_cast<BitVector>(bv->clone());
 }
 
 LuceneObjectPtr SegmentReader::clone(const LuceneObjectPtr& other) {
     try {
         return SegmentReader::clone(readOnly, other); // Preserve current readOnly
     } catch (...) {
-        boost::throw_exception(RuntimeException());
+        throw (RuntimeException());
     }
     return LuceneObjectPtr();
 }
@@ -161,7 +160,7 @@ SegmentReaderPtr SegmentReader::reopenSegment(const SegmentInfoPtr& si, bool doC
     }
 
     // When cloning, the incoming SegmentInfos should not have any changes in it
-    BOOST_ASSERT(!doClone || (normsUpToDate && deletionsUpToDate));
+    assert(!doClone || (normsUpToDate && deletionsUpToDate));
 
     // clone reader
     SegmentReaderPtr clone(openReadOnly ? newLucene<ReadOnlySegmentReader>() : newLucene<SegmentReader>());
@@ -193,7 +192,7 @@ SegmentReaderPtr SegmentReader::reopenSegment(const SegmentInfoPtr& si, bool doC
         } else {
             if (!deletionsUpToDate) {
                 // load deleted docs
-                BOOST_ASSERT(!clone->deletedDocs);
+                assert(!clone->deletedDocs);
                 clone->loadDeletedDocs();
             } else if (deletedDocs) {
                 deletedDocsRef->incRef();
@@ -211,7 +210,7 @@ SegmentReaderPtr SegmentReader::reopenSegment(const SegmentInfoPtr& si, bool doC
                 String curField(core->fieldInfos->fieldInfo(i)->name);
                 NormPtr norm(this->_norms.get(curField));
                 if (norm) {
-                    NormPtr cloneNorm(boost::dynamic_pointer_cast<Norm>(norm->clone()));
+                    NormPtr cloneNorm(std::dynamic_pointer_cast<Norm>(norm->clone()));
                     cloneNorm->_reader = clone;
                     clone->_norms.put(curField, cloneNorm);
                 }
@@ -279,9 +278,9 @@ void SegmentReader::commitChanges(MapStringString commitUserData) {
 
         si->setDelCount(si->getDelCount() + pendingDeleteCount);
         pendingDeleteCount = 0;
-        BOOST_ASSERT(deletedDocs->count() == si->getDelCount()); // delete count mismatch during commit?
+        assert(deletedDocs->count() == si->getDelCount()); // delete count mismatch during commit?
     } else {
-        BOOST_ASSERT(pendingDeleteCount == 0);
+        assert(pendingDeleteCount == 0);
     }
 
     if (normsDirty) { // re-write norms
@@ -356,7 +355,7 @@ void SegmentReader::doDelete(int32_t docNum) {
 void SegmentReader::doUndeleteAll() {
     deletedDocsDirty = false;
     if (deletedDocs) {
-        BOOST_ASSERT(deletedDocsRef);
+        assert(deletedDocsRef);
         deletedDocsRef->decRef();
         deletedDocs.reset();
         deletedDocsRef.reset();
@@ -364,8 +363,8 @@ void SegmentReader::doUndeleteAll() {
         si->clearDelGen();
         si->setDelCount(0);
     } else {
-        BOOST_ASSERT(!deletedDocsRef);
-        BOOST_ASSERT(pendingDeleteCount == 0);
+        assert(!deletedDocsRef);
+        assert(pendingDeleteCount == 0);
     }
 }
 
@@ -494,7 +493,7 @@ void SegmentReader::doSetNorm(int32_t doc, const String& field, uint8_t value) {
     normsDirty = true;
     ByteArray bytes(norm->copyOnWrite());
     if (doc < 0 || doc >= bytes.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     bytes[doc] = value; // set the value
 }
@@ -529,7 +528,7 @@ void SegmentReader::openNorms(const DirectoryPtr& cfsDir, int32_t readBufferSize
             }
 
             // singleNormFile means multiple norms share this file
-            bool singleNormFile = boost::ends_with(fileName, String(L".") + IndexFileNames::NORMS_EXTENSION());
+            bool singleNormFile = boost_copy::ends_with(fileName, String(L".") + IndexFileNames::NORMS_EXTENSION());
             IndexInputPtr normInput;
             int64_t normSeek;
 
@@ -588,7 +587,7 @@ TermVectorsReaderPtr SegmentReader::getTermVectorsReader() {
             return TermVectorsReaderPtr();
         } else {
             try {
-                tvReader = boost::dynamic_pointer_cast<TermVectorsReader>(orig->clone());
+                tvReader = std::dynamic_pointer_cast<TermVectorsReader>(orig->clone());
             } catch (...) {
                 return TermVectorsReaderPtr();
             }
@@ -668,7 +667,7 @@ void SegmentReader::setSegmentInfo(const SegmentInfoPtr& info) {
 }
 
 void SegmentReader::startCommit() {
-    rollbackSegmentInfo = boost::dynamic_pointer_cast<SegmentInfo>(si->clone());
+    rollbackSegmentInfo = std::dynamic_pointer_cast<SegmentInfo>(si->clone());
     rollbackHasChanges = _hasChanges;
     rollbackDeletedDocsDirty = deletedDocsDirty;
     rollbackNormsDirty = normsDirty;
@@ -712,21 +711,21 @@ SegmentReaderPtr SegmentReader::getOnlySegmentReader(const DirectoryPtr& dir) {
 }
 
 SegmentReaderPtr SegmentReader::getOnlySegmentReader(const IndexReaderPtr& reader) {
-    SegmentReaderPtr segmentReader(boost::dynamic_pointer_cast<SegmentReader>(reader));
+    SegmentReaderPtr segmentReader(std::dynamic_pointer_cast<SegmentReader>(reader));
     if (segmentReader) {
         return segmentReader;
     }
 
-    DirectoryReaderPtr directoryReader(boost::dynamic_pointer_cast<DirectoryReader>(reader));
+    DirectoryReaderPtr directoryReader(std::dynamic_pointer_cast<DirectoryReader>(reader));
     if (directoryReader) {
         Collection<IndexReaderPtr> subReaders(directoryReader->getSequentialSubReaders());
         if (subReaders.size() != 1) {
-            boost::throw_exception(IllegalArgumentException(L"reader has " + StringUtils::toString(subReaders.size()) + L" segments instead of exactly one"));
+            throw (IllegalArgumentException(L"reader has " + StringUtils::toString(subReaders.size()) + L" segments instead of exactly one"));
         }
-        return boost::dynamic_pointer_cast<SegmentReader>(subReaders[0]);
+        return std::dynamic_pointer_cast<SegmentReader>(subReaders[0]);
     }
 
-    boost::throw_exception(IllegalArgumentException(L"reader is not a SegmentReader or a single-segment DirectoryReader"));
+    throw (IllegalArgumentException(L"reader is not a SegmentReader or a single-segment DirectoryReader"));
 
     return SegmentReaderPtr();
 }
@@ -877,19 +876,19 @@ void CoreReaders::decRef() {
 
 void CoreReaders::openDocStores(const SegmentInfoPtr& si) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(si->name == segment);
+    assert(si->name == segment);
 
     if (!fieldsReaderOrig) {
         DirectoryPtr storeDir;
         if (si->getDocStoreOffset() != -1) {
             if (si->getDocStoreIsCompoundFile()) {
-                BOOST_ASSERT(!storeCFSReader);
+                assert(!storeCFSReader);
                 storeCFSReader = newLucene<CompoundFileReader>(dir, si->getDocStoreSegment() + L"." + IndexFileNames::COMPOUND_FILE_STORE_EXTENSION(), readBufferSize);
                 storeDir = storeCFSReader;
-                BOOST_ASSERT(storeDir);
+                assert(storeDir);
             } else {
                 storeDir = dir;
-                BOOST_ASSERT(storeDir);
+                assert(storeDir);
             }
         } else if (si->getUseCompoundFile()) {
             // In some cases, we were originally opened when CFS was not used, but then we are asked to open doc
@@ -898,10 +897,10 @@ void CoreReaders::openDocStores(const SegmentInfoPtr& si) {
                 cfsReader = newLucene<CompoundFileReader>(dir, segment + L"." + IndexFileNames::COMPOUND_FILE_EXTENSION(), readBufferSize);
             }
             storeDir = cfsReader;
-            BOOST_ASSERT(storeDir);
+            assert(storeDir);
         } else {
             storeDir = dir;
-            BOOST_ASSERT(storeDir);
+            assert(storeDir);
         }
 
         String storesSegment(si->getDocStoreOffset() != -1 ? si->getDocStoreSegment() : segment);
@@ -910,7 +909,7 @@ void CoreReaders::openDocStores(const SegmentInfoPtr& si) {
 
         // Verify two sources of "maxDoc" agree
         if (si->getDocStoreOffset() == -1 && fieldsReaderOrig->size() != si->docCount) {
-            boost::throw_exception(CorruptIndexException(L"doc counts differ for segment " + segment +
+            throw (CorruptIndexException(L"doc counts differ for segment " + segment +
                                    L": fieldsReader shows " + StringUtils::toString(fieldsReaderOrig->size()) +
                                    L" but segmentInfo shows " + StringUtils::toString(si->docCount)));
         }
@@ -926,7 +925,7 @@ FieldsReaderLocal::FieldsReaderLocal(const SegmentReaderPtr& reader) {
 }
 
 FieldsReaderPtr FieldsReaderLocal::initialValue() {
-    return boost::dynamic_pointer_cast<FieldsReader>(SegmentReaderPtr(_reader)->core->getFieldsReaderOrig()->clone());
+    return std::dynamic_pointer_cast<FieldsReader>(SegmentReaderPtr(_reader)->core->getFieldsReaderOrig()->clone());
 }
 
 SegmentReaderRef::SegmentReaderRef() {
@@ -949,13 +948,13 @@ int32_t SegmentReaderRef::refCount() {
 
 int32_t SegmentReaderRef::incRef() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(_refCount > 0);
+    assert(_refCount > 0);
     return ++_refCount;
 }
 
 int32_t SegmentReaderRef::decRef() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(_refCount > 0);
+    assert(_refCount > 0);
     return --_refCount;
 }
 
@@ -982,7 +981,7 @@ Norm::~Norm() {
 
 void Norm::incRef() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(refCount > 0 && (!origNorm || origNorm->refCount > 0));
+    assert(refCount > 0 && (!origNorm || origNorm->refCount > 0));
     ++refCount;
 }
 
@@ -1006,7 +1005,7 @@ void Norm::closeInput() {
 
 void Norm::decRef() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(refCount > 0 && (!origNorm || origNorm->refCount > 0));
+    assert(refCount > 0 && (!origNorm || origNorm->refCount > 0));
 
     if (--refCount == 0) {
         if (origNorm) {
@@ -1021,22 +1020,22 @@ void Norm::decRef() {
         }
 
         if (_bytes) {
-            BOOST_ASSERT(_bytesRef);
+            assert(_bytesRef);
             _bytesRef->decRef();
             _bytes.reset();
             _bytesRef.reset();
         } else {
-            BOOST_ASSERT(!_bytesRef);
+            assert(!_bytesRef);
         }
     }
 }
 
 void Norm::bytes(uint8_t* bytesOut, int32_t offset, int32_t length) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(refCount > 0 && (!origNorm || origNorm->refCount > 0));
+    assert(refCount > 0 && (!origNorm || origNorm->refCount > 0));
     if (_bytes) {
         // Already cached - copy from cache
-        BOOST_ASSERT(length <= SegmentReaderPtr(_reader)->maxDoc());
+        assert(length <= SegmentReaderPtr(_reader)->maxDoc());
         MiscUtils::arrayCopy(_bytes.get(), 0, bytesOut, offset, length);
     } else {
         // Not cached
@@ -1054,9 +1053,9 @@ void Norm::bytes(uint8_t* bytesOut, int32_t offset, int32_t length) {
 
 ByteArray Norm::bytes() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(refCount > 0 && (!origNorm || origNorm->refCount > 0));
+    assert(refCount > 0 && (!origNorm || origNorm->refCount > 0));
     if (!_bytes) { // value not yet read
-        BOOST_ASSERT(!_bytesRef);
+        assert(!_bytesRef);
         if (origNorm) {
             // Ask origNorm to load so that for a series of reopened readers we share a single read-only byte[]
             _bytes = origNorm->bytes();
@@ -1073,7 +1072,7 @@ ByteArray Norm::bytes() {
             _bytes = ByteArray::newInstance(count);
 
             // Since we are orig, in must not be null
-            BOOST_ASSERT(in);
+            assert(in);
 
             // Read from disk.
             {
@@ -1096,14 +1095,14 @@ SegmentReaderRefPtr Norm::bytesRef() {
 
 ByteArray Norm::copyOnWrite() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(refCount > 0 && (!origNorm || origNorm->refCount > 0));
+    assert(refCount > 0 && (!origNorm || origNorm->refCount > 0));
     bytes();
-    BOOST_ASSERT(_bytes);
-    BOOST_ASSERT(_bytesRef);
+    assert(_bytes);
+    assert(_bytesRef);
     if (_bytesRef->refCount() > 1) {
         // I cannot be the origNorm for another norm instance if I'm being changed.
         // ie, only the "head Norm" can be changed
-        BOOST_ASSERT(refCount == 1);
+        assert(refCount == 1);
         SegmentReaderRefPtr oldRef(_bytesRef);
         _bytes = SegmentReaderPtr(_reader)->cloneNormBytes(_bytes);
         _bytesRef = newLucene<SegmentReaderRef>();
@@ -1116,9 +1115,9 @@ ByteArray Norm::copyOnWrite() {
 LuceneObjectPtr Norm::clone(const LuceneObjectPtr& other) {
     SyncLock syncLock(this);
 
-    BOOST_ASSERT(refCount > 0 && (!origNorm || origNorm->refCount > 0));
+    assert(refCount > 0 && (!origNorm || origNorm->refCount > 0));
     LuceneObjectPtr clone = other ? other : newLucene<Norm>();
-    NormPtr cloneNorm(boost::dynamic_pointer_cast<Norm>(clone));
+    NormPtr cloneNorm(std::dynamic_pointer_cast<Norm>(clone));
     cloneNorm->_reader = _reader;
     cloneNorm->origNorm = origNorm;
     cloneNorm->origReader = origReader;
@@ -1132,13 +1131,13 @@ LuceneObjectPtr Norm::clone(const LuceneObjectPtr& other) {
     cloneNorm->refCount = 1;
 
     if (_bytes) {
-        BOOST_ASSERT(_bytesRef);
-        BOOST_ASSERT(!origNorm);
+        assert(_bytesRef);
+        assert(!origNorm);
 
         // Clone holds a reference to my bytes
         cloneNorm->_bytesRef->incRef();
     } else {
-        BOOST_ASSERT(!_bytesRef);
+        assert(!_bytesRef);
         if (!origNorm) {
             // I become the origNorm for the clone
             cloneNorm->origNorm = shared_from_this();
@@ -1154,7 +1153,7 @@ LuceneObjectPtr Norm::clone(const LuceneObjectPtr& other) {
 }
 
 void Norm::reWrite(const SegmentInfoPtr& si) {
-    BOOST_ASSERT(refCount > 0 && (!origNorm || origNorm->refCount > 0));
+    assert(refCount > 0 && (!origNorm || origNorm->refCount > 0));
 
     // NOTE: norms are re-written in regular directory, not cfs
     si->advanceNormGen(this->number);

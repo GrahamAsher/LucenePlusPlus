@@ -58,6 +58,10 @@ class LPPAPI DocumentsWriter : public LuceneObject {
     friend class PerDocBuffer;
     friend class ByteBlockAllocator;
     friend class DocumentsWriterThreadState;
+    friend class StoredFieldsWriter;
+    friend class TermsHash;
+    friend class TermsHashPerThread;
+    friend class TermVectorsTermsWriter;
 
 public:
     DocumentsWriter(const DirectoryPtr& directory, const IndexWriterPtr& writer, const IndexingChainPtr& indexingChain);

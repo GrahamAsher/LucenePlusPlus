@@ -45,7 +45,7 @@ double LogMergePolicy::getNoCFSRatio() {
 
 void LogMergePolicy::setNoCFSRatio(double noCFSRatio) {
     if (noCFSRatio < 0.0 || noCFSRatio > 1.0) {
-        boost::throw_exception(IllegalArgumentException(L"noCFSRatio must be 0.0 to 1.0 inclusive; got " + StringUtils::toString(noCFSRatio)));
+        throw (IllegalArgumentException(L"noCFSRatio must be 0.0 to 1.0 inclusive; got " + StringUtils::toString(noCFSRatio)));
     }
     this->noCFSRatio = noCFSRatio;
 }
@@ -66,7 +66,7 @@ int32_t LogMergePolicy::getMergeFactor() {
 
 void LogMergePolicy::setMergeFactor(int32_t mergeFactor) {
     if (mergeFactor < 2) {
-        boost::throw_exception(IllegalArgumentException(L"mergeFactor cannot be less than 2"));
+        throw (IllegalArgumentException(L"mergeFactor cannot be less than 2"));
     }
     this->mergeFactor = mergeFactor;
 }
@@ -149,7 +149,7 @@ bool LogMergePolicy::isOptimized(const SegmentInfoPtr& info) {
 MergeSpecificationPtr LogMergePolicy::findMergesForOptimize(const SegmentInfosPtr& segmentInfos, int32_t maxSegmentCount, SetSegmentInfo segmentsToOptimize) {
     MergeSpecificationPtr spec;
 
-    BOOST_ASSERT(maxSegmentCount > 0);
+    assert(maxSegmentCount > 0);
 
     if (!isOptimized(segmentInfos, maxSegmentCount, segmentsToOptimize)) {
         // Find the newest (rightmost) segment that needs to be optimized (other segments may have been

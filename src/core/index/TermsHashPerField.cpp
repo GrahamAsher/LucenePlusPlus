@@ -56,12 +56,12 @@ void TermsHashPerField::initialize() {
     streamCount = consumer->getStreamCount();
     numPostingInt = 2 * streamCount;
     if (nextPerThread) {
-        nextPerField = boost::dynamic_pointer_cast<TermsHashPerField>(nextPerThread->addField(docInverterPerField, fieldInfo));
+        nextPerField = std::dynamic_pointer_cast<TermsHashPerField>(nextPerThread->addField(docInverterPerField, fieldInfo));
     }
 }
 
 void TermsHashPerField::shrinkHash(int32_t targetSize) {
-    BOOST_ASSERT(postingsCompacted || numPostings == 0);
+    assert(postingsCompacted || numPostings == 0);
 
     int32_t newSize = 4;
     if (newSize != postingsHash.size()) {
@@ -77,7 +77,7 @@ void TermsHashPerField::reset() {
     if (!postingsCompacted) {
         compactPostings();
     }
-    BOOST_ASSERT(numPostings <= postingsHash.size());
+    assert(numPostings <= postingsHash.size());
     if (numPostings > 0) {
         TermsHashPtr(TermsHashPerThreadPtr(_perThread)->_termsHash)->recyclePostings(postingsHash, numPostings);
         MiscUtils::arrayFill(postingsHash.begin(), 0, numPostings, RawPostingListPtr());
@@ -98,7 +98,7 @@ void TermsHashPerField::abort() {
 }
 
 void TermsHashPerField::initReader(const ByteSliceReaderPtr& reader, const RawPostingListPtr& p, int32_t stream) {
-    BOOST_ASSERT(stream < streamCount);
+    assert(stream < streamCount);
     IntArray ints(intPool->buffers[p->intStart >> DocumentsWriter::INT_BLOCK_SHIFT]);
     int32_t upto = (p->intStart & DocumentsWriter::INT_BLOCK_MASK);
     reader->init(bytePool, p->byteStart + stream * ByteBlockPool::FIRST_LEVEL_SIZE(), ints[upto + stream]);
@@ -117,7 +117,7 @@ void TermsHashPerField::compactPostings() {
         }
     }
 
-    BOOST_ASSERT(upto == numPostings);
+    assert(upto == numPostings);
     postingsCompacted = true;
 }
 
@@ -137,7 +137,7 @@ struct comparePostings {
         wchar_t* text2 = buffers[second->textStart >> DocumentsWriter::CHAR_BLOCK_SHIFT].get();
         int32_t pos2 = (second->textStart & DocumentsWriter::CHAR_BLOCK_MASK);
 
-        BOOST_ASSERT(text1 != text2 || pos1 != pos2);
+        assert(text1 != text2 || pos1 != pos2);
 
         while (true) {
             wchar_t c1 = text1[pos1++];
@@ -152,7 +152,7 @@ struct comparePostings {
                 }
             } else {
                 // This method should never compare equal postings unless first == second
-                BOOST_ASSERT(c1 != UTF8Base::UNICODE_TERMINATOR);
+                assert(c1 != UTF8Base::UNICODE_TERMINATOR);
             }
         }
     }
@@ -168,7 +168,7 @@ Collection<RawPostingListPtr> TermsHashPerField::sortPostings() {
 
 bool TermsHashPerField::postingEquals(const wchar_t* tokenText, int32_t tokenTextLen) {
     wchar_t* text = TermsHashPerThreadPtr(_perThread)->charPool->buffers[p->textStart >> DocumentsWriter::CHAR_BLOCK_SHIFT].get();
-    BOOST_ASSERT(text);
+    assert(text);
     int32_t pos = (p->textStart & DocumentsWriter::CHAR_BLOCK_MASK);
     int32_t tokenPos = 0;
     for (; tokenPos < tokenTextLen; ++pos, ++tokenPos) {
@@ -201,7 +201,7 @@ void TermsHashPerField::add(int32_t textStart) {
 
     int32_t hashPos = (code & postingsHashMask);
 
-    BOOST_ASSERT(!postingsCompacted);
+    assert(!postingsCompacted);
 
     // Locate RawPostingList in hash
     p = postingsHash[hashPos];
@@ -227,11 +227,11 @@ void TermsHashPerField::add(int32_t textStart) {
 
         // Pull next free RawPostingList from free list
         p = perThread->freePostings[--perThread->freePostingsCount];
-        BOOST_ASSERT(p);
+        assert(p);
 
         p->textStart = textStart;
 
-        BOOST_ASSERT(!postingsHash[hashPos]);
+        assert(!postingsHash[hashPos]);
         postingsHash[hashPos] = p;
         ++numPostings;
 
@@ -269,7 +269,7 @@ void TermsHashPerField::add(int32_t textStart) {
 }
 
 void TermsHashPerField::add() {
-    BOOST_ASSERT(!postingsCompacted);
+    assert(!postingsCompacted);
 
     // Get the text of this term.
     wchar_t* tokenText = termAtt->termBufferArray();
@@ -360,7 +360,7 @@ void TermsHashPerField::add() {
 
         // Pull next free RawPostingList from free list
         p = perThread->freePostings[--perThread->freePostingsCount];
-        BOOST_ASSERT(p);
+        assert(p);
 
         wchar_t* text = charPool->buffer.get();
         int32_t textUpto = charPool->charUpto;
@@ -371,7 +371,7 @@ void TermsHashPerField::add() {
         MiscUtils::arrayCopy(tokenText, 0, text, textUpto, tokenTextLen);
         text[textUpto + tokenTextLen] = UTF8Base::UNICODE_TERMINATOR;
 
-        BOOST_ASSERT(!postingsHash[hashPos]);
+        assert(!postingsHash[hashPos]);
         postingsHash[hashPos] = p;
         ++numPostings;
 
@@ -415,7 +415,7 @@ void TermsHashPerField::add() {
 void TermsHashPerField::writeByte(int32_t stream, int8_t b) {
     int32_t upto = intUptos[intUptoStart + stream];
     ByteArray bytes(bytePool->buffers[upto >> DocumentsWriter::BYTE_BLOCK_SHIFT]);
-    BOOST_ASSERT(bytes);
+    assert(bytes);
     int32_t offset = (upto & DocumentsWriter::BYTE_BLOCK_MASK);
     if (bytes[offset] != 0) {
         // End of slice; allocate a new one
@@ -435,7 +435,7 @@ void TermsHashPerField::writeBytes(int32_t stream, const uint8_t* b, int32_t off
 }
 
 void TermsHashPerField::writeVInt(int32_t stream, int32_t i) {
-    BOOST_ASSERT(stream < streamCount);
+    assert(stream < streamCount);
     while ((i & ~0x7f) != 0) {
         writeByte(stream, (uint8_t)((i & 0x7f) | 0x80));
         i = MiscUtils::unsignedShift(i, 7);
@@ -476,7 +476,7 @@ void TermsHashPerField::rehashPostings(int32_t newSize) {
             }
 
             int32_t hashPos = (code & newMask);
-            BOOST_ASSERT(hashPos >= 0);
+            assert(hashPos >= 0);
             if (newHash[hashPos]) {
                 int32_t inc = (((code >> 8) + code) | 1);
                 do {

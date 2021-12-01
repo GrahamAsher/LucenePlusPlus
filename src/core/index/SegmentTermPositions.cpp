@@ -89,7 +89,7 @@ bool SegmentTermPositions::next() {
 }
 
 int32_t SegmentTermPositions::read(Collection<int32_t>& docs, Collection<int32_t>& freqs) {
-    boost::throw_exception(UnsupportedOperationException(L"TermPositions does not support processing multiple documents in one call. Use TermDocs instead."));
+    throw (UnsupportedOperationException(L"TermPositions does not support processing multiple documents in one call. Use TermDocs instead."));
     return 0;
 }
 
@@ -103,7 +103,7 @@ void SegmentTermPositions::skipProx(int64_t proxPointer, int32_t payloadLength) 
 }
 
 void SegmentTermPositions::skipPositions(int32_t n) {
-    BOOST_ASSERT(!currentFieldOmitTermFreqAndPositions);
+    assert(!currentFieldOmitTermFreqAndPositions);
     for (int32_t i = n; i > 0; --i) { // skip unread positions
         readDeltaPosition();
         skipPayload();
@@ -120,7 +120,7 @@ void SegmentTermPositions::skipPayload() {
 void SegmentTermPositions::lazySkip() {
     if (!proxStream) {
         // clone lazily
-        proxStream = boost::dynamic_pointer_cast<IndexInput>(SegmentReaderPtr(_parent)->core->proxStream->clone());
+        proxStream = std::dynamic_pointer_cast<IndexInput>(SegmentReaderPtr(_parent)->core->proxStream->clone());
     }
 
     // we might have to skip the current payload if it was not read yet
@@ -143,7 +143,7 @@ int32_t SegmentTermPositions::getPayloadLength() {
 
 ByteArray SegmentTermPositions::getPayload(ByteArray data, int32_t offset) {
     if (!needToLoadPayload) {
-        boost::throw_exception(IOException(L"Either no payload exists at this term position or an attempt was made to load it more than once."));
+        throw (IOException(L"Either no payload exists at this term position or an attempt was made to load it more than once."));
     }
 
     // read payloads lazily

@@ -73,8 +73,8 @@ void InOrderTopScoreDocCollector::collect(int32_t doc) {
     double score = __scorer->score();
 
     // This collector cannot handle these scores
-    BOOST_ASSERT(score != -std::numeric_limits<double>::infinity());
-    BOOST_ASSERT(!MiscUtils::isNaN(score));
+    assert(score != -std::numeric_limits<double>::infinity());
+    assert(!MiscUtils::isNaN(score));
 
     ++totalHits;
     if (score <= pqTop->score) {
@@ -102,7 +102,7 @@ void OutOfOrderTopScoreDocCollector::collect(int32_t doc) {
     double score = __scorer->score();
 
     // This collector cannot handle NaN
-    BOOST_ASSERT(!MiscUtils::isNaN(score));
+    assert(!MiscUtils::isNaN(score));
 
     ++totalHits;
     doc += docBase;

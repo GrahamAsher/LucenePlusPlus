@@ -92,62 +92,62 @@ DoubleParserPtr FieldCache::NUMERIC_UTILS_DOUBLE_PARSER() {
 }
 
 Collection<uint8_t> FieldCache::getBytes(const IndexReaderPtr& reader, const String& field) {
-    BOOST_ASSERT(false);
+    assert(false);
     return Collection<uint8_t>(); // override
 }
 
 Collection<uint8_t> FieldCache::getBytes(const IndexReaderPtr& reader, const String& field, const ByteParserPtr& parser) {
-    BOOST_ASSERT(false);
+    assert(false);
     return Collection<uint8_t>(); // override
 }
 
 Collection<int32_t> FieldCache::getInts(const IndexReaderPtr& reader, const String& field) {
-    BOOST_ASSERT(false);
+    assert(false);
     return Collection<int32_t>(); // override
 }
 
 Collection<int32_t> FieldCache::getInts(const IndexReaderPtr& reader, const String& field, const IntParserPtr& parser) {
-    BOOST_ASSERT(false);
+    assert(false);
     return Collection<int32_t>(); // override
 }
 
 Collection<int64_t> FieldCache::getLongs(const IndexReaderPtr& reader, const String& field) {
-    BOOST_ASSERT(false);
+    assert(false);
     return Collection<int64_t>(); // override
 }
 
 Collection<int64_t> FieldCache::getLongs(const IndexReaderPtr& reader, const String& field, const LongParserPtr& parser) {
-    BOOST_ASSERT(false);
+    assert(false);
     return Collection<int64_t>(); // override
 }
 
 Collection<double> FieldCache::getDoubles(const IndexReaderPtr& reader, const String& field) {
-    BOOST_ASSERT(false);
+    assert(false);
     return Collection<double>(); // override
 }
 
 Collection<double> FieldCache::getDoubles(const IndexReaderPtr& reader, const String& field, const DoubleParserPtr& parser) {
-    BOOST_ASSERT(false);
+    assert(false);
     return Collection<double>(); // override
 }
 
 Collection<String> FieldCache::getStrings(const IndexReaderPtr& reader, const String& field) {
-    BOOST_ASSERT(false);
+    assert(false);
     return Collection<String>(); // override
 }
 
 StringIndexPtr FieldCache::getStringIndex(const IndexReaderPtr& reader, const String& field) {
-    BOOST_ASSERT(false);
+    assert(false);
     return StringIndexPtr(); // override
 }
 
 void FieldCache::setInfoStream(const InfoStreamPtr& stream) {
-    BOOST_ASSERT(false);
+    assert(false);
     // override
 }
 
 InfoStreamPtr FieldCache::getInfoStream() {
-    BOOST_ASSERT(false);
+    assert(false);
     return InfoStreamPtr(); // override
 }
 
@@ -213,7 +213,7 @@ NumericUtilsIntParser::~NumericUtilsIntParser() {
 int32_t NumericUtilsIntParser::parseInt(const String& string) {
     int32_t shift = string[0] - NumericUtils::SHIFT_START_INT;
     if (shift > 0 && shift <= 31) {
-        boost::throw_exception(StopFillCacheException());
+        throw (StopFillCacheException());
     }
     return NumericUtils::prefixCodedToInt(string);
 }
@@ -246,7 +246,7 @@ NumericUtilsLongParser::~NumericUtilsLongParser() {
 int64_t NumericUtilsLongParser::parseLong(const String& string) {
     int32_t shift = string[0] - NumericUtils::SHIFT_START_LONG;
     if (shift > 0 && shift <= 63) {
-        boost::throw_exception(StopFillCacheException());
+        throw (StopFillCacheException());
     }
     return NumericUtils::prefixCodedToLong(string);
 }
@@ -279,7 +279,7 @@ NumericUtilsDoubleParser::~NumericUtilsDoubleParser() {
 double NumericUtilsDoubleParser::parseDouble(const String& string) {
     int32_t shift = string[0] - NumericUtils::SHIFT_START_LONG;
     if (shift > 0 && shift <= 63) {
-        boost::throw_exception(StopFillCacheException());
+        throw (StopFillCacheException());
     }
     return NumericUtils::sortableLongToDouble(NumericUtils::prefixCodedToLong(string));
 }

@@ -179,7 +179,7 @@ void SegmentMerger::setMatchingSegmentReaders() {
     // "merged" FieldInfos, then we can do a bulk copy of the stored fields
     for (int32_t i = 0; i < numReaders; ++i) {
         IndexReaderPtr reader(readers[i]);
-        SegmentReaderPtr segmentReader(boost::dynamic_pointer_cast<SegmentReader>(reader));
+        SegmentReaderPtr segmentReader(std::dynamic_pointer_cast<SegmentReader>(reader));
         if (segmentReader) {
             bool same = true;
             FieldInfosPtr segmentFieldInfos(segmentReader->fieldInfos());
@@ -202,13 +202,13 @@ int32_t SegmentMerger::mergeFields() {
     if (!mergeDocStores) {
         // When we are not merging by doc stores, their field name -> number mapping are the same.
         // So, we start with the fieldInfos of the last segment in this case, to keep that numbering
-        fieldInfos = boost::dynamic_pointer_cast<FieldInfos>(boost::dynamic_pointer_cast<SegmentReader>(readers[readers.size() - 1])->core->fieldInfos->clone());
+        fieldInfos = std::dynamic_pointer_cast<FieldInfos>(std::dynamic_pointer_cast<SegmentReader>(readers[readers.size() - 1])->core->fieldInfos->clone());
     } else {
         fieldInfos = newLucene<FieldInfos>();    // merge field names
     }
 
     for (Collection<IndexReaderPtr>::iterator reader = readers.begin(); reader != readers.end(); ++reader) {
-        SegmentReaderPtr segmentReader(boost::dynamic_pointer_cast<SegmentReader>(*reader));
+        SegmentReaderPtr segmentReader(std::dynamic_pointer_cast<SegmentReader>(*reader));
         if (segmentReader) {
             FieldInfosPtr readerFieldInfos(segmentReader->fieldInfos());
             int32_t numReaderFieldInfos = readerFieldInfos->size();
@@ -267,7 +267,7 @@ int32_t SegmentMerger::mergeFields() {
         int64_t fdxFileLength = directory->fileLength(fileName);
 
         if (4 + ((int64_t)docCount) * 8 != fdxFileLength) {
-            boost::throw_exception(RuntimeException(L"mergeFields produced an invalid result: docCount is " +
+            throw (RuntimeException(L"mergeFields produced an invalid result: docCount is " +
                                                     StringUtils::toString(docCount) + L" but fdx file size is " +
                                                     StringUtils::toString(fdxFileLength) + L" file=" + fileName +
                                                     L" file exists?=" + StringUtils::toString(directory->fileExists(fileName)) +
@@ -386,7 +386,7 @@ void SegmentMerger::mergeVectors() {
     int64_t tvxSize = directory->fileLength(fileName);
 
     if (4 + ((int64_t)mergedDocs) * 16 != tvxSize) {
-        boost::throw_exception(RuntimeException(L"mergeVectors produced an invalid result: mergedDocs is " +
+        throw (RuntimeException(L"mergeVectors produced an invalid result: mergedDocs is " +
                                                 StringUtils::toString(mergedDocs) + L" but tvx size is " +
                                                 StringUtils::toString(tvxSize) + L" file=" + fileName +
                                                 L" file exists?=" + StringUtils::toString(directory->fileExists(fileName)) +
@@ -499,7 +499,7 @@ void SegmentMerger::mergeTermInfos(const FormatPostingsFieldsConsumerPtr& consum
 
         base += reader->numDocs();
 
-        BOOST_ASSERT(reader->numDocs() == reader->maxDoc() - smi->delCount);
+        assert(reader->numDocs() == reader->maxDoc() - smi->delCount);
 
         if (smi->next()) {
             queue->add(smi);    // initialize queue
@@ -563,7 +563,7 @@ int32_t SegmentMerger::appendPostings(const FormatPostingsTermsConsumerPtr& term
     for (int32_t i = 0; i < n; ++i) {
         SegmentMergeInfoPtr smi(smis[i]);
         TermPositionsPtr postings(smi->getPositions());
-        BOOST_ASSERT(postings);
+        assert(postings);
         int32_t base = smi->base;
         Collection<int32_t> docMap(smi->getDocMap());
         postings->seek(smi->termEnum);

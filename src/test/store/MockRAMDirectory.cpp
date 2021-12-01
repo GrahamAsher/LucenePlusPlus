@@ -61,7 +61,7 @@ void MockRAMDirectory::sync(const String& name) {
     SyncLock syncLock(this);
     maybeThrowDeterministicException();
     if (crashed) {
-        boost::throw_exception(IOException(L"cannot sync after crash"));
+        throw (IOException(L"cannot sync after crash"));
     }
     unSyncedFiles.remove(name);
 }
@@ -135,7 +135,7 @@ void MockRAMDirectory::maybeThrowIOException() {
     if (randomIOExceptionRate > 0.0) {
         int32_t number = std::abs(randomState->nextInt() % 1000);
         if (number < randomIOExceptionRate * 1000) {
-            boost::throw_exception(IOException(L"a random IO exception"));
+            throw (IOException(L"a random IO exception"));
         }
     }
 }
@@ -150,7 +150,7 @@ void MockRAMDirectory::deleteFile(const String& name, bool forced) {
     maybeThrowDeterministicException();
 
     if (crashed && !forced) {
-        boost::throw_exception(IOException(L"cannot delete after crash"));
+        throw (IOException(L"cannot delete after crash"));
     }
 
     unSyncedFiles.remove(name);
@@ -158,7 +158,7 @@ void MockRAMDirectory::deleteFile(const String& name, bool forced) {
     if (!forced && noDeleteOpenFile) {
         if (openFiles.contains(name)) {
             openFilesDeleted.add(name);
-            boost::throw_exception(IOException(L"MockRAMDirectory: file \"" + name + L"\" is still open: cannot delete"));
+            throw (IOException(L"MockRAMDirectory: file \"" + name + L"\" is still open: cannot delete"));
         } else {
             openFilesDeleted.remove(name);
         }
@@ -176,25 +176,25 @@ HashSet<String> MockRAMDirectory::getOpenDeletedFiles() {
 IndexOutputPtr MockRAMDirectory::createOutput(const String& name) {
     SyncLock syncLock(this);
     if (crashed) {
-        boost::throw_exception(IOException(L"cannot createOutput after crash"));
+        throw (IOException(L"cannot createOutput after crash"));
     }
     init();
     if (preventDoubleWrite && createdFiles.contains(name) && name != L"segments.gen") {
-        boost::throw_exception(IOException(L"file \"" + name + L"\" was already written to"));
+        throw (IOException(L"file \"" + name + L"\" was already written to"));
     }
     if (noDeleteOpenFile && openFiles.contains(name)) {
-        boost::throw_exception(IOException(L"MockRAMDirectory: file \"" + name + L"\" is still open: cannot overwrite"));
+        throw (IOException(L"MockRAMDirectory: file \"" + name + L"\" is still open: cannot overwrite"));
     }
     RAMFilePtr file(newLucene<RAMFile>(shared_from_this()));
     if (crashed) {
-        boost::throw_exception(IOException(L"cannot createOutput after crash"));
+        throw (IOException(L"cannot createOutput after crash"));
     }
     unSyncedFiles.add(name);
     createdFiles.add(name);
     RAMFilePtr existing(fileMap.get(name));
     // Enforce write once
     if (existing && name != L"segments.gen" && preventDoubleWrite) {
-        boost::throw_exception(IOException(L"file " + name + L" already exists"));
+        throw (IOException(L"file " + name + L" already exists"));
     } else {
         if (existing) {
             _sizeInBytes -= existing->getSizeInBytes();
@@ -210,7 +210,7 @@ IndexInputPtr MockRAMDirectory::openInput(const String& name) {
     SyncLock syncLock(this);
     MapStringRAMFile::iterator file = fileMap.find(name);
     if (file == fileMap.end()) {
-        boost::throw_exception(FileNotFoundException(name));
+        throw (FileNotFoundException(name));
     } else {
         MapStringInt::iterator openFile = openFiles.find(name);
         if (openFile != openFiles.end()) {
@@ -248,7 +248,7 @@ void MockRAMDirectory::close() {
     }
     if (noDeleteOpenFile && !openFiles.empty()) {
         // RuntimeException instead of IOException because RAMDirectory does not throw IOException currently
-        boost::throw_exception(RuntimeException(L"MockRAMDirectory: cannot close: there are still open files"));
+        throw (RuntimeException(L"MockRAMDirectory: cannot close: there are still open files"));
     }
 }
 

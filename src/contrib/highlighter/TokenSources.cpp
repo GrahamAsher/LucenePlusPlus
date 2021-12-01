@@ -28,8 +28,8 @@ TokenStreamPtr TokenSources::getAnyTokenStream(const IndexReaderPtr& reader, int
     TokenStreamPtr ts;
     TermFreqVectorPtr tfv(reader->getTermFreqVector(docId, field));
     if (tfv) {
-        if (boost::dynamic_pointer_cast<TermPositionVector>(tfv)) {
-            ts = getTokenStream(boost::dynamic_pointer_cast<TermPositionVector>(tfv));
+        if (std::dynamic_pointer_cast<TermPositionVector>(tfv)) {
+            ts = getTokenStream(std::dynamic_pointer_cast<TermPositionVector>(tfv));
         }
     }
     // No token info stored so fall back to analyzing raw content
@@ -43,8 +43,8 @@ TokenStreamPtr TokenSources::getAnyTokenStream(const IndexReaderPtr& reader, int
     TokenStreamPtr ts;
     TermFreqVectorPtr tfv(reader->getTermFreqVector(docId, field));
     if (tfv) {
-        if (boost::dynamic_pointer_cast<TermPositionVector>(tfv)) {
-            ts = getTokenStream(boost::dynamic_pointer_cast<TermPositionVector>(tfv));
+        if (std::dynamic_pointer_cast<TermPositionVector>(tfv)) {
+            ts = getTokenStream(std::dynamic_pointer_cast<TermPositionVector>(tfv));
         }
     }
     // No token info stored so fall back to analyzing raw content
@@ -124,14 +124,14 @@ TokenStreamPtr TokenSources::getTokenStream(const TermPositionVectorPtr& tpv, bo
 TokenStreamPtr TokenSources::getTokenStream(const IndexReaderPtr& reader, int32_t docId, const String& field) {
     TermFreqVectorPtr tfv(reader->getTermFreqVector(docId, field));
     if (!tfv) {
-        boost::throw_exception(IllegalArgumentException(field + L" in doc #" + StringUtils::toString(docId) + L"does not have any term position data stored"));
+        throw (IllegalArgumentException(field + L" in doc #" + StringUtils::toString(docId) + L"does not have any term position data stored"));
     }
 
-    if (boost::dynamic_pointer_cast<TermPositionVector>(tfv)) {
-        TermPositionVectorPtr tpv(boost::dynamic_pointer_cast<TermPositionVector>(reader->getTermFreqVector(docId, field)));
+    if (std::dynamic_pointer_cast<TermPositionVector>(tfv)) {
+        TermPositionVectorPtr tpv(std::dynamic_pointer_cast<TermPositionVector>(reader->getTermFreqVector(docId, field)));
         return getTokenStream(tpv);
     }
-    boost::throw_exception(IllegalArgumentException(field + L" in doc #" + StringUtils::toString(docId) + L"does not have any term position data stored"));
+    throw (IllegalArgumentException(field + L" in doc #" + StringUtils::toString(docId) + L"does not have any term position data stored"));
     return TokenStreamPtr();
 }
 
@@ -143,7 +143,7 @@ TokenStreamPtr TokenSources::getTokenStream(const IndexReaderPtr& reader, int32_
 TokenStreamPtr TokenSources::getTokenStream(const DocumentPtr& doc, const String& field, const AnalyzerPtr& analyzer) {
     String contents(doc->get(field));
     if (contents.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"Field " + field + L" in document is not stored and cannot be analyzed"));
+        throw (IllegalArgumentException(L"Field " + field + L" in document is not stored and cannot be analyzed"));
     }
     return getTokenStream(field, contents, analyzer);
 }

@@ -15,10 +15,10 @@ GradientFormatter::GradientFormatter(double maxScore, const String& minForegroun
     highlightForeground = (!minForegroundColor.empty()  && !maxForegroundColor.empty());
     if (highlightForeground) {
         if (minForegroundColor.length() != 7) {
-            boost::throw_exception(IllegalArgumentException(L"minForegroundColor is not 7 bytes long eg a hex RGB value such as #FFFFFF"));
+            throw (IllegalArgumentException(L"minForegroundColor is not 7 bytes long eg a hex RGB value such as #FFFFFF"));
         }
         if (maxForegroundColor.length() != 7) {
-            boost::throw_exception(IllegalArgumentException(L"maxForegroundColor is not 7 bytes long eg a hex RGB value such as #FFFFFF"));
+            throw (IllegalArgumentException(L"maxForegroundColor is not 7 bytes long eg a hex RGB value such as #FFFFFF"));
         }
 
         fgRMin = hexToInt(minForegroundColor.substr(1, 2));
@@ -33,10 +33,10 @@ GradientFormatter::GradientFormatter(double maxScore, const String& minForegroun
     highlightBackground = (!minBackgroundColor.empty()  && !maxBackgroundColor.empty());
     if (highlightBackground) {
         if (minBackgroundColor.length() != 7) {
-            boost::throw_exception(IllegalArgumentException(L"minBackgroundColor is not 7 bytes long eg a hex RGB value such as #FFFFFF"));
+            throw (IllegalArgumentException(L"minBackgroundColor is not 7 bytes long eg a hex RGB value such as #FFFFFF"));
         }
         if (maxBackgroundColor.length() != 7) {
-            boost::throw_exception(IllegalArgumentException(L"maxBackgroundColor is not 7 bytes long eg a hex RGB value such as #FFFFFF"));
+            throw (IllegalArgumentException(L"maxBackgroundColor is not 7 bytes long eg a hex RGB value such as #FFFFFF"));
         }
 
         bgRMin = hexToInt(minBackgroundColor.substr(1, 2));
@@ -112,14 +112,14 @@ String GradientFormatter::intToHex(int32_t i) {
 int32_t GradientFormatter::hexToInt(const String& hex) {
     int32_t len = (int32_t)hex.length();
     if (len > 16) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
     int32_t l = 0;
     for (int32_t i = 0; i < len; ++i) {
         l <<= 4;
         int32_t c = (int32_t)StringUtils::toLong(hex.substr(i, 1), 16);
         if (c < 0) {
-            boost::throw_exception(NumberFormatException());
+            throw (NumberFormatException());
         }
         l |= c;
     }

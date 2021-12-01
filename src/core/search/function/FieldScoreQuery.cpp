@@ -27,7 +27,7 @@ ValueSourcePtr FieldScoreQuery::getValueSource(const String& field, Type type) {
     case DOUBLE:
         return newLucene<DoubleFieldSource>(field);
     default:
-        boost::throw_exception(IllegalArgumentException(L"not a known Field Score Query Type"));
+        throw (IllegalArgumentException(L"not a known Field Score Query Type"));
         return ValueSourcePtr();
     }
 }

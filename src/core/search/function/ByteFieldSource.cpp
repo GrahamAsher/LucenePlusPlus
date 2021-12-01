@@ -33,7 +33,7 @@ bool ByteFieldSource::cachedFieldSourceEquals(const FieldCacheSourcePtr& other) 
     if (!MiscUtils::equalTypes(shared_from_this(), other)) {
         return false;
     }
-    ByteFieldSourcePtr otherSource(boost::dynamic_pointer_cast<ByteFieldSource>(other));
+    ByteFieldSourcePtr otherSource(std::dynamic_pointer_cast<ByteFieldSource>(other));
     if (!otherSource) {
         return false;
     }
@@ -54,14 +54,14 @@ ByteDocValues::~ByteDocValues() {
 
 double ByteDocValues::doubleVal(int32_t doc) {
     if (doc < 0 || doc >= arr.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     return (double)arr[doc];
 }
 
 int32_t ByteDocValues::intVal(int32_t doc) {
     if (doc < 0 || doc >= arr.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     return (int32_t)arr[doc];
 }

@@ -75,7 +75,7 @@ protected:
 public:
     virtual bool matchDoc(int32_t doc) {
         if (doc < 0 || doc >= values.size()) {
-            boost::throw_exception(IndexOutOfBoundsException());
+            throw (IndexOutOfBoundsException());
         }
         return (values[doc] >= inclusiveLowerPoint && values[doc] <= inclusiveUpperPoint);
     }
@@ -132,7 +132,7 @@ public:
         if (Filter::equals(other)) {
             return true;
         }
-        boost::shared_ptr< FieldCacheRangeFilterNumeric<TYPE> > otherFilter(boost::dynamic_pointer_cast< FieldCacheRangeFilterNumeric<TYPE> >(other));
+        boost::shared_ptr< FieldCacheRangeFilterNumeric<TYPE> > otherFilter(std::dynamic_pointer_cast< FieldCacheRangeFilterNumeric<TYPE> >(other));
         if (!otherFilter) {
             return false;
         }

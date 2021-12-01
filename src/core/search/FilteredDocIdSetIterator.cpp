@@ -11,7 +11,7 @@ namespace Lucene {
 
 FilteredDocIdSetIterator::FilteredDocIdSetIterator(const DocIdSetIteratorPtr& innerIter) {
     if (!innerIter) {
-        boost::throw_exception(IllegalArgumentException(L"null iterator"));
+        throw (IllegalArgumentException(L"null iterator"));
     }
     this->innerIter = innerIter;
     this->doc = -1;

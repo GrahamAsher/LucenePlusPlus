@@ -60,10 +60,10 @@ QueryPtr MultiFieldQueryParser::getFieldQuery(const String& field, const String&
 
 void MultiFieldQueryParser::applySlop(const QueryPtr& query, int32_t slop) {
     if (MiscUtils::typeOf<PhraseQuery>(query)) {
-        boost::dynamic_pointer_cast<PhraseQuery>(query)->setSlop(slop);
+        std::dynamic_pointer_cast<PhraseQuery>(query)->setSlop(slop);
     }
     if (MiscUtils::typeOf<MultiPhraseQuery>(query)) {
-        boost::dynamic_pointer_cast<MultiPhraseQuery>(query)->setSlop(slop);
+        std::dynamic_pointer_cast<MultiPhraseQuery>(query)->setSlop(slop);
     }
 }
 
@@ -113,13 +113,13 @@ QueryPtr MultiFieldQueryParser::getRangeQuery(const String& field, const String&
 
 QueryPtr MultiFieldQueryParser::parse(LuceneVersion::Version matchVersion, Collection<String> queries, Collection<String> fields, const AnalyzerPtr& analyzer) {
     if (queries.size() != fields.size()) {
-        boost::throw_exception(IllegalArgumentException(L"queries.size() != fields.size()"));
+        throw (IllegalArgumentException(L"queries.size() != fields.size()"));
     }
     BooleanQueryPtr booleanQuery(newLucene<BooleanQuery>());
     for (int32_t i = 0; i < fields.size(); ++i) {
         QueryParserPtr queryParser(newLucene<QueryParser>(matchVersion, fields[i], analyzer));
         QueryPtr query(queryParser->parse(queries[i]));
-        if (query && (!MiscUtils::typeOf<BooleanQuery>(query) || !boost::dynamic_pointer_cast<BooleanQuery>(query)->getClauses().empty())) {
+        if (query && (!MiscUtils::typeOf<BooleanQuery>(query) || !std::dynamic_pointer_cast<BooleanQuery>(query)->getClauses().empty())) {
             booleanQuery->add(query, BooleanClause::SHOULD);
         }
     }
@@ -128,13 +128,13 @@ QueryPtr MultiFieldQueryParser::parse(LuceneVersion::Version matchVersion, Colle
 
 QueryPtr MultiFieldQueryParser::parse(LuceneVersion::Version matchVersion, const String& query, Collection<String> fields, Collection<BooleanClause::Occur> flags, const AnalyzerPtr& analyzer) {
     if (fields.size() != flags.size()) {
-        boost::throw_exception(IllegalArgumentException(L"fields.size() != flags.size()"));
+        throw (IllegalArgumentException(L"fields.size() != flags.size()"));
     }
     BooleanQueryPtr booleanQuery(newLucene<BooleanQuery>());
     for (int32_t i = 0; i < fields.size(); ++i) {
         QueryParserPtr queryParser(newLucene<QueryParser>(matchVersion, fields[i], analyzer));
         QueryPtr q(queryParser->parse(query));
-        if (q && (!MiscUtils::typeOf<BooleanQuery>(q) || !boost::dynamic_pointer_cast<BooleanQuery>(q)->getClauses().empty())) {
+        if (q && (!MiscUtils::typeOf<BooleanQuery>(q) || !std::dynamic_pointer_cast<BooleanQuery>(q)->getClauses().empty())) {
             booleanQuery->add(q, flags[i]);
         }
     }
@@ -143,13 +143,13 @@ QueryPtr MultiFieldQueryParser::parse(LuceneVersion::Version matchVersion, const
 
 QueryPtr MultiFieldQueryParser::parse(LuceneVersion::Version matchVersion, Collection<String> queries, Collection<String> fields, Collection<BooleanClause::Occur> flags, const AnalyzerPtr& analyzer) {
     if (queries.size() != fields.size() || fields.size() != flags.size()) {
-        boost::throw_exception(IllegalArgumentException(L"queries, fields, and flags array have have different length"));
+        throw (IllegalArgumentException(L"queries, fields, and flags array have have different length"));
     }
     BooleanQueryPtr booleanQuery(newLucene<BooleanQuery>());
     for (int32_t i = 0; i < fields.size(); ++i) {
         QueryParserPtr queryParser(newLucene<QueryParser>(matchVersion, fields[i], analyzer));
         QueryPtr query(queryParser->parse(queries[i]));
-        if (query && (!MiscUtils::typeOf<BooleanQuery>(query) || !boost::dynamic_pointer_cast<BooleanQuery>(query)->getClauses().empty())) {
+        if (query && (!MiscUtils::typeOf<BooleanQuery>(query) || !std::dynamic_pointer_cast<BooleanQuery>(query)->getClauses().empty())) {
             booleanQuery->add(query, flags[i]);
         }
     }

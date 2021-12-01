@@ -99,7 +99,7 @@ DocIdSetPtr FieldCacheRangeFilterString::getDocIdSet(const IndexReaderPtr& reade
     // * binarySearchLookup returns 0, if value was null.
     // * the value is <0 if no exact hit was found, the returned value is (-(insertion point) - 1)
     if (lowerPoint == 0) {
-        BOOST_ASSERT(lowerVal.empty());
+        assert(lowerVal.empty());
         inclusiveLowerPoint = 1;
     } else if (includeLower && lowerPoint > 0) {
         inclusiveLowerPoint = lowerPoint;
@@ -110,7 +110,7 @@ DocIdSetPtr FieldCacheRangeFilterString::getDocIdSet(const IndexReaderPtr& reade
     }
 
     if (upperPoint == 0) {
-        BOOST_ASSERT(upperVal.empty());
+        assert(upperVal.empty());
         inclusiveUpperPoint = INT_MAX;
     } else if (includeUpper && upperPoint > 0) {
         inclusiveUpperPoint = upperPoint;
@@ -124,7 +124,7 @@ DocIdSetPtr FieldCacheRangeFilterString::getDocIdSet(const IndexReaderPtr& reade
         return DocIdSet::EMPTY_DOCIDSET();
     }
 
-    BOOST_ASSERT(inclusiveLowerPoint > 0 && inclusiveUpperPoint > 0);
+    assert(inclusiveLowerPoint > 0 && inclusiveUpperPoint > 0);
 
     // for this DocIdSet, we never need to use TermDocs, because deleted docs have an order of 0
     // (null entry in StringIndex)
@@ -143,7 +143,7 @@ bool FieldCacheRangeFilterString::equals(const LuceneObjectPtr& other) {
     if (Filter::equals(other)) {
         return true;
     }
-    FieldCacheRangeFilterStringPtr otherFilter(boost::dynamic_pointer_cast<FieldCacheRangeFilterString>(other));
+    FieldCacheRangeFilterStringPtr otherFilter(std::dynamic_pointer_cast<FieldCacheRangeFilterString>(other));
     if (!otherFilter) {
         return false;
     }
@@ -177,7 +177,7 @@ FieldCacheRangeFilterByte::~FieldCacheRangeFilterByte() {
 }
 
 Collection<uint8_t> FieldCacheRangeFilterByte::getValues(const IndexReaderPtr& reader) {
-    return FieldCache::DEFAULT()->getBytes(reader, field, boost::static_pointer_cast<ByteParser>(parser));
+    return FieldCache::DEFAULT()->getBytes(reader, field, std::static_pointer_cast<ByteParser>(parser));
 }
 
 FieldCacheRangeFilterInt::FieldCacheRangeFilterInt(const String& field, const ParserPtr& parser, int32_t lowerVal, int32_t upperVal, bool includeLower, bool includeUpper)
@@ -188,7 +188,7 @@ FieldCacheRangeFilterInt::~FieldCacheRangeFilterInt() {
 }
 
 Collection<int32_t> FieldCacheRangeFilterInt::getValues(const IndexReaderPtr& reader) {
-    return FieldCache::DEFAULT()->getInts(reader, field, boost::static_pointer_cast<IntParser>(parser));
+    return FieldCache::DEFAULT()->getInts(reader, field, std::static_pointer_cast<IntParser>(parser));
 }
 
 FieldCacheRangeFilterLong::FieldCacheRangeFilterLong(const String& field, const ParserPtr& parser, int64_t lowerVal, int64_t upperVal, bool includeLower, bool includeUpper)
@@ -199,7 +199,7 @@ FieldCacheRangeFilterLong::~FieldCacheRangeFilterLong() {
 }
 
 Collection<int64_t> FieldCacheRangeFilterLong::getValues(const IndexReaderPtr& reader) {
-    return FieldCache::DEFAULT()->getLongs(reader, field, boost::static_pointer_cast<LongParser>(parser));
+    return FieldCache::DEFAULT()->getLongs(reader, field, std::static_pointer_cast<LongParser>(parser));
 }
 
 FieldCacheRangeFilterDouble::FieldCacheRangeFilterDouble(const String& field, const ParserPtr& parser, double lowerVal, double upperVal, bool includeLower, bool includeUpper)
@@ -231,7 +231,7 @@ DocIdSetPtr FieldCacheRangeFilterDouble::getDocIdSet(const IndexReaderPtr& reade
 }
 
 Collection<double> FieldCacheRangeFilterDouble::getValues(const IndexReaderPtr& reader) {
-    return FieldCache::DEFAULT()->getDoubles(reader, field, boost::static_pointer_cast<DoubleParser>(parser));
+    return FieldCache::DEFAULT()->getDoubles(reader, field, std::static_pointer_cast<DoubleParser>(parser));
 }
 
 FieldCacheDocIdSet::FieldCacheDocIdSet(const IndexReaderPtr& reader, bool mayUseTermDocs) {
@@ -276,7 +276,7 @@ FieldCacheDocIdSetString::~FieldCacheDocIdSetString() {
 
 bool FieldCacheDocIdSetString::matchDoc(int32_t doc) {
     if (doc < 0 || doc >= fcsi->order.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     return (fcsi->order[doc] >= inclusiveLowerPoint && fcsi->order[doc] <= inclusiveUpperPoint);
 }

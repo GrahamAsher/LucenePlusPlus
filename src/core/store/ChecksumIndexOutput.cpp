@@ -43,7 +43,7 @@ int64_t ChecksumIndexOutput::getFilePointer() {
 }
 
 void ChecksumIndexOutput::seek(int64_t pos) {
-    boost::throw_exception(RuntimeException(L"Seek not allowed"));
+    throw (RuntimeException(L"Seek not allowed"));
 }
 
 void ChecksumIndexOutput::prepareCommit() {

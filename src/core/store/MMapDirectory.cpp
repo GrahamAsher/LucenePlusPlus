@@ -38,7 +38,7 @@ MMapIndexInput::MMapIndexInput(const String& path) {
         try {
             file.open(boost::filesystem::wpath(path), _length);
         } catch (...) {
-            boost::throw_exception(FileNotFoundException(path));
+            throw (FileNotFoundException(path));
         }
     }
     isClone = false;
@@ -51,7 +51,7 @@ uint8_t MMapIndexInput::readByte() {
     try {
         return file.data()[bufferPosition++];
     } catch (...) {
-        boost::throw_exception(IOException(L"Read past EOF"));
+        throw (IOException(L"Read past EOF"));
         return 0;
     }
 }
@@ -61,7 +61,7 @@ void MMapIndexInput::readBytes(uint8_t* b, int32_t offset, int32_t length) {
         MiscUtils::arrayCopy(file.data(), bufferPosition, b, offset, length);
         bufferPosition += length;
     } catch (...) {
-        boost::throw_exception(IOException(L"Read past EOF"));
+        throw (IOException(L"Read past EOF"));
     }
 }
 
@@ -88,10 +88,10 @@ void MMapIndexInput::close() {
 
 LuceneObjectPtr MMapIndexInput::clone(const LuceneObjectPtr& other) {
     if (!file.is_open()) {
-        boost::throw_exception(AlreadyClosedException(L"MMapIndexInput already closed"));
+        throw (AlreadyClosedException(L"MMapIndexInput already closed"));
     }
     LuceneObjectPtr clone = IndexInput::clone(other ? other : newLucene<MMapIndexInput>());
-    MMapIndexInputPtr cloneIndexInput(boost::dynamic_pointer_cast<MMapIndexInput>(clone));
+    MMapIndexInputPtr cloneIndexInput(std::dynamic_pointer_cast<MMapIndexInput>(clone));
     cloneIndexInput->_length = _length;
     cloneIndexInput->file = file;
     cloneIndexInput->bufferPosition = bufferPosition;

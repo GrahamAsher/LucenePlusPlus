@@ -36,7 +36,7 @@ NumericUtils::~NumericUtils() {
 
 int32_t NumericUtils::longToPrefixCoded(int64_t val, int32_t shift, CharArray buffer) {
     if (shift > 63 || shift < 0) {
-        boost::throw_exception(IllegalArgumentException(L"Illegal shift value, must be 0..63"));
+        throw (IllegalArgumentException(L"Illegal shift value, must be 0..63"));
     }
     int32_t nChars = (63 - shift) / 7 + 1;
     int32_t len = nChars + 1;
@@ -64,7 +64,7 @@ String NumericUtils::longToPrefixCoded(int64_t val) {
 
 int32_t NumericUtils::intToPrefixCoded(int32_t val, int32_t shift, CharArray buffer) {
     if (shift > 31 || shift < 0) {
-        boost::throw_exception(IllegalArgumentException(L"Illegal shift value, must be 0..31"));
+        throw (IllegalArgumentException(L"Illegal shift value, must be 0..31"));
     }
     int32_t nChars = (31 - shift) / 7 + 1;
     int32_t len = nChars + 1;
@@ -93,14 +93,14 @@ String NumericUtils::intToPrefixCoded(int32_t val) {
 int64_t NumericUtils::prefixCodedToLong(const String& prefixCoded) {
     int32_t shift = prefixCoded[0] - SHIFT_START_LONG;
     if (shift > 63 || shift < 0) {
-        boost::throw_exception(NumberFormatException(L"Invalid shift value in prefixCoded string (is encoded value really a LONG?)"));
+        throw (NumberFormatException(L"Invalid shift value in prefixCoded string (is encoded value really a LONG?)"));
     }
     int64_t sortableBits = 0;
     for (int32_t i = 1, len = prefixCoded.length(); i < len; ++i) {
         sortableBits <<= 7;
         wchar_t ch = prefixCoded[i];
         if (ch > 0x7f) {
-            boost::throw_exception(NumberFormatException(L"Invalid prefixCoded numerical value representation (char " + StringUtils::toString(ch, 16) +
+            throw (NumberFormatException(L"Invalid prefixCoded numerical value representation (char " + StringUtils::toString(ch, 16) +
                                    L" at position " + StringUtils::toString(i) + L" is invalid)"));
         }
         sortableBits |= (int64_t)ch;
@@ -111,14 +111,14 @@ int64_t NumericUtils::prefixCodedToLong(const String& prefixCoded) {
 int32_t NumericUtils::prefixCodedToInt(const String& prefixCoded) {
     int32_t shift = prefixCoded[0] - SHIFT_START_INT;
     if (shift > 31 || shift < 0) {
-        boost::throw_exception(NumberFormatException(L"Invalid shift value in prefixCoded string (is encoded value really a INT?)"));
+        throw (NumberFormatException(L"Invalid shift value in prefixCoded string (is encoded value really a INT?)"));
     }
     int32_t sortableBits = 0;
     for (int32_t i = 1, len = prefixCoded.length(); i < len; ++i) {
         sortableBits <<= 7;
         wchar_t ch = prefixCoded[i];
         if (ch > 0x7f) {
-            boost::throw_exception(NumberFormatException(L"Invalid prefixCoded numerical value representation (char " + StringUtils::toString(ch, 16) +
+            throw (NumberFormatException(L"Invalid prefixCoded numerical value representation (char " + StringUtils::toString(ch, 16) +
                                    L" at position " + StringUtils::toString(i) + L" is invalid)"));
         }
         sortableBits |= (int32_t)ch;
@@ -159,7 +159,7 @@ void NumericUtils::splitIntRange(const IntRangeBuilderPtr& builder, int32_t prec
 
 void NumericUtils::splitRange(const LuceneObjectPtr& builder, int32_t valSize, int32_t precisionStep, int64_t minBound, int64_t maxBound) {
     if (precisionStep < 1) {
-        boost::throw_exception(IllegalArgumentException(L"precisionStep must be >=1"));
+        throw (IllegalArgumentException(L"precisionStep must be >=1"));
     }
     if (minBound > maxBound) {
         return;
@@ -202,13 +202,13 @@ void NumericUtils::addRange(const LuceneObjectPtr& builder, int32_t valSize, int
     // delegate to correct range builder
     switch (valSize) {
     case 64:
-        boost::dynamic_pointer_cast<LongRangeBuilder>(builder)->addRange(minBound, maxBound, shift);
+        std::dynamic_pointer_cast<LongRangeBuilder>(builder)->addRange(minBound, maxBound, shift);
         break;
     case 32:
-        boost::dynamic_pointer_cast<IntRangeBuilder>(builder)->addRange((int32_t)minBound, (int32_t)maxBound, shift);
+        std::dynamic_pointer_cast<IntRangeBuilder>(builder)->addRange((int32_t)minBound, (int32_t)maxBound, shift);
         break;
     default:
-        boost::throw_exception(IllegalArgumentException(L"valSize must be 32 or 64."));
+        throw (IllegalArgumentException(L"valSize must be 32 or 64."));
     }
 }
 
@@ -216,7 +216,7 @@ LongRangeBuilder::~LongRangeBuilder() {
 }
 
 void LongRangeBuilder::addRange(const String& minPrefixCoded, const String& maxPrefixCoded) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
 }
 
 void LongRangeBuilder::addRange(int64_t min, int64_t max, int32_t shift) {
@@ -227,7 +227,7 @@ IntRangeBuilder::~IntRangeBuilder() {
 }
 
 void IntRangeBuilder::addRange(const String& minPrefixCoded, const String& maxPrefixCoded) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
 }
 
 void IntRangeBuilder::addRange(int32_t min, int32_t max, int32_t shift) {

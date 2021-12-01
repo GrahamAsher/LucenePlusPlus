@@ -17,7 +17,7 @@ FSLockFactory::~FSLockFactory() {
 
 void FSLockFactory::setLockDir(const String& lockDir) {
     if (!this->lockDir.empty()) {
-        boost::throw_exception(IllegalStateException(L"You can set the lock directory for this factory only once."));
+        throw (IllegalStateException(L"You can set the lock directory for this factory only once."));
     }
     this->lockDir = lockDir;
 }

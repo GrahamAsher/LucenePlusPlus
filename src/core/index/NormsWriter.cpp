@@ -55,7 +55,7 @@ void NormsWriter::flush(MapInvertedDocEndConsumerPerThreadCollectionInvertedDocE
     // per-thread field instances that correspond to the same FieldInfo
     for (MapInvertedDocEndConsumerPerThreadCollectionInvertedDocEndConsumerPerField::iterator entry = threadsAndFields.begin(); entry != threadsAndFields.end(); ++entry) {
         for (Collection<InvertedDocEndConsumerPerFieldPtr>::iterator perField = entry->second.begin(); perField != entry->second.end();) {
-            NormsWriterPerFieldPtr normsPerField(boost::static_pointer_cast<NormsWriterPerField>(*perField));
+            NormsWriterPerFieldPtr normsPerField(std::static_pointer_cast<NormsWriterPerField>(*perField));
             if (normsPerField->upto > 0) {
                 // It has some norms
                 Collection<NormsWriterPerFieldPtr> l = byField.get(normsPerField->fieldInfo);
@@ -105,7 +105,7 @@ void NormsWriter::flush(MapInvertedDocEndConsumerPerThreadCollectionInvertedDocE
                 int32_t numLeft = numFields;
 
                 while (numLeft > 0) {
-                    BOOST_ASSERT(uptos[0] < fields[0]->docIDs.size());
+                    assert(uptos[0] < fields[0]->docIDs.size());
 
                     int32_t minLoc = 0;
                     int32_t minDocID = fields[0]->docIDs[uptos[0]];
@@ -118,7 +118,7 @@ void NormsWriter::flush(MapInvertedDocEndConsumerPerThreadCollectionInvertedDocE
                         }
                     }
 
-                    BOOST_ASSERT(minDocID < state->numDocs);
+                    assert(minDocID < state->numDocs);
 
                     // Fill hole
                     for (; upto < minDocID; ++upto) {
@@ -151,7 +151,7 @@ void NormsWriter::flush(MapInvertedDocEndConsumerPerThreadCollectionInvertedDocE
                 }
             }
 
-            BOOST_ASSERT(4 + normCount * state->numDocs == normsOut->getFilePointer()); // .nrm file size mismatch?
+            assert(4 + normCount * state->numDocs == normsOut->getFilePointer()); // .nrm file size mismatch?
         }
     } catch (LuceneException& e) {
         finally = e;

@@ -34,7 +34,7 @@ void NativeFSLockFactory::clearLock(const String& lockName) {
     if (FileUtils::isDirectory(lockDir)) {
         String lockPath(FileUtils::joinPath(lockDir, lockPrefix.empty() ? lockName : lockPrefix + L"-" + lockName));
         if (FileUtils::fileExists(lockPath) && !FileUtils::removeFile(lockPath)) {
-            boost::throw_exception(IOException(L"Failed to delete: " + lockPath));
+            throw (IOException(L"Failed to delete: " + lockPath));
         }
     }
 }
@@ -84,10 +84,10 @@ bool NativeFSLock::obtain() {
     // ensure that lockdir exists and is a directory
     if (!FileUtils::fileExists(lockDir)) {
         if (!FileUtils::createDirectory(lockDir)) {
-            boost::throw_exception(IOException(L"Cannot create directory: " + lockDir));
+            throw (IOException(L"Cannot create directory: " + lockDir));
         }
     } else if (!FileUtils::isDirectory(lockDir)) {
-        boost::throw_exception(IOException(L"Found regular file where directory expected: " + lockDir));
+        throw (IOException(L"Found regular file where directory expected: " + lockDir));
     }
 
     bool markedHeld = false;
@@ -168,7 +168,7 @@ void NativeFSLock::release() {
         try {
             obtained = obtain();
             if (!obtained) {
-                boost::throw_exception(LockReleaseFailedException(L"Cannot forcefully unlock a NativeFSLock which is held by another indexer component: " + path));
+                throw (LockReleaseFailedException(L"Cannot forcefully unlock a NativeFSLock which is held by another indexer component: " + path));
             }
         } catch (LuceneException& e) {
             finally = e;

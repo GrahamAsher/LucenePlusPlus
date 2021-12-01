@@ -26,7 +26,7 @@ BooleanScorer2::~BooleanScorer2() {
 
 void BooleanScorer2::initialize() {
     if (minNrShouldMatch < 0) {
-        boost::throw_exception(IllegalArgumentException(L"Minimum number of optional scorers should not be negative"));
+        throw (IllegalArgumentException(L"Minimum number of optional scorers should not be negative"));
     }
 
     coordinator = newLucene<Coordinator>(shared_from_this());

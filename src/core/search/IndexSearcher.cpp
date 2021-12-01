@@ -88,7 +88,7 @@ int32_t IndexSearcher::maxDoc() {
 
 TopDocsPtr IndexSearcher::search(const WeightPtr& weight, const FilterPtr& filter, int32_t n) {
     if (n <= 0) {
-        boost::throw_exception(IllegalArgumentException(L"n must be > 0"));
+        throw (IllegalArgumentException(L"n must be > 0"));
     }
     TopScoreDocCollectorPtr collector(TopScoreDocCollector::create(std::min(n, reader->maxDoc()), !weight->scoresDocsOutOfOrder()));
     search(weight, filter, collector);
@@ -102,7 +102,7 @@ TopFieldDocsPtr IndexSearcher::search(const WeightPtr& weight, const FilterPtr& 
 TopFieldDocsPtr IndexSearcher::search(const WeightPtr& weight, const FilterPtr& filter, int32_t n, const SortPtr& sort, bool fillFields) {
     TopFieldCollectorPtr collector(TopFieldCollector::create(sort, std::min(n, reader->maxDoc()), fillFields, fieldSortDoTrackScores, fieldSortDoMaxScore, !weight->scoresDocsOutOfOrder()));
     search(weight, filter, collector);
-    return boost::dynamic_pointer_cast<TopFieldDocs>(collector->topDocs());
+    return std::dynamic_pointer_cast<TopFieldDocs>(collector->topDocs());
 }
 
 void IndexSearcher::search(const WeightPtr& weight, const FilterPtr& filter, const CollectorPtr& results) {
@@ -123,7 +123,7 @@ void IndexSearcher::search(const WeightPtr& weight, const FilterPtr& filter, con
 }
 
 void IndexSearcher::searchWithFilter(const IndexReaderPtr& reader, const WeightPtr& weight, const FilterPtr& filter, const CollectorPtr& collector) {
-    BOOST_ASSERT(filter);
+    assert(filter);
 
     ScorerPtr scorer(weight->scorer(reader, true, false));
     if (!scorer) {
@@ -131,7 +131,7 @@ void IndexSearcher::searchWithFilter(const IndexReaderPtr& reader, const WeightP
     }
 
     int32_t docID = scorer->docID();
-    BOOST_ASSERT(docID == -1 || docID == DocIdSetIterator::NO_MORE_DOCS);
+    assert(docID == -1 || docID == DocIdSetIterator::NO_MORE_DOCS);
 
     DocIdSetPtr filterDocIdSet(filter->getDocIdSet(reader));
     if (!filterDocIdSet) {

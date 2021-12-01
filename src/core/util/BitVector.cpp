@@ -68,7 +68,7 @@ LuceneObjectPtr BitVector::clone(const LuceneObjectPtr& other) {
 
 void BitVector::set(int32_t bit) {
     if (bit >= _size) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     bits[bit >> 3] |= 1 << (bit & 7);
     _count = -1;
@@ -76,7 +76,7 @@ void BitVector::set(int32_t bit) {
 
 bool BitVector::getAndSet(int32_t bit) {
     if (bit >= _size) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     int32_t pos = (bit >> 3);
     int32_t v = bits[pos];
@@ -94,14 +94,14 @@ bool BitVector::getAndSet(int32_t bit) {
 
 void BitVector::clear(int32_t bit) {
     if (bit >= _size) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     bits[bit >> 3] &= ~(1 << (bit & 7));
     _count = -1;
 }
 
 bool BitVector::get(int32_t bit) {
-    BOOST_ASSERT(bit >= 0 && bit < _size);
+    assert(bit >= 0 && bit < _size);
     return (bits[bit >> 3] & (1 << (bit & 7))) != 0;
 }
 
@@ -218,7 +218,7 @@ void BitVector::readDgaps(const IndexInputPtr& input) {
 
 BitVectorPtr BitVector::subset(int32_t start, int32_t end) {
     if (start < 0 || end > size() || end < start) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     // Special case -- return empty vector is start == end
     if (end == start) {

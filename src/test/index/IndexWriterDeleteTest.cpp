@@ -53,7 +53,7 @@ public:
             if (!TestPoint::getTestPoint(L"applyDeletes")) {
                 // Only fail once we are no longer in applyDeletes
                 failed = true;
-                boost::throw_exception(IOException(L"fail after applyDeletes"));
+                throw (IOException(L"fail after applyDeletes"));
             }
         }
         if (!failed) {
@@ -87,7 +87,7 @@ public:
     virtual void eval(const MockRAMDirectoryPtr& dir) {
         if (!failed) {
             failed = true;
-            boost::throw_exception(IOException(L"fail in add doc"));
+            throw (IOException(L"fail in add doc"));
         }
     }
 };

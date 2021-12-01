@@ -23,7 +23,7 @@ Payload::Payload(ByteArray data) {
 
 Payload::Payload(ByteArray data, int32_t offset, int32_t length) {
     if (offset < 0 || offset + length > data.size()) {
-        boost::throw_exception(IllegalArgumentException());
+        throw (IllegalArgumentException());
     }
     this->data = data;
     this->offset = offset;
@@ -59,7 +59,7 @@ uint8_t Payload::byteAt(int32_t index) {
     if (0 <= index && index < this->_length) {
         return this->data[this->offset + index];
     }
-    boost::throw_exception(IndexOutOfBoundsException());
+    throw (IndexOutOfBoundsException());
     return 0;
 }
 
@@ -71,7 +71,7 @@ ByteArray Payload::toByteArray() {
 
 void Payload::copyTo(ByteArray target, int32_t targetOffset) {
     if (this->_length > target.size() + targetOffset) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     MiscUtils::arrayCopy(this->data.get(), this->offset, target.get(), targetOffset, this->_length);
 }
@@ -79,7 +79,7 @@ void Payload::copyTo(ByteArray target, int32_t targetOffset) {
 LuceneObjectPtr Payload::clone(const LuceneObjectPtr& other) {
     // Start with a shallow copy of data
     LuceneObjectPtr clone = LuceneObject::clone(other ? other : newLucene<Payload>());
-    PayloadPtr clonePayload(boost::dynamic_pointer_cast<Payload>(clone));
+    PayloadPtr clonePayload(std::dynamic_pointer_cast<Payload>(clone));
     clonePayload->offset = offset;
     clonePayload->_length = _length;
 
@@ -101,7 +101,7 @@ bool Payload::equals(const LuceneObjectPtr& other) {
         return true;
     }
 
-    PayloadPtr otherPayload(boost::dynamic_pointer_cast<Payload>(other));
+    PayloadPtr otherPayload(std::dynamic_pointer_cast<Payload>(other));
     if (otherPayload) {
         if (_length == otherPayload->_length) {
             return (std::memcmp(data.get(), otherPayload->data.get(), _length) == 0);

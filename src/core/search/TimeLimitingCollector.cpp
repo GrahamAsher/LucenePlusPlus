@@ -69,7 +69,7 @@ void TimeLimitingCollector::collect(int32_t doc) {
         if (greedy) {
             collector->collect(doc);
         }
-        boost::throw_exception(TimeExceededException(L"Elapsed time:" + StringUtils::toString(timeout - t0) + L" ms. " +
+        throw (TimeExceededException(L"Elapsed time:" + StringUtils::toString(timeout - t0) + L" ms. " +
                                L"Exceeded allowed search time:" + StringUtils::toString(time - t0) + L" ms. " +
                                L"Last doc:" + StringUtils::toString(docBase + doc)));
     }

@@ -75,7 +75,7 @@ void IndexOutput::writeChars(const String& s, int32_t start, int32_t length) {
 }
 
 void IndexOutput::copyBytes(const IndexInputPtr& input, int64_t numBytes) {
-    BOOST_ASSERT(numBytes >= 0);
+    assert(numBytes >= 0);
     int64_t left = numBytes;
     if (!copyBuffer) {
         copyBuffer = ByteArray::newInstance(COPY_BUFFER_SIZE);

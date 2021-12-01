@@ -84,7 +84,7 @@ void SortedVIntList::initBytes() {
 void SortedVIntList::addInt(int32_t nextInt) {
     int32_t diff = nextInt - lastInt;
     if (diff < 0) {
-        boost::throw_exception(IllegalArgumentException(L"Input not sorted or first element negative."));
+        throw (IllegalArgumentException(L"Input not sorted or first element negative."));
     }
 
     if (!bytes || (lastBytePos + MAX_BYTES_PER_INT) > bytes.size()) {

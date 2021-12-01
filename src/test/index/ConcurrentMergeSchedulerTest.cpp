@@ -80,7 +80,7 @@ public:
     virtual void eval(const MockRAMDirectoryPtr& dir) {
         if (this->doFail && mainThread == LuceneThread::currentId() && TestPoint::getTestPoint(L"doFlush")) {
             hitExc = true;
-            boost::throw_exception(IOException(L"now failing during flush"));
+            throw (IOException(L"now failing during flush"));
         }
     }
 };
@@ -279,7 +279,7 @@ public:
 public:
     virtual void eval(const MockRAMDirectoryPtr& dir) {
         if (TestPoint::getTestPoint(L"doMerge")) {
-            boost::throw_exception(IOException(L"now failing during merge"));
+            throw (IOException(L"now failing during merge"));
         }
     }
 };

@@ -13,7 +13,7 @@ Encoder::~Encoder() {
 }
 
 String Encoder::encodeText(const String& originalText) {
-    BOOST_ASSERT(false);
+    assert(false);
     return L""; // override
 }
 

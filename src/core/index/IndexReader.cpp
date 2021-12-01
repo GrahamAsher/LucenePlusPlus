@@ -5,7 +5,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LuceneInc.h"
-#include <boost/filesystem/fstream.hpp>
 #include <iostream>
 #include "IndexReader.h"
 #include "_IndexReader.h"
@@ -38,14 +37,14 @@ int32_t IndexReader::getRefCount() {
 
 void IndexReader::incRef() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(refCount > 0);
+    assert(refCount > 0);
     ensureOpen();
     ++refCount;
 }
 
 void IndexReader::decRef() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(refCount > 0);
+    assert(refCount > 0);
     ensureOpen();
     if (refCount == 1) {
         commit();
@@ -56,7 +55,7 @@ void IndexReader::decRef() {
 
 void IndexReader::ensureOpen() {
     if (refCount <= 0) {
-        boost::throw_exception(AlreadyClosedException(L"this IndexReader is closed"));
+        throw (AlreadyClosedException(L"this IndexReader is closed"));
     }
 }
 
@@ -94,26 +93,26 @@ IndexReaderPtr IndexReader::open(const DirectoryPtr& directory, const IndexDelet
 
 IndexReaderPtr IndexReader::reopen() {
     SyncLock syncLock(this);
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support reopen()."));
+    throw (UnsupportedOperationException(L"This reader does not support reopen()."));
     return IndexReaderPtr();
 }
 
 IndexReaderPtr IndexReader::reopen(bool openReadOnly) {
     SyncLock syncLock(this);
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support reopen()."));
+    throw (UnsupportedOperationException(L"This reader does not support reopen()."));
     return IndexReaderPtr();
 }
 
 IndexReaderPtr IndexReader::reopen(const IndexCommitPtr& commit) {
     SyncLock syncLock(this);
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support reopen(IndexCommit)."));
+    throw (UnsupportedOperationException(L"This reader does not support reopen(IndexCommit)."));
     return IndexReaderPtr();
 }
 
 LuceneObjectPtr IndexReader::clone(const LuceneObjectPtr& other) {
     SyncLock syncLock(this);
     if (!other) {
-        boost::throw_exception(UnsupportedOperationException(L"This reader does not implement clone()."));
+        throw (UnsupportedOperationException(L"This reader does not implement clone()."));
     }
     return other;
 }
@@ -121,14 +120,14 @@ LuceneObjectPtr IndexReader::clone(const LuceneObjectPtr& other) {
 LuceneObjectPtr IndexReader::clone(bool openReadOnly, const LuceneObjectPtr& other) {
     SyncLock syncLock(this);
     if (!other) {
-        boost::throw_exception(UnsupportedOperationException(L"This reader does not implement clone(bool)."));
+        throw (UnsupportedOperationException(L"This reader does not implement clone(bool)."));
     }
     return other;
 }
 
 DirectoryPtr IndexReader::directory() {
     ensureOpen();
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support this method."));
+    throw (UnsupportedOperationException(L"This reader does not support this method."));
     return DirectoryPtr();
 }
 
@@ -145,22 +144,22 @@ MapStringString IndexReader::getCommitUserData(const DirectoryPtr& directory) {
 }
 
 int64_t IndexReader::getVersion() {
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support this method."));
+    throw (UnsupportedOperationException(L"This reader does not support this method."));
     return 0;
 }
 
 MapStringString IndexReader::getCommitUserData() {
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support this method."));
+    throw (UnsupportedOperationException(L"This reader does not support this method."));
     return MapStringString();
 }
 
 bool IndexReader::isCurrent() {
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support this method."));
+    throw (UnsupportedOperationException(L"This reader does not support this method."));
     return false;
 }
 
 bool IndexReader::isOptimized() {
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support this method."));
+    throw (UnsupportedOperationException(L"This reader does not support this method."));
     return false;
 }
 
@@ -290,7 +289,7 @@ void IndexReader::close() {
 }
 
 IndexCommitPtr IndexReader::getIndexCommit() {
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support this method."));
+    throw (UnsupportedOperationException(L"This reader does not support this method."));
     return IndexCommitPtr();
 }
 
@@ -332,7 +331,7 @@ void IndexReader::main(Collection<String> args) {
                 std::wcout << L"extract " << *file << L" with " << len << L" bytes to local directory...";
                 IndexInputPtr ii(cfr->openInput(*file));
 
-                boost::filesystem::ofstream f(*file, std::ios::binary | std::ios::out);
+                boost_copy::ofstream f(*file, std::ios::binary | std::ios::out);
 
                 // read and write with a small buffer, which is more effective than reading byte by byte
                 ByteArray buffer(ByteArray::newInstance(1024));
@@ -380,12 +379,12 @@ LuceneObjectPtr IndexReader::getDeletesCacheKey() {
 }
 
 int64_t IndexReader::getUniqueTermCount() {
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not implement getUniqueTermCount()"));
+    throw (UnsupportedOperationException(L"This reader does not implement getUniqueTermCount()"));
     return 0;
 }
 
 int32_t IndexReader::getTermInfosIndexDivisor() {
-    boost::throw_exception(UnsupportedOperationException(L"This reader does not support this method."));
+    throw (UnsupportedOperationException(L"This reader does not support this method."));
     return 0;
 }
 

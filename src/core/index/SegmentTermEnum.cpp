@@ -66,7 +66,7 @@ SegmentTermEnum::SegmentTermEnum(const IndexInputPtr& i, const FieldInfosPtr& fi
 
         // check that it is a format we can understand
         if (format < TermInfosWriter::FORMAT_CURRENT) {
-            boost::throw_exception(CorruptIndexException(L"Unknown format version:" + StringUtils::toString(format) + L" expected " + StringUtils::toString(TermInfosWriter::FORMAT_CURRENT) + L" or higher"));
+            throw (CorruptIndexException(L"Unknown format version:" + StringUtils::toString(format) + L" expected " + StringUtils::toString(TermInfosWriter::FORMAT_CURRENT) + L" or higher"));
         }
 
         size = input->readLong(); // read the size
@@ -87,8 +87,8 @@ SegmentTermEnum::SegmentTermEnum(const IndexInputPtr& i, const FieldInfosPtr& fi
             }
         }
 
-        BOOST_ASSERT(indexInterval > 0); // must not be negative
-        BOOST_ASSERT(skipInterval > 0); // must not be negative
+        assert(indexInterval > 0); // must not be negative
+        assert(skipInterval > 0); // must not be negative
     }
     if (format > TermInfosWriter::FORMAT_VERSION_UTF8_LENGTH_IN_BYTES) {
         termBuffer->setPreUTF8Strings();
@@ -102,7 +102,7 @@ SegmentTermEnum::~SegmentTermEnum() {
 
 LuceneObjectPtr SegmentTermEnum::clone(const LuceneObjectPtr& other) {
     LuceneObjectPtr clone = other ? other : newLucene<SegmentTermEnum>();
-    SegmentTermEnumPtr cloneEnum(boost::dynamic_pointer_cast<SegmentTermEnum>(TermEnum::clone(clone)));
+    SegmentTermEnumPtr cloneEnum(std::dynamic_pointer_cast<SegmentTermEnum>(TermEnum::clone(clone)));
     cloneEnum->format = format;
     cloneEnum->isIndex = isIndex;
     cloneEnum->formatM1SkipInterval = formatM1SkipInterval;
@@ -114,11 +114,11 @@ LuceneObjectPtr SegmentTermEnum::clone(const LuceneObjectPtr& other) {
     cloneEnum->skipInterval = skipInterval;
     cloneEnum->maxSkipLevels = maxSkipLevels;
 
-    cloneEnum->input = boost::dynamic_pointer_cast<IndexInput>(input->clone());
+    cloneEnum->input = std::dynamic_pointer_cast<IndexInput>(input->clone());
     cloneEnum->_termInfo = newLucene<TermInfo>(_termInfo);
 
-    cloneEnum->termBuffer = boost::dynamic_pointer_cast<TermBuffer>(termBuffer->clone());
-    cloneEnum->prevBuffer = boost::dynamic_pointer_cast<TermBuffer>(prevBuffer->clone());
+    cloneEnum->termBuffer = std::dynamic_pointer_cast<TermBuffer>(termBuffer->clone());
+    cloneEnum->prevBuffer = std::dynamic_pointer_cast<TermBuffer>(prevBuffer->clone());
     cloneEnum->scanBuffer = newLucene<TermBuffer>();
 
     return cloneEnum;

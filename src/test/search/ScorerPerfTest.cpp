@@ -84,7 +84,7 @@ public:
     virtual void collect(int32_t doc) {
         pos = answer->nextSetBit(pos + 1);
         if (pos != doc + docBase) {
-            boost::throw_exception(RuntimeException(L"Expected doc " + StringUtils::toString(pos) + L" but got " + StringUtils::toString(doc + docBase)));
+            throw (RuntimeException(L"Expected doc " + StringUtils::toString(pos) + L" but got " + StringUtils::toString(doc + docBase)));
         }
         CountingHitCollector::collect(doc);
     }
@@ -195,7 +195,7 @@ public:
         bq->add(q, BooleanClause::MUST);
         BitSetPtr _result(result);
         if (!_result) {
-            _result = boost::dynamic_pointer_cast<BitSet>(rnd->clone());
+            _result = std::dynamic_pointer_cast<BitSet>(rnd->clone());
         } else {
             _result->_and(rnd);
         }

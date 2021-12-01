@@ -13,12 +13,12 @@ Fragmenter::~Fragmenter() {
 }
 
 void Fragmenter::start(const String& originalText, const TokenStreamPtr& tokenStream) {
-    BOOST_ASSERT(false);
+    assert(false);
     // override
 }
 
 bool Fragmenter::isNewFragment() {
-    BOOST_ASSERT(false);
+    assert(false);
     return false; // override
 }
 

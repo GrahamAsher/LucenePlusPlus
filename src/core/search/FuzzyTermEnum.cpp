@@ -30,12 +30,12 @@ FuzzyTermEnum::~FuzzyTermEnum() {
 
 void FuzzyTermEnum::ConstructTermEnum(const IndexReaderPtr& reader, const TermPtr& term, double minSimilarity, int32_t prefixLength) {
     if (minSimilarity >= 1.0) {
-        boost::throw_exception(IllegalArgumentException(L"minimumSimilarity cannot be greater than or equal to 1"));
+        throw (IllegalArgumentException(L"minimumSimilarity cannot be greater than or equal to 1"));
     } else if (minSimilarity < 0.0) {
-        boost::throw_exception(IllegalArgumentException(L"minimumSimilarity cannot be less than 0"));
+        throw (IllegalArgumentException(L"minimumSimilarity cannot be less than 0"));
     }
     if (prefixLength < 0) {
-        boost::throw_exception(IllegalArgumentException(L"prefixLength cannot be less than 0"));
+        throw (IllegalArgumentException(L"prefixLength cannot be less than 0"));
     }
 
     this->minimumSimilarity = minSimilarity;

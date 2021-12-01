@@ -36,59 +36,59 @@ bool LuceneException::isNull() const {
 void LuceneException::throwException() {
     switch (type) {
     case LuceneException::AlreadyClosed:
-        boost::throw_exception(AlreadyClosedException(error, type));
+        throw (AlreadyClosedException(error, type));
     case LuceneException::Compression:
-        boost::throw_exception(CompressionException(error, type));
+        throw (CompressionException(error, type));
     case LuceneException::CorruptIndex:
-        boost::throw_exception(CorruptIndexException(error, type));
+        throw (CorruptIndexException(error, type));
     case LuceneException::FieldReader:
-        boost::throw_exception(FieldReaderException(error, type));
+        throw (FieldReaderException(error, type));
     case LuceneException::FileNotFound:
-        boost::throw_exception(FileNotFoundException(error, type));
+        throw (FileNotFoundException(error, type));
     case LuceneException::IllegalArgument:
-        boost::throw_exception(IllegalArgumentException(error, type));
+        throw (IllegalArgumentException(error, type));
     case LuceneException::IllegalState:
-        boost::throw_exception(IllegalStateException(error, type));
+        throw (IllegalStateException(error, type));
     case LuceneException::IndexOutOfBounds:
-        boost::throw_exception(IndexOutOfBoundsException(error, type));
+        throw (IndexOutOfBoundsException(error, type));
     case LuceneException::IO:
-        boost::throw_exception(IOException(error, type));
+        throw (IOException(error, type));
     case LuceneException::LockObtainFailed:
-        boost::throw_exception(LockObtainFailedException(error, type));
+        throw (LockObtainFailedException(error, type));
     case LuceneException::LockReleaseFailed:
-        boost::throw_exception(LockReleaseFailedException(error, type));
+        throw (LockReleaseFailedException(error, type));
     case LuceneException::Lookahead:
-        boost::throw_exception(LookaheadSuccess(error, type));
+        throw (LookaheadSuccess(error, type));
     case LuceneException::MergeAborted:
-        boost::throw_exception(MergeAbortedException(error, type));
+        throw (MergeAbortedException(error, type));
     case LuceneException::Merge:
-        boost::throw_exception(MergeException(error, type));
+        throw (MergeException(error, type));
     case LuceneException::NoSuchDirectory:
-        boost::throw_exception(NoSuchDirectoryException(error, type));
+        throw (NoSuchDirectoryException(error, type));
     case LuceneException::NullPointer:
-        boost::throw_exception(NullPointerException(error, type));
+        throw (NullPointerException(error, type));
     case LuceneException::NumberFormat:
-        boost::throw_exception(NumberFormatException(error, type));
+        throw (NumberFormatException(error, type));
     case LuceneException::OutOfMemory:
-        boost::throw_exception(OutOfMemoryError(error, type));
+        throw (OutOfMemoryError(error, type));
     case LuceneException::Parse:
-        boost::throw_exception(ParseException(error, type));
+        throw (ParseException(error, type));
     case LuceneException::QueryParser:
-        boost::throw_exception(QueryParserError(error, type));
+        throw (QueryParserError(error, type));
     case LuceneException::Runtime:
-        boost::throw_exception(RuntimeException(error, type));
+        throw (RuntimeException(error, type));
     case LuceneException::StaleReader:
-        boost::throw_exception(StaleReaderException(error, type));
+        throw (StaleReaderException(error, type));
     case LuceneException::StopFillCache:
-        boost::throw_exception(StopFillCacheException(error, type));
+        throw (StopFillCacheException(error, type));
     case LuceneException::Temporary:
-        boost::throw_exception(TemporaryException(error, type));
+        throw (TemporaryException(error, type));
     case LuceneException::TimeExceeded:
-        boost::throw_exception(TimeExceededException(error, type));
+        throw (TimeExceededException(error, type));
     case LuceneException::TooManyClauses:
-        boost::throw_exception(TooManyClausesException(error, type));
+        throw (TooManyClausesException(error, type));
     case LuceneException::UnsupportedOperation:
-        boost::throw_exception(UnsupportedOperationException(error, type));
+        throw (UnsupportedOperationException(error, type));
     case LuceneException::Null:
         // silence static analyzer
         break;

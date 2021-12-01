@@ -5,7 +5,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LuceneInc.h"
-#include <boost/algorithm/string.hpp>
 #include "SegmentInfo.h"
 #include "SegmentInfos.h"
 #include "Directory.h"
@@ -110,7 +109,7 @@ SegmentInfo::SegmentInfo(const DirectoryPtr& dir, int32_t format, const IndexInp
         preLockless = (isCompoundFile == CHECK_DIR);
         if (format <= SegmentInfos::FORMAT_DEL_COUNT) {
             delCount = input->readInt();
-            BOOST_ASSERT(delCount <= docCount);
+            assert(delCount <= docCount);
         } else {
             delCount = -1;
         }
@@ -273,12 +272,12 @@ bool SegmentInfo::hasSeparateNorms() {
         } else {
             HashSet<String> result(dir->listAll());
             if (!result) {
-                boost::throw_exception(IOException(L"Cannot read directory " + dir->toString() + L": listAll() returned null"));
+                throw (IOException(L"Cannot read directory " + dir->toString() + L": listAll() returned null"));
             }
             String pattern(name + L".s");
-            int32_t patternLength = pattern.length();
+            int32_t patternLength = (int32_t)pattern.length();
             for (HashSet<String>::iterator fileName = result.begin(); fileName != result.end(); ++fileName) {
-                if (IndexFileNameFilter::accept(L"", *fileName) && boost::starts_with(*fileName, pattern) && UnicodeUtil::isDigit((*fileName)[patternLength])) {
+                if (IndexFileNameFilter::accept(L"", *fileName) && boost_copy::starts_with(*fileName, pattern) && UnicodeUtil::isDigit((*fileName)[patternLength])) {
                     return true;
                 }
             }
@@ -352,13 +351,13 @@ int32_t SegmentInfo::getDelCount() {
     if (delCount == -1) {
         delCount = hasDeletions() ? BitVector(dir, getDelFileName()).count() : 0;
     }
-    BOOST_ASSERT(delCount <= docCount);
+    assert(delCount <= docCount);
     return delCount;
 }
 
 void SegmentInfo::setDelCount(int32_t delCount) {
     this->delCount = delCount;
-    BOOST_ASSERT(delCount <= docCount);
+    assert(delCount <= docCount);
 }
 
 int32_t SegmentInfo::getDocStoreOffset() {
@@ -448,7 +447,7 @@ HashSet<String> SegmentInfo::files() {
 
     if (docStoreOffset != -1) {
         // we are sharing doc stores (stored fields, term vectors) with other segments
-        BOOST_ASSERT(!docStoreSegment.empty());
+        assert(!docStoreSegment.empty());
         if (docStoreIsCompoundFile) {
             _files.add(docStoreSegment + L"." + IndexFileNames::COMPOUND_FILE_STORE_EXTENSION());
         } else {
@@ -503,11 +502,11 @@ HashSet<String> SegmentInfo::files() {
         } else {
             prefix = name + L"." + IndexFileNames::PLAIN_NORMS_EXTENSION();
         }
-        int32_t prefixLength = prefix.length();
+        int32_t prefixLength = (int32_t)prefix.length();
         HashSet<String> allFiles(dir->listAll());
         for (HashSet<String>::iterator fileName = allFiles.begin(); fileName != allFiles.end(); ++fileName) {
             if (IndexFileNameFilter::accept(L"", *fileName) && (int32_t)fileName->length() > prefixLength &&
-                    UnicodeUtil::isDigit((*fileName)[prefixLength]) && boost::starts_with(*fileName, prefix)) {
+                    UnicodeUtil::isDigit((*fileName)[prefixLength]) && boost_copy::starts_with(*fileName, prefix)) {
                 _files.add(*fileName);
             }
         }
@@ -540,7 +539,7 @@ bool SegmentInfo::equals(const LuceneObjectPtr& other) {
     if (LuceneObject::equals(other)) {
         return true;
     }
-    SegmentInfoPtr otherSegmentInfo(boost::dynamic_pointer_cast<SegmentInfo>(other));
+    SegmentInfoPtr otherSegmentInfo(std::dynamic_pointer_cast<SegmentInfo>(other));
     if (!otherSegmentInfo) {
         return false;
     }

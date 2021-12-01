@@ -71,7 +71,7 @@ uint64_t RAMDirectory::fileModified(const String& name) {
     SyncLock syncLock(this);
     MapStringRAMFile::iterator ramFile = fileMap.find(name);
     if (ramFile == fileMap.end()) {
-        boost::throw_exception(FileNotFoundException(name));
+        throw (FileNotFoundException(name));
     }
     return ramFile->second->getLastModified();
 }
@@ -83,7 +83,7 @@ void RAMDirectory::touchFile(const String& name) {
         SyncLock syncLock(this);
         MapStringRAMFile::iterator ramFile = fileMap.find(name);
         if (ramFile == fileMap.end()) {
-            boost::throw_exception(FileNotFoundException(name));
+            throw (FileNotFoundException(name));
         }
         file = ramFile->second;
     }
@@ -99,7 +99,7 @@ int64_t RAMDirectory::fileLength(const String& name) {
     SyncLock syncLock(this);
     MapStringRAMFile::iterator ramFile = fileMap.find(name);
     if (ramFile == fileMap.end()) {
-        boost::throw_exception(FileNotFoundException(name));
+        throw (FileNotFoundException(name));
     }
     return ramFile->second->getLength();
 }
@@ -115,7 +115,7 @@ void RAMDirectory::deleteFile(const String& name) {
     ensureOpen();
     MapStringRAMFile::iterator ramFile = fileMap.find(name);
     if (ramFile == fileMap.end()) {
-        boost::throw_exception(FileNotFoundException(name));
+        throw (FileNotFoundException(name));
     }
     _sizeInBytes -= ramFile->second->getSizeInBytes();
     fileMap.remove(name);
@@ -143,7 +143,7 @@ IndexInputPtr RAMDirectory::openInput(const String& name) {
         SyncLock syncLock(this);
         MapStringRAMFile::iterator ramFile = fileMap.find(name);
         if (ramFile == fileMap.end()) {
-            boost::throw_exception(FileNotFoundException(name));
+            throw (FileNotFoundException(name));
         }
         file = ramFile->second;
     }

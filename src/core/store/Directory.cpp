@@ -43,7 +43,7 @@ void Directory::clearLock(const String& name) {
 }
 
 void Directory::setLockFactory(const LockFactoryPtr& lockFactory) {
-    BOOST_ASSERT(lockFactory);
+    assert(lockFactory);
     this->lockFactory = lockFactory;
     this->lockFactory->setLockPrefix(getLockID());
 }
@@ -113,7 +113,7 @@ void Directory::copy(const DirectoryPtr& src, const DirectoryPtr& dest, bool clo
 
 void Directory::ensureOpen() {
     if (!isOpen) {
-        boost::throw_exception(AlreadyClosedException(L"This directory is closed"));
+        throw (AlreadyClosedException(L"This directory is closed"));
     }
 }
 

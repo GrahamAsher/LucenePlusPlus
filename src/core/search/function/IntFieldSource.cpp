@@ -33,7 +33,7 @@ bool IntFieldSource::cachedFieldSourceEquals(const FieldCacheSourcePtr& other) {
     if (!MiscUtils::equalTypes(shared_from_this(), other)) {
         return false;
     }
-    IntFieldSourcePtr otherSource(boost::dynamic_pointer_cast<IntFieldSource>(other));
+    IntFieldSourcePtr otherSource(std::dynamic_pointer_cast<IntFieldSource>(other));
     if (!otherSource) {
         return false;
     }
@@ -54,14 +54,14 @@ IntDocValues::~IntDocValues() {
 
 double IntDocValues::doubleVal(int32_t doc) {
     if (doc < 0 || doc >= arr.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     return (double)arr[doc];
 }
 
 int32_t IntDocValues::intVal(int32_t doc) {
     if (doc < 0 || doc >= arr.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     return arr[doc];
 }

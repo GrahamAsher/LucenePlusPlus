@@ -57,7 +57,7 @@ void TermsHash::abort() {
 }
 
 void TermsHash::shrinkFreePostings(MapInvertedDocConsumerPerThreadCollectionInvertedDocConsumerPerField threadsAndFields, const SegmentWriteStatePtr& state) {
-    BOOST_ASSERT(postingsFreeCount == postingsAllocCount);
+    assert(postingsFreeCount == postingsAllocCount);
 
     int32_t newSize = 1;
     if (newSize != postingsFreeList.size()) {
@@ -96,15 +96,15 @@ void TermsHash::flush(MapInvertedDocConsumerPerThreadCollectionInvertedDocConsum
         }
 
         for (Collection<InvertedDocConsumerPerFieldPtr>::iterator perField = entry->second.begin(); perField != entry->second.end(); ++perField) {
-            childFields.add(boost::static_pointer_cast<TermsHashPerField>(*perField)->consumer);
+            childFields.add(std::static_pointer_cast<TermsHashPerField>(*perField)->consumer);
             if (nextTermsHash) {
-                nextChildFields.add(boost::static_pointer_cast<TermsHashPerField>(*perField)->nextPerField);
+                nextChildFields.add(std::static_pointer_cast<TermsHashPerField>(*perField)->nextPerField);
             }
         }
 
-        childThreadsAndFields.put(boost::static_pointer_cast<TermsHashPerThread>(entry->first)->consumer, childFields);
+        childThreadsAndFields.put(std::static_pointer_cast<TermsHashPerThread>(entry->first)->consumer, childFields);
         if (nextTermsHash) {
-            nextThreadsAndFields.put(boost::static_pointer_cast<TermsHashPerThread>(entry->first)->nextPerThread, nextChildFields);
+            nextThreadsAndFields.put(std::static_pointer_cast<TermsHashPerThread>(entry->first)->nextPerThread, nextChildFields);
         }
     }
 
@@ -150,11 +150,11 @@ bool TermsHash::freeRAM() {
 
 void TermsHash::recyclePostings(Collection<RawPostingListPtr> postings, int32_t numPostings) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(postings.size() >= numPostings);
+    assert(postings.size() >= numPostings);
 
     // Move all Postings from this ThreadState back to our free list.  We pre-allocated this array while we
     // were creating Postings to make sure it's large enough
-    BOOST_ASSERT(postingsFreeCount + numPostings <= postingsFreeList.size());
+    assert(postingsFreeCount + numPostings <= postingsFreeList.size());
     MiscUtils::arrayCopy(postings.begin(), 0, postingsFreeList.begin(), postingsFreeCount, numPostings);
     postingsFreeCount += numPostings;
 }
@@ -164,16 +164,16 @@ void TermsHash::getPostings(Collection<RawPostingListPtr> postings) {
     DocumentsWriterPtr docWriter(_docWriter);
     IndexWriterPtr writer(docWriter->_writer);
 
-    BOOST_ASSERT(writer->testPoint(L"TermsHash.getPostings start"));
+    assert(writer->testPoint(L"TermsHash.getPostings start"));
 
-    BOOST_ASSERT(postingsFreeCount <= postingsFreeList.size());
-    BOOST_ASSERT(postingsFreeCount <= postingsAllocCount);
+    assert(postingsFreeCount <= postingsFreeList.size());
+    assert(postingsFreeCount <= postingsAllocCount);
 
     int32_t numToCopy = postingsFreeCount < postings.size() ? postingsFreeCount : postings.size();
     int32_t start = postingsFreeCount - numToCopy;
-    BOOST_ASSERT(start >= 0);
-    BOOST_ASSERT(start + numToCopy <= postingsFreeList.size());
-    BOOST_ASSERT(numToCopy <= postings.size());
+    assert(start >= 0);
+    assert(start + numToCopy <= postingsFreeList.size());
+    assert(numToCopy <= postings.size());
     MiscUtils::arrayCopy(postingsFreeList.begin(), start, postings.begin(), 0, numToCopy);
 
     // Directly allocate the remainder if any
@@ -182,7 +182,7 @@ void TermsHash::getPostings(Collection<RawPostingListPtr> postings) {
         int32_t newPostingsAllocCount = postingsAllocCount + extra;
 
         consumer->createPostings(postings, numToCopy, extra);
-        BOOST_ASSERT(writer->testPoint(L"TermsHash.getPostings after create"));
+        assert(writer->testPoint(L"TermsHash.getPostings after create"));
         postingsAllocCount += extra;
 
         if (trackAllocations) {

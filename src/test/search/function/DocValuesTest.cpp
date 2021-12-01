@@ -31,7 +31,7 @@ public:
 public:
     virtual double doubleVal(int32_t doc) {
         if (doc < 0 || doc >= innerArray.size()) {
-            boost::throw_exception(IndexOutOfBoundsException());
+            throw (IndexOutOfBoundsException());
         }
         return innerArray[doc];
     }

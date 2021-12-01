@@ -54,16 +54,16 @@ SortField::SortField(const String& field, int32_t type, bool reverse) {
 }
 
 SortField::SortField(const String& field, const ParserPtr& parser, bool reverse) {
-    if (boost::dynamic_pointer_cast<IntParser>(parser)) {
+    if (std::dynamic_pointer_cast<IntParser>(parser)) {
         initFieldType(field, INT);
-    } else if (boost::dynamic_pointer_cast<ByteParser>(parser)) {
+    } else if (std::dynamic_pointer_cast<ByteParser>(parser)) {
         initFieldType(field, BYTE);
-    } else if (boost::dynamic_pointer_cast<LongParser>(parser)) {
+    } else if (std::dynamic_pointer_cast<LongParser>(parser)) {
         initFieldType(field, LONG);
-    } else if (boost::dynamic_pointer_cast<DoubleParser>(parser)) {
+    } else if (std::dynamic_pointer_cast<DoubleParser>(parser)) {
         initFieldType(field, DOUBLE);
     } else {
-        boost::throw_exception(IllegalArgumentException(L"Parser instance does not subclass existing numeric parser from FieldCache"));
+        throw (IllegalArgumentException(L"Parser instance does not subclass existing numeric parser from FieldCache"));
     }
     this->reverse = reverse;
     this->parser = parser;
@@ -105,7 +105,7 @@ SortFieldPtr SortField::FIELD_DOC() {
 void SortField::initFieldType(const String& field, int32_t type) {
     this->type = type;
     if (field.empty() && type != SCORE && type != DOC) {
-        boost::throw_exception(IllegalArgumentException(L"Field can only be null when type is SCORE or DOC"));
+        throw (IllegalArgumentException(L"Field can only be null when type is SCORE or DOC"));
     }
     this->field = field;
 }
@@ -190,7 +190,7 @@ bool SortField::equals(const LuceneObjectPtr& other) {
         return true;
     }
 
-    SortFieldPtr otherSortField(boost::dynamic_pointer_cast<SortField>(other));
+    SortFieldPtr otherSortField(std::dynamic_pointer_cast<SortField>(other));
     if (!otherSortField) {
         return false;
     }
@@ -238,14 +238,14 @@ FieldComparatorPtr SortField::getComparator(int32_t numHits, int32_t sortPos) {
     case BYTE:
         return newLucene<ByteComparator>(numHits, field, parser);
     case CUSTOM:
-        BOOST_ASSERT(comparatorSource);
+        assert(comparatorSource);
         return comparatorSource->newComparator(field, numHits, sortPos, reverse);
     case STRING:
         return newLucene<StringOrdValComparator>(numHits, field, sortPos, reverse);
     case STRING_VAL:
         return newLucene<StringValComparator>(numHits, field);
     default:
-        boost::throw_exception(IllegalStateException(L"Illegal sort type: " + StringUtils::toString(type)));
+        throw (IllegalStateException(L"Illegal sort type: " + StringUtils::toString(type)));
         return FieldComparatorPtr();
     }
 }

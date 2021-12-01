@@ -49,14 +49,14 @@ FSDirectory::FSDirectory(const String& path, const LockFactoryPtr& lockFactory) 
     directory = path;
 
     if (FileUtils::fileExists(directory) && !FileUtils::isDirectory(directory)) {
-        boost::throw_exception(NoSuchDirectoryException(L"File '" + directory + L"' exists but is not a directory"));
+        throw (NoSuchDirectoryException(L"File '" + directory + L"' exists but is not a directory"));
     }
 
     setLockFactory(_lockFactory);
 
     // for filesystem based LockFactory, delete the lockPrefix if the locks are placed
     // in index dir. if no index dir is given, set ourselves
-    FSLockFactoryPtr lf(boost::dynamic_pointer_cast<FSLockFactory>(_lockFactory));
+    FSLockFactoryPtr lf(std::dynamic_pointer_cast<FSLockFactory>(_lockFactory));
 
     if (lf) {
         if (lf->getLockDir().empty()) {
@@ -82,7 +82,7 @@ FSDirectoryPtr FSDirectory::open(const String& path, const LockFactoryPtr& lockF
 void FSDirectory::createDir() {
     if (!checked) {
         if (!FileUtils::fileExists(directory) && !FileUtils::createDirectory(directory)) {
-            boost::throw_exception(IOException(L"Cannot create directory: " + directory));
+            throw (IOException(L"Cannot create directory: " + directory));
         }
         checked = true;
     }
@@ -93,22 +93,22 @@ void FSDirectory::initOutput(const String& name) {
     createDir();
     String path(FileUtils::joinPath(directory, name));
     if (FileUtils::fileExists(path) && !FileUtils::removeFile(path)) { // delete existing, if any
-        boost::throw_exception(IOException(L"Cannot overwrite: " + name));
+        throw (IOException(L"Cannot overwrite: " + name));
     }
 }
 
 HashSet<String> FSDirectory::listAll(const String& dir) {
     if (!FileUtils::fileExists(dir)) {
-        boost::throw_exception(NoSuchDirectoryException(L"Directory '" + dir + L"' does not exist"));
+        throw (NoSuchDirectoryException(L"Directory '" + dir + L"' does not exist"));
     } else if (!FileUtils::isDirectory(dir)) {
-        boost::throw_exception(NoSuchDirectoryException(L"File '" + dir + L"' exists but is not a directory"));
+        throw (NoSuchDirectoryException(L"File '" + dir + L"' exists but is not a directory"));
     }
 
     HashSet<String> result(HashSet<String>::newInstance());
 
     // Exclude subdirs
     if (!FileUtils::listDirectory(dir, true, result)) {
-        boost::throw_exception(IOException(L"Directory '" + dir + L"' exists and is a directory, but cannot be listed"));
+        throw (IOException(L"Directory '" + dir + L"' exists and is a directory, but cannot be listed"));
     }
 
     return result;
@@ -141,7 +141,7 @@ void FSDirectory::touchFile(const String& name) {
 void FSDirectory::deleteFile(const String& name) {
     ensureOpen();
     if (!FileUtils::removeFile(FileUtils::joinPath(directory, name))) {
-        boost::throw_exception(IOException(L"Cannot delete: " + name));
+        throw (IOException(L"Cannot delete: " + name));
     }
 }
 
@@ -181,7 +181,7 @@ void FSDirectory::sync(const String& name) {
     }
 
     if (!success) {
-        boost::throw_exception(IOException(L"Sync failure: " + path));
+        throw (IOException(L"Sync failure: " + path));
     }
 }
 

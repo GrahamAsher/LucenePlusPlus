@@ -85,7 +85,7 @@ int32_t BufferedIndexInput::getBufferSize() {
 
 void BufferedIndexInput::checkBufferSize(int32_t bufferSize) {
     if (bufferSize <= 0) {
-        boost::throw_exception(IllegalArgumentException(L"bufferSize must be greater than 0 (got " + StringUtils::toString(bufferSize) + L")"));
+        throw (IllegalArgumentException(L"bufferSize must be greater than 0 (got " + StringUtils::toString(bufferSize) + L")"));
     }
 }
 
@@ -118,7 +118,7 @@ void BufferedIndexInput::readBytes(uint8_t* b, int32_t offset, int32_t length, b
             if (bufferLength < length) {
                 // throw an exception when refill() could not read length bytes
                 MiscUtils::arrayCopy(buffer.get(), 0, b, offset, bufferLength);
-                boost::throw_exception(IOException(L"Read past EOF"));
+                throw (IOException(L"Read past EOF"));
             } else {
                 MiscUtils::arrayCopy(buffer.get(), 0, b, offset, length);
                 bufferPosition = length;
@@ -130,7 +130,7 @@ void BufferedIndexInput::readBytes(uint8_t* b, int32_t offset, int32_t length, b
             // here, because there's no need to reread what we had in the buffer.
             int64_t after = bufferStart + bufferPosition + length;
             if (after > this->length()) {
-                boost::throw_exception(IOException(L"Read past EOF"));
+                throw (IOException(L"Read past EOF"));
             }
             readInternal(b, offset, length);
             bufferStart = after;
@@ -148,7 +148,7 @@ void BufferedIndexInput::refill() {
     }
     int32_t newLength = (int32_t)(end - start);
     if (newLength <= 0) {
-        boost::throw_exception(IOException(L"Read past EOF"));
+        throw (IOException(L"Read past EOF"));
     }
 
     if (!buffer) {
@@ -183,7 +183,7 @@ void BufferedIndexInput::seek(int64_t pos) {
 }
 
 LuceneObjectPtr BufferedIndexInput::clone(const LuceneObjectPtr& other) {
-    BufferedIndexInputPtr cloneIndexInput(boost::dynamic_pointer_cast<BufferedIndexInput>(IndexInput::clone(other)));
+    BufferedIndexInputPtr cloneIndexInput(std::dynamic_pointer_cast<BufferedIndexInput>(IndexInput::clone(other)));
     cloneIndexInput->bufferSize = bufferSize;
     cloneIndexInput->buffer.reset();
     cloneIndexInput->bufferLength = 0;

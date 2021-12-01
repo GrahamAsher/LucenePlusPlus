@@ -65,7 +65,7 @@ void TermInfosWriter::initialize(const DirectoryPtr& directory, const String& se
     output->writeInt(indexInterval); // write indexInterval
     output->writeInt(skipInterval); // write skipInterval
     output->writeInt(maxSkipLevels); // write maxSkipLevels
-    BOOST_ASSERT(initUnicodeResults());
+    assert(initUnicodeResults());
 }
 
 void TermInfosWriter::add(const TermPtr& term, const TermInfoPtr& ti) {
@@ -105,10 +105,10 @@ int32_t TermInfosWriter::compareToLastTerm(int32_t fieldNumber, ByteArray termBy
 
 void TermInfosWriter::add(int32_t fieldNumber, ByteArray termBytes, int32_t termBytesLength, const TermInfoPtr& ti) {
     // terms out of order?
-    BOOST_ASSERT(compareToLastTerm(fieldNumber, termBytes, termBytesLength) < 0 || (isIndex && termBytesLength == 0 && lastTermBytesLength == 0));
+    assert(compareToLastTerm(fieldNumber, termBytes, termBytesLength) < 0 || (isIndex && termBytesLength == 0 && lastTermBytesLength == 0));
 
-    BOOST_ASSERT(ti->freqPointer >= lastTi->freqPointer); // freqPointer out of order?
-    BOOST_ASSERT(ti->proxPointer >= lastTi->proxPointer); // proxPointer out of order?
+    assert(ti->freqPointer >= lastTi->freqPointer); // freqPointer out of order?
+    assert(ti->proxPointer >= lastTi->proxPointer); // proxPointer out of order?
 
     TermInfosWriterPtr other(_other);
 

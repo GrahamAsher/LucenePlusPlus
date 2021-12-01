@@ -21,7 +21,7 @@ void FieldComparator::setScorer(const ScorerPtr& scorer) {
 }
 
 ByteComparator::ByteComparator(int32_t numHits, const String& field, const ParserPtr& parser) : NumericComparator<uint8_t>(numHits, field) {
-    this->parser = boost::static_pointer_cast<ByteParser>(parser);
+    this->parser = std::static_pointer_cast<ByteParser>(parser);
 }
 
 ByteComparator::~ByteComparator() {
@@ -52,7 +52,7 @@ void DocComparator::setNextReader(const IndexReaderPtr& reader, int32_t docBase)
 }
 
 DoubleComparator::DoubleComparator(int32_t numHits, const String& field, const ParserPtr& parser) : NumericComparator<double>(numHits, field) {
-    this->parser = boost::static_pointer_cast<DoubleParser>(parser);
+    this->parser = std::static_pointer_cast<DoubleParser>(parser);
 }
 
 DoubleComparator::~DoubleComparator() {
@@ -74,7 +74,7 @@ void DoubleComparator::setNextReader(const IndexReaderPtr& reader, int32_t docBa
 }
 
 IntComparator::IntComparator(int32_t numHits, const String& field, const ParserPtr& parser) : NumericComparator<int32_t>(numHits, field) {
-    this->parser = boost::static_pointer_cast<IntParser>(parser);
+    this->parser = std::static_pointer_cast<IntParser>(parser);
 }
 
 IntComparator::~IntComparator() {
@@ -96,7 +96,7 @@ void IntComparator::setNextReader(const IndexReaderPtr& reader, int32_t docBase)
 }
 
 LongComparator::LongComparator(int32_t numHits, const String& field, const ParserPtr& parser) : NumericComparator<int64_t>(numHits, field) {
-    this->parser = boost::static_pointer_cast<LongParser>(parser);
+    this->parser = std::static_pointer_cast<LongParser>(parser);
 }
 
 LongComparator::~LongComparator() {
@@ -203,7 +203,7 @@ int32_t StringOrdValComparator::compare(int32_t slot1, int32_t slot2) {
 }
 
 int32_t StringOrdValComparator::compareBottom(int32_t doc) {
-    BOOST_ASSERT(bottomSlot != -1);
+    assert(bottomSlot != -1);
     int32_t order = this->order[doc];
     int32_t cmp = bottomOrd - order;
     if (cmp != 0) {
@@ -223,7 +223,7 @@ void StringOrdValComparator::convert(int32_t slot) {
 
     if (sortPos == 0 && bottomSlot != -1 && bottomSlot != slot) {
         // Since we are the primary sort, the entries in the queue are bounded by bottomOrd
-        BOOST_ASSERT(bottomOrd < lookup.size());
+        assert(bottomOrd < lookup.size());
         if (reversed) {
             index = binarySearch(lookup, value, bottomOrd, lookup.size() - 1);
         } else {
@@ -250,7 +250,7 @@ int32_t StringOrdValComparator::binarySearch(Collection<String> lookup, const St
 void StringOrdValComparator::copy(int32_t slot, int32_t doc) {
     int32_t ord = order[doc];
     ords[slot] = ord;
-    BOOST_ASSERT(ord >= 0);
+    assert(ord >= 0);
     values[slot] = lookup[ord];
     readerGen[slot] = currentReaderGen;
 }
@@ -260,7 +260,7 @@ void StringOrdValComparator::setNextReader(const IndexReaderPtr& reader, int32_t
     ++currentReaderGen;
     order = currentReaderValues->order;
     lookup = currentReaderValues->lookup;
-    BOOST_ASSERT(!lookup.empty());
+    assert(!lookup.empty());
     if (bottomSlot != -1) {
         convert(bottomSlot);
         bottomOrd = ords[bottomSlot];
@@ -273,8 +273,8 @@ void StringOrdValComparator::setBottom(int32_t slot) {
         convert(bottomSlot);
     }
     bottomOrd = ords[slot];
-    BOOST_ASSERT(bottomOrd >= 0);
-    BOOST_ASSERT(bottomOrd < lookup.size());
+    assert(bottomOrd >= 0);
+    assert(bottomOrd < lookup.size());
     bottomValue = values[slot];
 }
 

@@ -169,7 +169,7 @@ void IndexWriter::initialize() {
     LockPtr writeLock(directory->makeLock(WRITE_LOCK_NAME));
 
     if (!writeLock->obtain((int32_t)writeLockTimeout)) { // obtain write lock
-        boost::throw_exception(LockObtainFailedException(L"Index locked for write: " + writeLock->toString()));
+        throw (LockObtainFailedException(L"Index locked for write: " + writeLock->toString()));
     }
     this->writeLock = writeLock;
 
@@ -206,7 +206,7 @@ void IndexWriter::initialize() {
                 // Swap out all segments, but, keep metadata in SegmentInfos, like version & generation, to
                 // preserve write-once.  This is important if readers are open against the future commit points.
                 if (indexCommit->getDirectory() != directory) {
-                    boost::throw_exception(IllegalArgumentException(L"IndexCommit's directory doesn't match my directory"));
+                    throw (IllegalArgumentException(L"IndexCommit's directory doesn't match my directory"));
                 }
                 SegmentInfosPtr oldInfos(newLucene<SegmentInfos>());
                 oldInfos->read(directory, indexCommit->getSegmentsFileName());
@@ -317,7 +317,7 @@ int32_t IndexWriter::numDeletedDocs(const SegmentInfoPtr& info) {
 
 void IndexWriter::acquireWrite() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(writeThread != LuceneThread::currentId());
+    assert(writeThread != LuceneThread::currentId());
     while (writeThread != 0 || readCount > 0) {
         doWait();
     }
@@ -330,7 +330,7 @@ void IndexWriter::acquireWrite() {
 
 void IndexWriter::releaseWrite() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(writeThread == LuceneThread::currentId());
+    assert(writeThread == LuceneThread::currentId());
     writeThread = 0;
     notifyAll();
 }
@@ -346,7 +346,7 @@ void IndexWriter::acquireRead() {
 
 void IndexWriter::upgradeReadToWrite() {
     SyncLock syncLock(this);
-    BOOST_ASSERT(readCount > 0);
+    assert(readCount > 0);
     ++upgradeCount;
     while (readCount > upgradeCount || writeThread != 0) {
         doWait();
@@ -359,7 +359,7 @@ void IndexWriter::upgradeReadToWrite() {
 void IndexWriter::releaseRead() {
     SyncLock syncLock(this);
     --readCount;
-    BOOST_ASSERT(readCount >= 0);
+    assert(readCount >= 0);
     notifyAll();
 }
 
@@ -371,7 +371,7 @@ bool IndexWriter::isOpen(bool includePendingClose) {
 void IndexWriter::ensureOpen(bool includePendingClose) {
     SyncLock syncLock(this);
     if (!isOpen(includePendingClose)) {
-        boost::throw_exception(AlreadyClosedException(L"This IndexWriter is closed"));
+        throw (AlreadyClosedException(L"This IndexWriter is closed"));
     }
 }
 
@@ -397,11 +397,11 @@ void IndexWriter::setMessageID(const InfoStreamPtr& infoStream) {
 }
 
 LogMergePolicyPtr IndexWriter::getLogMergePolicy() {
-    LogMergePolicyPtr logMergePolicy(boost::dynamic_pointer_cast<LogMergePolicy>(mergePolicy));
+    LogMergePolicyPtr logMergePolicy(std::dynamic_pointer_cast<LogMergePolicy>(mergePolicy));
     if (logMergePolicy) {
         return logMergePolicy;
     }
-    boost::throw_exception(IllegalArgumentException(L"This method can only be called when the merge policy is the default LogMergePolicy"));
+    throw (IllegalArgumentException(L"This method can only be called when the merge policy is the default LogMergePolicy"));
     return LogMergePolicyPtr();
 }
 
@@ -438,8 +438,8 @@ int32_t IndexWriter::getTermIndexInterval() {
 
 void IndexWriter::setRollbackSegmentInfos(const SegmentInfosPtr& infos) {
     SyncLock syncLock(this);
-    rollbackSegmentInfos = boost::dynamic_pointer_cast<SegmentInfos>(infos->clone());
-    BOOST_ASSERT(!rollbackSegmentInfos->hasExternalSegments(directory));
+    rollbackSegmentInfos = std::dynamic_pointer_cast<SegmentInfos>(infos->clone());
+    assert(!rollbackSegmentInfos->hasExternalSegments(directory));
     rollbackSegments = MapSegmentInfoInt::newInstance();
     int32_t size = rollbackSegmentInfos->size();
     for (int32_t i = 0; i < size; ++i) {
@@ -450,7 +450,7 @@ void IndexWriter::setRollbackSegmentInfos(const SegmentInfosPtr& infos) {
 void IndexWriter::setMergePolicy(const MergePolicyPtr& mp) {
     ensureOpen();
     if (!mp) {
-        boost::throw_exception(NullPointerException(L"MergePolicy must be non-null"));
+        throw (NullPointerException(L"MergePolicy must be non-null"));
     }
 
     if (mergePolicy != mp) {
@@ -472,7 +472,7 @@ void IndexWriter::setMergeScheduler(const MergeSchedulerPtr& mergeScheduler) {
     SyncLock syncLock(this);
     ensureOpen();
     if (!mergeScheduler) {
-        boost::throw_exception(NullPointerException(L"MergeScheduler must be non-null"));
+        throw (NullPointerException(L"MergeScheduler must be non-null"));
     }
     if (this->mergeScheduler != mergeScheduler) {
         finishMerges(true);
@@ -514,7 +514,7 @@ int32_t IndexWriter::getMaxFieldLength() {
 void IndexWriter::setReaderTermsIndexDivisor(int32_t divisor) {
     ensureOpen();
     if (divisor <= 0) {
-        boost::throw_exception(IllegalArgumentException(L"divisor must be >= 1 (got " + StringUtils::toString(divisor) + L")"));
+        throw (IllegalArgumentException(L"divisor must be >= 1 (got " + StringUtils::toString(divisor) + L")"));
     }
     readerTermsIndexDivisor = divisor;
     if (infoStream) {
@@ -530,10 +530,10 @@ int32_t IndexWriter::getReaderTermsIndexDivisor() {
 void IndexWriter::setMaxBufferedDocs(int32_t maxBufferedDocs) {
     ensureOpen();
     if (maxBufferedDocs != DISABLE_AUTO_FLUSH && maxBufferedDocs < 2) {
-        boost::throw_exception(IllegalArgumentException(L"maxBufferedDocs must at least be 2 when enabled"));
+        throw (IllegalArgumentException(L"maxBufferedDocs must at least be 2 when enabled"));
     }
     if (maxBufferedDocs == DISABLE_AUTO_FLUSH && getRAMBufferSizeMB() == DISABLE_AUTO_FLUSH) {
-        boost::throw_exception(IllegalArgumentException(L"at least one of ramBufferSize and maxBufferedDocs must be enabled"));
+        throw (IllegalArgumentException(L"at least one of ramBufferSize and maxBufferedDocs must be enabled"));
     }
     docWriter->setMaxBufferedDocs(maxBufferedDocs);
     pushMaxBufferedDocs();
@@ -544,7 +544,7 @@ void IndexWriter::setMaxBufferedDocs(int32_t maxBufferedDocs) {
 
 void IndexWriter::pushMaxBufferedDocs() {
     if (docWriter->getMaxBufferedDocs() != DISABLE_AUTO_FLUSH) {
-        LogDocMergePolicyPtr lmp(boost::dynamic_pointer_cast<LogDocMergePolicy>(mergePolicy));
+        LogDocMergePolicyPtr lmp(std::dynamic_pointer_cast<LogDocMergePolicy>(mergePolicy));
         if (lmp) {
             int32_t maxBufferedDocs = docWriter->getMaxBufferedDocs();
             if (lmp->getMinMergeDocs() != maxBufferedDocs) {
@@ -564,13 +564,13 @@ int32_t IndexWriter::getMaxBufferedDocs() {
 
 void IndexWriter::setRAMBufferSizeMB(double mb) {
     if (mb > 2048.0) {
-        boost::throw_exception(IllegalArgumentException(L"ramBufferSize " + StringUtils::toString(mb) + L" is too large; should be comfortably less than 2048"));
+        throw (IllegalArgumentException(L"ramBufferSize " + StringUtils::toString(mb) + L" is too large; should be comfortably less than 2048"));
     }
     if (mb != DISABLE_AUTO_FLUSH && mb <= 0.0) {
-        boost::throw_exception(IllegalArgumentException(L"ramBufferSize should be > 0.0 MB when enabled"));
+        throw (IllegalArgumentException(L"ramBufferSize should be > 0.0 MB when enabled"));
     }
     if (mb == DISABLE_AUTO_FLUSH && getMaxBufferedDocs() == DISABLE_AUTO_FLUSH) {
-        boost::throw_exception(IllegalArgumentException(L"at least one of ramBufferSize and maxBufferedDocs must be enabled"));
+        throw (IllegalArgumentException(L"at least one of ramBufferSize and maxBufferedDocs must be enabled"));
     }
     docWriter->setRAMBufferSizeMB(mb);
     if (infoStream) {
@@ -585,7 +585,7 @@ double IndexWriter::getRAMBufferSizeMB() {
 void IndexWriter::setMaxBufferedDeleteTerms(int32_t maxBufferedDeleteTerms) {
     ensureOpen();
     if (maxBufferedDeleteTerms != DISABLE_AUTO_FLUSH && maxBufferedDeleteTerms < 1) {
-        boost::throw_exception(IllegalArgumentException(L"maxBufferedDeleteTerms must at least be 1 when enabled"));
+        throw (IllegalArgumentException(L"maxBufferedDeleteTerms must at least be 1 when enabled"));
     }
     docWriter->setMaxBufferedDeleteTerms(maxBufferedDeleteTerms);
     if (infoStream) {
@@ -934,7 +934,7 @@ void IndexWriter::addDocument(const DocumentPtr& doc, const AnalyzerPtr& analyze
             flush(true, false, false);
         }
     } catch (std::bad_alloc& oom) {
-        boost::throw_exception(handleOOM(oom, L"addDocument"));
+        throw (handleOOM(oom, L"addDocument"));
     }
 }
 
@@ -946,7 +946,7 @@ void IndexWriter::deleteDocuments(const TermPtr& term) {
             flush(true, false, false);
         }
     } catch (std::bad_alloc& oom) {
-        boost::throw_exception(handleOOM(oom, L"deleteDocuments(Term)"));
+        throw (handleOOM(oom, L"deleteDocuments(Term)"));
     }
 }
 
@@ -958,7 +958,7 @@ void IndexWriter::deleteDocuments(Collection<TermPtr> terms) {
             flush(true, false, false);
         }
     } catch (std::bad_alloc& oom) {
-        boost::throw_exception(handleOOM(oom, L"deleteDocuments(VectorTerm)"));
+        throw (handleOOM(oom, L"deleteDocuments(VectorTerm)"));
     }
 }
 
@@ -1016,7 +1016,7 @@ void IndexWriter::updateDocument(const TermPtr& term, const DocumentPtr& doc, co
             flush(true, false, false);
         }
     } catch (std::bad_alloc& oom) {
-        boost::throw_exception(handleOOM(oom, L"updateDocument"));
+        throw (handleOOM(oom, L"updateDocument"));
     }
 }
 
@@ -1072,7 +1072,7 @@ void IndexWriter::optimize(int32_t maxNumSegments, bool doWait) {
     ensureOpen();
 
     if (maxNumSegments < 1) {
-        boost::throw_exception(IllegalArgumentException(L"maxNumSegments must be >= 1; got " + StringUtils::toString(maxNumSegments)));
+        throw (IllegalArgumentException(L"maxNumSegments must be >= 1; got " + StringUtils::toString(maxNumSegments)));
     }
 
     if (infoStream) {
@@ -1111,7 +1111,7 @@ void IndexWriter::optimize(int32_t maxNumSegments, bool doWait) {
             SyncLock syncLock(this);
             while (true) {
                 if (hitOOM) {
-                    boost::throw_exception(IllegalStateException(L"this writer hit an OutOfMemoryError; cannot complete optimize"));
+                    throw (IllegalStateException(L"this writer hit an OutOfMemoryError; cannot complete optimize"));
                 }
 
                 if (!mergeExceptions.empty()) {
@@ -1120,7 +1120,7 @@ void IndexWriter::optimize(int32_t maxNumSegments, bool doWait) {
                         if ((*merge)->optimize) {
                             LuceneException err = (*merge)->getException();
                             if (!err.isNull()) {
-                                boost::throw_exception(IOException(L"background merge hit exception: " + (*merge)->segString(directory)));
+                                throw (IOException(L"background merge hit exception: " + (*merge)->segString(directory)));
                             }
                         }
                     }
@@ -1186,7 +1186,7 @@ void IndexWriter::expungeDeletes(bool doWait) {
             bool running = true;
             while (running) {
                 if (hitOOM) {
-                    boost::throw_exception(IllegalStateException(L"this writer hit an OutOfMemoryError; cannot complete expungeDeletes"));
+                    throw (IllegalStateException(L"this writer hit an OutOfMemoryError; cannot complete expungeDeletes"));
                 }
 
                 // Check each merge that MergePolicy asked us to do, to see if any of them are still running and
@@ -1198,7 +1198,7 @@ void IndexWriter::expungeDeletes(bool doWait) {
                     }
                     LuceneException err = (*merge)->getException();
                     if (!err.isNull()) {
-                        boost::throw_exception(IOException(L"background merge hit exception: " + (*merge)->segString(directory)));
+                        throw (IOException(L"background merge hit exception: " + (*merge)->segString(directory)));
                     }
                 }
 
@@ -1233,7 +1233,7 @@ void IndexWriter::maybeMerge(int32_t maxNumSegmentsOptimize, bool optimize) {
 
 void IndexWriter::updatePendingMerges(int32_t maxNumSegmentsOptimize, bool optimize) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(!optimize || maxNumSegmentsOptimize > 0);
+    assert(!optimize || maxNumSegmentsOptimize > 0);
 
     if (stopMerges) {
         return;
@@ -1307,8 +1307,8 @@ void IndexWriter::startTransaction(bool haveReadLock) {
             message(L"now start transaction");
         }
 
-        BOOST_ASSERT(docWriter->getNumBufferedDeleteTerms() == 0); // calling startTransaction with buffered delete terms not supported
-        BOOST_ASSERT(docWriter->getNumDocsInRAM() == 0); // calling startTransaction with buffered documents not supported
+        assert(docWriter->getNumBufferedDeleteTerms() == 0); // calling startTransaction with buffered delete terms not supported
+        assert(docWriter->getNumDocsInRAM() == 0); // calling startTransaction with buffered documents not supported
 
         ensureOpen();
 
@@ -1337,9 +1337,9 @@ void IndexWriter::startTransaction(bool haveReadLock) {
     success = false;
 
     try {
-        localRollbackSegmentInfos = boost::dynamic_pointer_cast<SegmentInfos>(segmentInfos->clone());
+        localRollbackSegmentInfos = std::dynamic_pointer_cast<SegmentInfos>(segmentInfos->clone());
 
-        BOOST_ASSERT(!hasExternalSegments());
+        assert(!hasExternalSegments());
 
         localFlushedDocCount = docWriter->getFlushedDocCount();
 
@@ -1395,7 +1395,7 @@ void IndexWriter::rollbackTransaction() {
 
     notifyAll();
 
-    BOOST_ASSERT(!hasExternalSegments());
+    assert(!hasExternalSegments());
 }
 
 void IndexWriter::commitTransaction() {
@@ -1413,7 +1413,7 @@ void IndexWriter::commitTransaction() {
 
     localRollbackSegmentInfos.reset();
 
-    BOOST_ASSERT(!hasExternalSegments());
+    assert(!hasExternalSegments());
 
     finishAddIndexes();
 }
@@ -1459,12 +1459,12 @@ void IndexWriter::rollbackInternal() {
             segmentInfos->clear();
             segmentInfos->addAll(rollbackSegmentInfos);
 
-            BOOST_ASSERT(!hasExternalSegments());
+            assert(!hasExternalSegments());
 
             docWriter->abort();
 
             bool test = testPoint(L"rollback before checkpoint");
-            BOOST_ASSERT(test);
+            assert(test);
 
             // Ask deleter to locate unreferenced files & remove them
             deleter->checkpoint(segmentInfos, false);
@@ -1580,7 +1580,7 @@ void IndexWriter::finishMerges(bool waitForMerges) {
         stopMerges = false;
         notifyAll();
 
-        BOOST_ASSERT(mergingSegments.empty());
+        assert(mergingSegments.empty());
 
         if (infoStream) {
             message(L"all running merges have aborted");
@@ -1604,7 +1604,7 @@ void IndexWriter::waitForMerges() {
     }
 
     // sanity check
-    BOOST_ASSERT(mergingSegments.empty());
+    assert(mergingSegments.empty());
 }
 
 void IndexWriter::checkpoint() {
@@ -1652,11 +1652,11 @@ void IndexWriter::noDupDirs(Collection<DirectoryPtr> dirs) {
     for (Collection<DirectoryPtr>::iterator dir = dirs.begin(); dir != dirs.end(); ++dir) {
         for (Collection<DirectoryPtr>::iterator dup = dups.begin(); dup != dups.end(); ++dup) {
             if (*dup == *dir) {
-                boost::throw_exception(IllegalArgumentException(L"Directory " + (*dir)->getLockID() + L" appears more than once"));
+                throw (IllegalArgumentException(L"Directory " + (*dir)->getLockID() + L" appears more than once"));
             }
         }
         if (*dir == directory) {
-            boost::throw_exception(IllegalArgumentException(L"Cannot add directory to itself"));
+            throw (IllegalArgumentException(L"Cannot add directory to itself"));
         }
         dups.add(*dir);
     }
@@ -1691,7 +1691,7 @@ void IndexWriter::addIndexesNoOptimize(Collection<DirectoryPtr> dirs) {
                 for (Collection<DirectoryPtr>::iterator dir = dirs.begin(); dir != dirs.end(); ++dir) {
                     if (directory == *dir) {
                         // cannot add this index: segments may be deleted in merge before added
-                        boost::throw_exception(IllegalArgumentException(L"Cannot add this index to itself"));
+                        throw (IllegalArgumentException(L"Cannot add this index to itself"));
                     }
 
                     SegmentInfosPtr sis(newLucene<SegmentInfos>()); // read infos from dir
@@ -1699,7 +1699,7 @@ void IndexWriter::addIndexesNoOptimize(Collection<DirectoryPtr> dirs) {
 
                     for (int32_t j = 0; j < sis->size(); ++j) {
                         SegmentInfoPtr info(sis->info(j));
-                        BOOST_ASSERT(!segmentInfos->contains(info));
+                        assert(!segmentInfos->contains(info));
                         docCount += info->docCount;
                         segmentInfos->add(info); // add each info
                     }
@@ -1756,7 +1756,7 @@ void IndexWriter::resolveExternalSegments() {
         {
             SyncLock syncLock(this);
             if (stopMerges) {
-                boost::throw_exception(MergeAbortedException(L"rollback() was called or addIndexes* hit an unhandled exception"));
+                throw (MergeAbortedException(L"rollback() was called or addIndexes* hit an unhandled exception"));
             }
 
             int32_t numSegments = segmentInfos->size();
@@ -1766,7 +1766,7 @@ void IndexWriter::resolveExternalSegments() {
                 info = segmentInfos->info(i);
                 if (info->dir != directory) {
                     done = false;
-                    OneMergePtr newMerge(newLucene<OneMerge>(segmentInfos->range(i, i + 1), boost::dynamic_pointer_cast<LogMergePolicy>(mergePolicy) && getUseCompoundFile()));
+                    OneMergePtr newMerge(newLucene<OneMerge>(segmentInfos->range(i, i + 1), std::dynamic_pointer_cast<LogMergePolicy>(mergePolicy) && getUseCompoundFile()));
 
                     // Returns true if no running merge conflicts with this one (and, records this merge as
                     // pending), ie, this segment is not currently being merged
@@ -1904,7 +1904,7 @@ void IndexWriter::addIndexes(Collection<IndexReaderPtr> readers) {
 
         finally.throwException();
 
-        if (boost::dynamic_pointer_cast<LogMergePolicy>(mergePolicy) && getUseCompoundFile()) {
+        if (std::dynamic_pointer_cast<LogMergePolicy>(mergePolicy) && getUseCompoundFile()) {
             HashSet<String> files;
 
             {
@@ -1976,11 +1976,11 @@ void IndexWriter::prepareCommit() {
 
 void IndexWriter::prepareCommit(MapStringString commitUserData) {
     if (hitOOM) {
-        boost::throw_exception(IllegalStateException(L"this writer hit an OutOfMemoryError; cannot commit"));
+        throw (IllegalStateException(L"this writer hit an OutOfMemoryError; cannot commit"));
     }
 
     if (pendingCommit) {
-        boost::throw_exception(IllegalStateException(L"prepareCommit was already called with no corresponding call to commit"));
+        throw (IllegalStateException(L"prepareCommit was already called with no corresponding call to commit"));
     }
 
     if (infoStream) {
@@ -2097,12 +2097,12 @@ bool IndexWriter::doFlush(bool flushDocStores, bool flushDeletes) {
 bool IndexWriter::doFlushInternal(bool flushDocStores, bool flushDeletes) {
     SyncLock syncLock(this);
     if (hitOOM) {
-        boost::throw_exception(IllegalStateException(L"this writer hit an OutOfMemoryError; cannot flush"));
+        throw (IllegalStateException(L"this writer hit an OutOfMemoryError; cannot flush"));
     }
 
     ensureOpen(false);
 
-    BOOST_ASSERT(testPoint(L"startDoFlush"));
+    assert(testPoint(L"startDoFlush"));
 
     doBeforeFlush();
 
@@ -2136,7 +2136,7 @@ bool IndexWriter::doFlushInternal(bool flushDocStores, bool flushDeletes) {
 
         String docStoreSegment(docWriter->getDocStoreSegment());
 
-        BOOST_ASSERT(!docStoreSegment.empty() || numDocs == 0);
+        assert(!docStoreSegment.empty() || numDocs == 0);
 
         if (docStoreSegment.empty()) {
             flushDocStores = false;
@@ -2173,7 +2173,7 @@ bool IndexWriter::doFlushInternal(bool flushDocStores, bool flushDeletes) {
         String segment(docWriter->getSegment());
 
         // If we are flushing docs, segment must not be null
-        BOOST_ASSERT(!segment.empty() || !flushDocs);
+        assert(!segment.empty() || !flushDocs);
 
         if (flushDocs) {
             bool success = false;
@@ -2201,8 +2201,8 @@ bool IndexWriter::doFlushInternal(bool flushDocStores, bool flushDeletes) {
             if (docStoreOffset == 0 && flushDocStores) {
                 // This means we are flushing private doc stores with this segment, so it will not be shared
                 // with other segments
-                BOOST_ASSERT(!docStoreSegment.empty());
-                BOOST_ASSERT(docStoreSegment == segment);
+                assert(!docStoreSegment.empty());
+                assert(docStoreSegment == segment);
                 docStoreOffset = -1;
                 docStoreIsCompoundFile = false;
                 docStoreSegment.clear();
@@ -2278,7 +2278,7 @@ int32_t IndexWriter::numRamDocs() {
 int32_t IndexWriter::ensureContiguousMerge(const OneMergePtr& merge) {
     int32_t first = segmentInfos->find(merge->segments->info(0));
     if (first == -1) {
-        boost::throw_exception(MergeException(L"Could not find segment " + merge->segments->info(0)->name + L" in current index " + segString()));
+        throw (MergeException(L"Could not find segment " + merge->segments->info(0)->name + L" in current index " + segString()));
     }
 
     int32_t numSegments = segmentInfos->size();
@@ -2289,9 +2289,9 @@ int32_t IndexWriter::ensureContiguousMerge(const OneMergePtr& merge) {
 
         if (first + i >= numSegments || !segmentInfos->info(first + i)->equals(info)) {
             if (!segmentInfos->contains(info)) {
-                boost::throw_exception(MergeException(L"MergePolicy selected a segment (" + info->name + L") that is not in the current index " + segString()));
+                throw (MergeException(L"MergePolicy selected a segment (" + info->name + L") that is not in the current index " + segString()));
             } else {
-                boost::throw_exception(MergeException(L"MergePolicy selected non-contiguous segments to merge (" + merge->segString(directory) + L" vs " + segString() + L"), which IndexWriter (currently) cannot handle"));
+                throw (MergeException(L"MergePolicy selected non-contiguous segments to merge (" + merge->segString(directory) + L" vs " + segString() + L"), which IndexWriter (currently) cannot handle"));
             }
         }
     }
@@ -2301,7 +2301,7 @@ int32_t IndexWriter::ensureContiguousMerge(const OneMergePtr& merge) {
 
 void IndexWriter::commitMergedDeletes(const OneMergePtr& merge, const SegmentReaderPtr& mergeReader) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(testPoint(L"startCommitMergeDeletes"));
+    assert(testPoint(L"startCommitMergeDeletes"));
 
     SegmentInfosPtr sourceSegments(merge->segments);
 
@@ -2327,7 +2327,7 @@ void IndexWriter::commitMergedDeletes(const OneMergePtr& merge, const SegmentRea
                 // This means this segment has had new deletes committed since we started the merge, so we must merge them
                 for (int32_t j = 0; j < docCount; ++j) {
                     if (previousReader->isDeleted(j)) {
-                        BOOST_ASSERT(currentReader->isDeleted(j));
+                        assert(currentReader->isDeleted(j));
                     } else {
                         if (currentReader->isDeleted(j)) {
                             mergeReader->doDelete(docUpto);
@@ -2354,24 +2354,24 @@ void IndexWriter::commitMergedDeletes(const OneMergePtr& merge, const SegmentRea
         }
     }
 
-    BOOST_ASSERT(mergeReader->numDeletedDocs() == delCount);
+    assert(mergeReader->numDeletedDocs() == delCount);
 
     mergeReader->_hasChanges = (delCount > 0);
 }
 
 bool IndexWriter::commitMerge(const OneMergePtr& merge, const SegmentMergerPtr& merger, int32_t mergedDocCount, const SegmentReaderPtr& mergedReader) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(testPoint(L"startCommitMerge"));
+    assert(testPoint(L"startCommitMerge"));
 
     if (hitOOM) {
-        boost::throw_exception(IllegalStateException(L"this writer hit an OutOfMemoryError; cannot complete merge"));
+        throw (IllegalStateException(L"this writer hit an OutOfMemoryError; cannot complete merge"));
     }
 
     if (infoStream) {
         message(L"commitMerge: " + merge->segString(directory) + L" index=" + segString());
     }
 
-    BOOST_ASSERT(merge->registerDone);
+    assert(merge->registerDone);
 
     // If merge was explicitly aborted, or, if rollback() or rollbackTransaction() had been called since our merge
     // started (which results in an unqualified deleter.refresh() call that will remove any index file that current
@@ -2395,7 +2395,7 @@ bool IndexWriter::commitMerge(const OneMergePtr& merge, const SegmentMergerPtr& 
     merge->info->setHasProx(merger->hasProx());
 
     segmentInfos->remove(start, start + merge->segments->size());
-    BOOST_ASSERT(!segmentInfos->contains(merge->info));
+    assert(!segmentInfos->contains(merge->info));
     segmentInfos->add(start, merge->info);
 
     closeMergeReaders(merge, false);
@@ -2485,7 +2485,7 @@ void IndexWriter::merge(const OneMergePtr& merge) {
         }
         finally.throwException();
     } catch (std::bad_alloc& oom) {
-        boost::throw_exception(handleOOM(oom, L"merge"));
+        throw (handleOOM(oom, L"merge"));
     }
 }
 
@@ -2502,7 +2502,7 @@ bool IndexWriter::registerMerge(const OneMergePtr& merge) {
 
     if (stopMerges) {
         merge->abort();
-        boost::throw_exception(MergeAbortedException(L"merge is aborted: " + merge->segString(directory)));
+        throw (MergeAbortedException(L"merge is aborted: " + merge->segString(directory)));
     }
 
     int32_t count = merge->segments->size();
@@ -2566,13 +2566,13 @@ void IndexWriter::mergeInit(const OneMergePtr& merge) {
 void IndexWriter::_mergeInit(const OneMergePtr& merge) {
     SyncLock syncLock(this);
     bool test = testPoint(L"startMergeInit");
-    BOOST_ASSERT(test);
+    assert(test);
 
-    BOOST_ASSERT(merge->registerDone);
-    BOOST_ASSERT(!merge->optimize || merge->maxNumSegmentsOptimize > 0);
+    assert(merge->registerDone);
+    assert(!merge->optimize || merge->maxNumSegmentsOptimize > 0);
 
     if (hitOOM) {
-        boost::throw_exception(IllegalStateException(L"this writer hit an OutOfMemoryError; cannot merge"));
+        throw (IllegalStateException(L"this writer hit an OutOfMemoryError; cannot merge"));
     }
 
     if (merge->info) {
@@ -2763,7 +2763,7 @@ void IndexWriter::closeMergeReaders(const OneMergePtr& merge, bool suppressExcep
                 } catch (...) {
                 }
                 // This was a private clone and we had the only reference
-                BOOST_ASSERT(merge->readersClone[i]->getRefCount() == 0);
+                assert(merge->readersClone[i]->getRefCount() == 0);
                 merge->readersClone[i].reset();
             }
         }
@@ -2777,7 +2777,7 @@ void IndexWriter::closeMergeReaders(const OneMergePtr& merge, bool suppressExcep
             if (merge->readersClone[i]) {
                 merge->readersClone[i]->close();
                 // This was a private clone and we had the only reference
-                BOOST_ASSERT(merge->readersClone[i]->getRefCount() == 0);
+                assert(merge->readersClone[i]->getRefCount() == 0);
                 merge->readersClone[i].reset();
             }
         }
@@ -2825,7 +2825,7 @@ int32_t IndexWriter::mergeMiddle(const OneMergePtr& merge) {
             SegmentReaderPtr reader(merge->readers[i]);
 
             // We clone the segment readers because other deletes may come in while we're merging so we need readers that will not change
-            merge->readersClone[i] = boost::dynamic_pointer_cast<SegmentReader>(reader->clone(true));
+            merge->readersClone[i] = std::dynamic_pointer_cast<SegmentReader>(reader->clone(true));
             SegmentReaderPtr clone(merge->readersClone[i]);
             merger->add(clone);
 
@@ -2872,7 +2872,7 @@ int32_t IndexWriter::mergeMiddle(const OneMergePtr& merge) {
         merge->info->docCount = merger->merge(merge->mergeDocStores);
         mergedDocCount = merge->info->docCount;
 
-        BOOST_ASSERT(mergedDocCount == totDocCount);
+        assert(mergedDocCount == totDocCount);
 
         if (merge->useCompoundFile) {
             success = false;
@@ -2923,7 +2923,7 @@ int32_t IndexWriter::mergeMiddle(const OneMergePtr& merge) {
                         message(L"abort merge after building CFS");
                     }
                     deleter->deleteFile(compoundFileName);
-                    boost::throw_exception(TemporaryException());
+                    throw (TemporaryException());
                 }
             }
 
@@ -2951,7 +2951,7 @@ int32_t IndexWriter::mergeMiddle(const OneMergePtr& merge) {
             }
             if (!commitMerge(merge, merger, mergedDocCount, mergedReader)) {
                 // commitMerge will return false if this merge was aborted
-                boost::throw_exception(TemporaryException());
+                throw (TemporaryException());
             }
         } catch (LuceneException& e) {
             finally = e;
@@ -2986,7 +2986,7 @@ int32_t IndexWriter::mergeMiddle(const OneMergePtr& merge) {
 
 void IndexWriter::addMergeException(const OneMergePtr& merge) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(!merge->getException().isNull());
+    assert(!merge->getException().isNull());
     if (!mergeExceptions.contains(merge) && mergeGen == merge->mergeGen) {
         mergeExceptions.add(merge);
     }
@@ -2995,7 +2995,7 @@ void IndexWriter::addMergeException(const OneMergePtr& merge) {
 bool IndexWriter::applyDeletes() {
     TestScope testScope(L"IndexWriter", L"applyDeletes");
     SyncLock syncLock(this);
-    BOOST_ASSERT(testPoint(L"startApplyDeletes"));
+    assert(testPoint(L"startApplyDeletes"));
     ++flushDeletesCount;
     bool success = false;
     bool changed = false;
@@ -3072,7 +3072,7 @@ bool IndexWriter::startSync(const String& fileName, HashSet<String> pending) {
 
 void IndexWriter::finishSync(const String& fileName, bool success) {
     SyncLock syncedLock(&synced);
-    BOOST_ASSERT(syncing.contains(fileName));
+    assert(syncing.contains(fileName));
     syncing.remove(fileName);
     if (success) {
         synced.add(fileName);
@@ -3104,10 +3104,10 @@ void IndexWriter::doWait() {
 }
 
 void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserData) {
-    BOOST_ASSERT(testPoint(L"startStartCommit"));
+    assert(testPoint(L"startStartCommit"));
 
     if (hitOOM) {
-        boost::throw_exception(IllegalStateException(L"this writer hit an OutOfMemoryError; cannot commit"));
+        throw (IllegalStateException(L"this writer hit an OutOfMemoryError; cannot commit"));
     }
 
     try {
@@ -3127,17 +3127,17 @@ void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserDat
             blockAddIndexes(false);
 
             // On commit the segmentInfos must never reference a segment in another directory
-            BOOST_ASSERT(!hasExternalSegments());
+            assert(!hasExternalSegments());
 
             try {
-                BOOST_ASSERT(lastCommitChangeCount <= changeCount);
+                assert(lastCommitChangeCount <= changeCount);
                 myChangeCount = changeCount;
 
                 if (changeCount == lastCommitChangeCount) {
                     if (infoStream) {
                         message(L" skip startCommit(): no changes pending");
                     }
-                    boost::throw_exception(TemporaryException());
+                    throw (TemporaryException());
                 }
 
                 // First, we clone & incref the segmentInfos we intend to sync, then, without locking, we sync() each
@@ -3153,7 +3153,7 @@ void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserDat
                 // It's possible another flush (that did not close the open do stores) snook in after the flush we
                 // just did, so we remove any tail segments referencing the open doc store from the SegmentInfos
                 // we are about to sync (the main SegmentInfos will keep them)
-                toSync = boost::dynamic_pointer_cast<SegmentInfos>(segmentInfos->clone());
+                toSync = std::dynamic_pointer_cast<SegmentInfos>(segmentInfos->clone());
 
                 String dss(docWriter->getDocStoreSegment());
                 if (!dss.empty()) {
@@ -3175,12 +3175,12 @@ void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserDat
 
                 HashSet<String> files(toSync->files(directory, false));
                 for (HashSet<String>::iterator fileName = files.begin(); fileName != files.end(); ++fileName) {
-                    BOOST_ASSERT(directory->fileExists(*fileName));
+                    assert(directory->fileExists(*fileName));
 
                     // If this trips it means we are missing a call to .checkpoint somewhere, because by the
                     // time we are called, deleter should know about every file referenced by the current head
                     // segmentInfos
-                    BOOST_ASSERT(deleter->exists(*fileName));
+                    assert(deleter->exists(*fileName));
                 }
             } catch (LuceneException& e) {
                 finally = e;
@@ -3195,7 +3195,7 @@ void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserDat
             finally.throwException();
         }
 
-        BOOST_ASSERT(testPoint(L"midStartCommit"));
+        assert(testPoint(L"midStartCommit"));
 
         bool setPending = false;
 
@@ -3209,7 +3209,7 @@ void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserDat
                         bool success = false;
                         try {
                             // Because we incRef'd this commit point above, the file had better exist
-                            BOOST_ASSERT(directory->fileExists(*fileName));
+                            assert(directory->fileExists(*fileName));
 
                             if (infoStream) {
                                 message(L"now sync " + *fileName);
@@ -3232,7 +3232,7 @@ void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserDat
                 }
             }
 
-            BOOST_ASSERT(testPoint(L"midStartCommit2"));
+            assert(testPoint(L"midStartCommit2"));
 
             {
                 SyncLock syncLock(this);
@@ -3267,7 +3267,7 @@ void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserDat
                             segmentInfos->updateGeneration(toSync);
                             finally.throwException();
 
-                            BOOST_ASSERT(!pendingCommit);
+                            assert(!pendingCommit);
                             setPending = true;
                             pendingCommit = toSync;
                             pendingCommitChangeCount = myChangeCount;
@@ -3291,7 +3291,7 @@ void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserDat
             if (infoStream) {
                 message(L"done all syncs");
             }
-            BOOST_ASSERT(testPoint(L"midStartCommitSuccess"));
+            assert(testPoint(L"midStartCommitSuccess"));
         } catch (LuceneException& e) {
             finally = e;
         }
@@ -3304,9 +3304,9 @@ void IndexWriter::startCommit(int64_t sizeInBytes, MapStringString commitUserDat
         }
         finally.throwException();
     } catch (std::bad_alloc& oom) {
-        boost::throw_exception(handleOOM(oom, L"startCommit"));
+        throw (handleOOM(oom, L"startCommit"));
     }
-    BOOST_ASSERT(testPoint(L"finishStartCommit"));
+    assert(testPoint(L"finishStartCommit"));
 }
 
 bool IndexWriter::isLocked(const DirectoryPtr& directory) {
@@ -3383,8 +3383,8 @@ bool ReaderPool::infoIsLive(const SegmentInfoPtr& info) {
     SyncLock syncLock(this);
     IndexWriterPtr indexWriter(_indexWriter);
     int32_t idx = indexWriter->segmentInfos->find(info);
-    BOOST_ASSERT(idx != -1);
-    BOOST_ASSERT(indexWriter->segmentInfos->info(idx) == info);
+    assert(idx != -1);
+    assert(indexWriter->segmentInfos->info(idx) == info);
     return true;
 }
 
@@ -3409,14 +3409,14 @@ void ReaderPool::release(const SegmentReaderPtr& sr, bool drop) {
 
     bool pooled = readerMap.contains(sr->getSegmentInfo());
 
-    BOOST_ASSERT(!pooled || readerMap.get(sr->getSegmentInfo()) == sr);
+    assert(!pooled || readerMap.get(sr->getSegmentInfo()) == sr);
 
     // Drop caller's ref; for an external reader (not pooled), this decRef will close it
     sr->decRef();
 
     if (pooled && (drop || (!indexWriter->poolReaders && sr->getRefCount() == 1))) {
         // We invoke deleter.checkpoint below, so we must be sync'd on IW if there are changes
-        BOOST_ASSERT(!sr->_hasChanges || holdsLock());
+        assert(!sr->_hasChanges || holdsLock());
 
         // Discard (don't save) changes when we are dropping the reader; this is used only on the
         // sub-readers after a successful merge.
@@ -3443,11 +3443,11 @@ void ReaderPool::close() {
     IndexWriterPtr indexWriter(_indexWriter);
 
     // We invoke deleter.checkpoint below, so we must be sync'd on IW
-    BOOST_ASSERT(holdsLock());
+    assert(holdsLock());
 
     for (MapSegmentInfoSegmentReader::iterator iter = readerMap.begin(); iter != readerMap.end(); ++iter) {
         if (iter->second->_hasChanges) {
-            BOOST_ASSERT(infoIsLive(iter->second->getSegmentInfo()));
+            assert(infoIsLive(iter->second->getSegmentInfo()));
             iter->second->doCommit(MapStringString());
 
             // Must checkpoint with deleter, because this segment reader will have created
@@ -3467,11 +3467,11 @@ void ReaderPool::commit() {
     IndexWriterPtr indexWriter(_indexWriter);
 
     // We invoke deleter.checkpoint below, so we must be sync'd on IW
-    BOOST_ASSERT(holdsLock());
+    assert(holdsLock());
 
     for (MapSegmentInfoSegmentReader::iterator ent = readerMap.begin(); ent != readerMap.end(); ++ent) {
         if (ent->second->_hasChanges) {
-            BOOST_ASSERT(infoIsLive(ent->second->getSegmentInfo()));
+            assert(infoIsLive(ent->second->getSegmentInfo()));
             ent->second->doCommit(MapStringString());
 
             // Must checkpoint with deleter, because this segment reader will have created
@@ -3487,7 +3487,7 @@ IndexReaderPtr ReaderPool::getReadOnlyClone(const SegmentInfoPtr& info, bool doO
     IndexReaderPtr clone;
     LuceneException finally;
     try {
-        clone = boost::dynamic_pointer_cast<IndexReader>(sr->clone(true));
+        clone = std::dynamic_pointer_cast<IndexReader>(sr->clone(true));
     } catch (LuceneException& e) {
         finally = e;
     }

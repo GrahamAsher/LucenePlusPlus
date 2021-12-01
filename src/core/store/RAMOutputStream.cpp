@@ -90,7 +90,7 @@ void RAMOutputStream::writeByte(uint8_t b) {
 
 void RAMOutputStream::writeBytes(const uint8_t* b, int32_t offset, int32_t length) {
     while (length > 0) {
-        BOOST_ASSERT(b != NULL);
+        assert(b != NULL);
         if (bufferPosition == bufferLength) {
             ++currentBufferIndex;
             switchCurrentBuffer();

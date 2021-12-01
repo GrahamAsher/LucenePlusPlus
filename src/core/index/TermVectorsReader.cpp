@@ -70,26 +70,26 @@ void TermVectorsReader::ConstructReader(const DirectoryPtr& d, const String& seg
             tvf = d->openInput(segment + L"." + IndexFileNames::VECTORS_FIELDS_EXTENSION(), readBufferSize);
             int32_t tvfFormat = checkValidFormat(tvf);
 
-            BOOST_ASSERT(format == tvdFormat);
-            BOOST_ASSERT(format == tvfFormat);
+            assert(format == tvdFormat);
+            assert(format == tvfFormat);
 
             if (format >= FORMAT_VERSION2) {
-                BOOST_ASSERT((tvx->length() - FORMAT_SIZE) % 16 == 0);
+                assert((tvx->length() - FORMAT_SIZE) % 16 == 0);
                 numTotalDocs = (int32_t)(tvx->length() >> 4);
             } else {
-                BOOST_ASSERT((tvx->length() - FORMAT_SIZE) % 8 == 0);
+                assert((tvx->length() - FORMAT_SIZE) % 8 == 0);
                 numTotalDocs = (int32_t)(tvx->length() >> 3);
             }
 
             if (docStoreOffset == -1) {
                 this->docStoreOffset = 0;
                 this->_size = numTotalDocs;
-                BOOST_ASSERT(size == 0 || numTotalDocs == size);
+                assert(size == 0 || numTotalDocs == size);
             } else {
                 this->docStoreOffset = docStoreOffset;
                 this->_size = size;
                 // Verify the file is long enough to hold all of our docs
-                BOOST_ASSERT(numTotalDocs >= size + docStoreOffset);
+                assert(numTotalDocs >= size + docStoreOffset);
             }
         } else {
             // If all documents flushed in a segment had hit non-aborting exceptions, it's possible that
@@ -140,7 +140,7 @@ void TermVectorsReader::rawDocs(Collection<int32_t> tvdLengths, Collection<int32
 
     // SegmentMerger calls canReadRawDocs() first and should not call us if that returns false.
     if (format < FORMAT_VERSION2) {
-        boost::throw_exception(IllegalStateException(L"cannot read raw docs with older term vector formats"));
+        throw (IllegalStateException(L"cannot read raw docs with older term vector formats"));
     }
 
     seekTvx(startDocID);
@@ -157,14 +157,14 @@ void TermVectorsReader::rawDocs(Collection<int32_t> tvdLengths, Collection<int32
     int32_t count = 0;
     while (count < numDocs) {
         int32_t docID = docStoreOffset + startDocID + count + 1;
-        BOOST_ASSERT(docID <= numTotalDocs);
+        assert(docID <= numTotalDocs);
         if (docID < numTotalDocs) {
             tvdPosition = tvx->readLong();
             tvfPosition = tvx->readLong();
         } else {
             tvdPosition = tvd->length();
             tvfPosition = tvf->length();
-            BOOST_ASSERT(count == numDocs - 1);
+            assert(count == numDocs - 1);
         }
         tvdLengths[count] = (int32_t)(tvdPosition - lastTvdPosition);
         tvfLengths[count] = (int32_t)(tvfPosition - lastTvfPosition);
@@ -177,7 +177,7 @@ void TermVectorsReader::rawDocs(Collection<int32_t> tvdLengths, Collection<int32
 int32_t TermVectorsReader::checkValidFormat(const IndexInputPtr& in) {
     int32_t format = in->readInt();
     if (format > FORMAT_CURRENT) {
-        boost::throw_exception(CorruptIndexException(L"Incompatible format version: " +
+        throw (CorruptIndexException(L"Incompatible format version: " +
                                StringUtils::toString(format) + L" expected " +
                                StringUtils::toString(FORMAT_CURRENT) + L" or less"));
     }
@@ -477,7 +477,7 @@ void TermVectorsReader::readTermVector(const String& field, int64_t tvfPointer, 
 
 LuceneObjectPtr TermVectorsReader::clone(const LuceneObjectPtr& other) {
     LuceneObjectPtr clone = other ? other : newLucene<TermVectorsReader>();
-    TermVectorsReaderPtr cloneReader(boost::dynamic_pointer_cast<TermVectorsReader>(LuceneObject::clone(clone)));
+    TermVectorsReaderPtr cloneReader(std::dynamic_pointer_cast<TermVectorsReader>(LuceneObject::clone(clone)));
     cloneReader->fieldInfos = fieldInfos;
     cloneReader->_size = _size;
     cloneReader->numTotalDocs = numTotalDocs;
@@ -486,9 +486,9 @@ LuceneObjectPtr TermVectorsReader::clone(const LuceneObjectPtr& other) {
 
     // These are null when a TermVectorsReader was created on a segment that did not have term vectors saved
     if (tvx && tvd && tvf) {
-        cloneReader->tvx = boost::dynamic_pointer_cast<IndexInput>(tvx->clone());
-        cloneReader->tvd = boost::dynamic_pointer_cast<IndexInput>(tvd->clone());
-        cloneReader->tvf = boost::dynamic_pointer_cast<IndexInput>(tvf->clone());
+        cloneReader->tvx = std::dynamic_pointer_cast<IndexInput>(tvx->clone());
+        cloneReader->tvd = std::dynamic_pointer_cast<IndexInput>(tvd->clone());
+        cloneReader->tvf = std::dynamic_pointer_cast<IndexInput>(tvf->clone());
     }
 
     return cloneReader;

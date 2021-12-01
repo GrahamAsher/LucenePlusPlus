@@ -110,9 +110,9 @@ QueryPtr QueryParser::parse(const String& query) {
         QueryPtr res(TopLevelQuery(field));
         return res ? res : newBooleanQuery(false);
     } catch (QueryParserError& e) {
-        boost::throw_exception(QueryParserError(L"Cannot parse '" + query + L"': " + e.getError()));
+        throw (QueryParserError(L"Cannot parse '" + query + L"': " + e.getError()));
     } catch (TooManyClausesException&) {
-        boost::throw_exception(QueryParserError(L"Cannot parse '" + query + L"': too many boolean clauses"));
+        throw (QueryParserError(L"Cannot parse '" + query + L"': too many boolean clauses"));
     }
     return QueryPtr();
 }
@@ -203,7 +203,7 @@ void QueryParser::setDateResolution(DateTools::Resolution dateResolution) {
 
 void QueryParser::setDateResolution(const String& fieldName, DateTools::Resolution dateResolution) {
     if (fieldName.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"Field cannot be empty."));
+        throw (IllegalArgumentException(L"Field cannot be empty."));
     }
 
     if (!fieldToDateResolution) {
@@ -216,7 +216,7 @@ void QueryParser::setDateResolution(const String& fieldName, DateTools::Resoluti
 
 DateTools::Resolution QueryParser::getDateResolution(const String& fieldName) {
     if (fieldName.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"Field cannot be empty."));
+        throw (IllegalArgumentException(L"Field cannot be empty."));
     }
 
     if (!fieldToDateResolution) {
@@ -289,7 +289,7 @@ void QueryParser::addClause(Collection<BooleanClausePtr> clauses, int32_t conj, 
     } else if (!required && prohibited) {
         clauses.add(newBooleanClause(q, BooleanClause::MUST_NOT));
     } else {
-        boost::throw_exception(RuntimeException(L"Clause cannot be both required and prohibited"));
+        throw (RuntimeException(L"Clause cannot be both required and prohibited"));
     }
 }
 
@@ -360,7 +360,7 @@ QueryPtr QueryParser::getFieldQuery(const String& field, const String& queryText
         String term;
         try {
             bool hasNext = buffer->incrementToken();
-            BOOST_ASSERT(hasNext);
+            assert(hasNext);
             term = termAtt->term();
         } catch (IOException&) {
             // safe to ignore, because we know the number of tokens
@@ -375,7 +375,7 @@ QueryPtr QueryParser::getFieldQuery(const String& field, const String& queryText
                     String term;
                     try {
                         bool hasNext = buffer->incrementToken();
-                        BOOST_ASSERT(hasNext);
+                        assert(hasNext);
                         term = termAtt->term();
                     } catch (IOException&) {
                         // safe to ignore, because we know the number of tokens
@@ -396,7 +396,7 @@ QueryPtr QueryParser::getFieldQuery(const String& field, const String& queryText
                     int32_t positionIncrement = 1;
                     try {
                         bool hasNext = buffer->incrementToken();
-                        BOOST_ASSERT(hasNext);
+                        assert(hasNext);
                         term = termAtt->term();
                         if (posIncrAtt) {
                             positionIncrement = posIncrAtt->getPositionIncrement();
@@ -434,7 +434,7 @@ QueryPtr QueryParser::getFieldQuery(const String& field, const String& queryText
 
                 try {
                     bool hasNext = buffer->incrementToken();
-                    BOOST_ASSERT(hasNext);
+                    assert(hasNext);
                     term = termAtt->term();
                     if (posIncrAtt) {
                         positionIncrement = posIncrAtt->getPositionIncrement();
@@ -458,10 +458,10 @@ QueryPtr QueryParser::getFieldQuery(const String& field, const String& queryText
 QueryPtr QueryParser::getFieldQuery(const String& field, const String& queryText, int32_t slop) {
     QueryPtr query(getFieldQuery(field, queryText));
     if (MiscUtils::typeOf<PhraseQuery>(query)) {
-        boost::dynamic_pointer_cast<PhraseQuery>(query)->setSlop(slop);
+        std::dynamic_pointer_cast<PhraseQuery>(query)->setSlop(slop);
     }
     if (MiscUtils::typeOf<MultiPhraseQuery>(query)) {
-        boost::dynamic_pointer_cast<MultiPhraseQuery>(query)->setSlop(slop);
+        std::dynamic_pointer_cast<MultiPhraseQuery>(query)->setSlop(slop);
     }
     return query;
 }
@@ -570,7 +570,7 @@ QueryPtr QueryParser::getWildcardQuery(const String& field, const String& termSt
         return newMatchAllDocsQuery();
     }
     if (!allowLeadingWildcard && (boost::starts_with(termStr, L"*") || boost::starts_with(termStr, L"?"))) {
-        boost::throw_exception(QueryParserError(L"'*' or '?' not allowed as first character in WildcardQuery"));
+        throw (QueryParserError(L"'*' or '?' not allowed as first character in WildcardQuery"));
     }
     String queryTerm(termStr);
     if (lowercaseExpandedTerms) {
@@ -582,7 +582,7 @@ QueryPtr QueryParser::getWildcardQuery(const String& field, const String& termSt
 
 QueryPtr QueryParser::getPrefixQuery(const String& field, const String& termStr) {
     if (!allowLeadingWildcard && boost::starts_with(termStr, L"*")) {
-        boost::throw_exception(QueryParserError(L"'*' not allowed as first character in PrefixQuery"));
+        throw (QueryParserError(L"'*' not allowed as first character in PrefixQuery"));
     }
     String queryTerm(termStr);
     if (lowercaseExpandedTerms) {
@@ -647,10 +647,10 @@ String QueryParser::discardEscapeChar(const String& input) {
     }
 
     if (codePointMultiplier > 0) {
-        boost::throw_exception(QueryParserError(L"Truncated unicode escape sequence."));
+        throw (QueryParserError(L"Truncated unicode escape sequence."));
     }
     if (lastCharWasEscapeChar) {
-        boost::throw_exception(QueryParserError(L"Term can not end with escape character."));
+        throw (QueryParserError(L"Term can not end with escape character."));
     }
     return String(output.get(), length);
 }
@@ -663,7 +663,7 @@ int32_t QueryParser::hexToInt(wchar_t c) {
     } else if (L'A' <= c && c <= L'F') {
         return c - L'A' + 10;
     } else {
-        boost::throw_exception(QueryParserError(L"None-hex character in unicode escape sequence: " + StringUtils::toString(c)));
+        throw (QueryParserError(L"None-hex character in unicode escape sequence: " + StringUtils::toString(c)));
         return 0;
     }
 }
@@ -711,7 +711,7 @@ int32_t QueryParser::Conjunction() {
         default:
             jj_la1[0] = jj_gen;
             jj_consume_token(-1);
-            boost::throw_exception(QueryParserError());
+            throw (QueryParserError());
         }
         break;
     default:
@@ -742,7 +742,7 @@ int32_t QueryParser::Modifiers() {
         default:
             jj_la1[2] = jj_gen;
             jj_consume_token(-1);
-            boost::throw_exception(QueryParserError());
+            throw (QueryParserError());
         }
         break;
     default:
@@ -820,7 +820,7 @@ QueryPtr QueryParser::ParseClause(const String& field) {
         default:
             jj_la1[5] = jj_gen;
             jj_consume_token(-1);
-            boost::throw_exception(QueryParserError());
+            throw (QueryParserError());
         }
     }
     switch ((_jj_ntk == -1) ? jj_ntk() : _jj_ntk) {
@@ -850,7 +850,7 @@ QueryPtr QueryParser::ParseClause(const String& field) {
     default:
         jj_la1[7] = jj_gen;
         jj_consume_token(-1);
-        boost::throw_exception(QueryParserError());
+        throw (QueryParserError());
     }
     if (boost) {
         double f = 1.0;
@@ -903,7 +903,7 @@ QueryPtr QueryParser::ParseTerm(const String& field) {
         default:
             jj_la1[8] = jj_gen;
             jj_consume_token(-1);
-            boost::throw_exception(QueryParserError());
+            throw (QueryParserError());
         }
         switch ((_jj_ntk == -1) ? jj_ntk() : _jj_ntk) {
         case FUZZY_SLOP:
@@ -942,7 +942,7 @@ QueryPtr QueryParser::ParseTerm(const String& field) {
                 } catch (...) {
                 }
                 if (fms < 0.0 || fms > 1.0) {
-                    boost::throw_exception(QueryParserError(L"Minimum similarity for a FuzzyQuery has to be between 0.0 and 1.0"));
+                    throw (QueryParserError(L"Minimum similarity for a FuzzyQuery has to be between 0.0 and 1.0"));
                 }
                 q = getFuzzyQuery(field, termImage, fms);
             } else {
@@ -962,7 +962,7 @@ QueryPtr QueryParser::ParseTerm(const String& field) {
         default:
             jj_la1[12] = jj_gen;
             jj_consume_token(-1);
-            boost::throw_exception(QueryParserError());
+            throw (QueryParserError());
         }
         switch ((_jj_ntk == -1) ? jj_ntk() : _jj_ntk) {
         case RANGEIN_TO:
@@ -981,7 +981,7 @@ QueryPtr QueryParser::ParseTerm(const String& field) {
         default:
             jj_la1[14] = jj_gen;
             jj_consume_token(-1);
-            boost::throw_exception(QueryParserError());
+            throw (QueryParserError());
         }
         jj_consume_token(RANGEIN_END);
         switch ((_jj_ntk == -1) ? jj_ntk() : _jj_ntk) {
@@ -1012,7 +1012,7 @@ QueryPtr QueryParser::ParseTerm(const String& field) {
         default:
             jj_la1[16] = jj_gen;
             jj_consume_token(-1);
-            boost::throw_exception(QueryParserError());
+            throw (QueryParserError());
         }
         switch ((_jj_ntk == -1) ? jj_ntk() : _jj_ntk) {
         case RANGEEX_TO:
@@ -1031,7 +1031,7 @@ QueryPtr QueryParser::ParseTerm(const String& field) {
         default:
             jj_la1[18] = jj_gen;
             jj_consume_token(-1);
-            boost::throw_exception(QueryParserError());
+            throw (QueryParserError());
         }
         jj_consume_token(RANGEEX_END);
         switch ((_jj_ntk == -1) ? jj_ntk() : _jj_ntk) {
@@ -1081,7 +1081,7 @@ QueryPtr QueryParser::ParseTerm(const String& field) {
     default:
         jj_la1[22] = jj_gen;
         jj_consume_token(-1);
-        boost::throw_exception(QueryParserError());
+        throw (QueryParserError());
     }
     if (boost) {
         double f = 1.0;
@@ -1233,7 +1233,7 @@ bool QueryParser::jj_scan_token(int32_t kind) {
         return true;
     }
     if (jj_la == 0 && jj_scanpos == jj_lastpos) {
-        boost::throw_exception(LookaheadSuccess());
+        throw (LookaheadSuccess());
     }
     return false;
 }
@@ -1342,7 +1342,7 @@ void QueryParser::generateParseException() {
     for (int32_t i = 0; i < jj_expentries.size(); ++i) {
         exptokseq[i] = jj_expentries[i];
     }
-    boost::throw_exception(QueryParserError(QueryParseError::parseError(token, exptokseq, tokenImage)));
+    throw (QueryParserError(QueryParseError::parseError(token, exptokseq, tokenImage)));
 }
 
 void QueryParser::enable_tracing() {

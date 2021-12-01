@@ -19,10 +19,10 @@ DisjunctionSumScorer::DisjunctionSumScorer(Collection<ScorerPtr> subScorers, int
     this->nrScorers = subScorers.size();
 
     if (minimumNrMatchers <= 0) {
-        boost::throw_exception(IllegalArgumentException(L"Minimum nr of matchers must be positive"));
+        throw (IllegalArgumentException(L"Minimum nr of matchers must be positive"));
     }
     if (nrScorers <= 1) {
-        boost::throw_exception(IllegalArgumentException(L"There must be at least 2 subScorers"));
+        throw (IllegalArgumentException(L"There must be at least 2 subScorers"));
     }
 
     this->minimumNrMatchers = minimumNrMatchers;

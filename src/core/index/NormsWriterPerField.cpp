@@ -41,14 +41,14 @@ void NormsWriterPerField::abort() {
 }
 
 int32_t NormsWriterPerField::compareTo(const LuceneObjectPtr& other) {
-    return fieldInfo->name.compare(boost::static_pointer_cast<NormsWriterPerField>(other)->fieldInfo->name);
+    return fieldInfo->name.compare(std::static_pointer_cast<NormsWriterPerField>(other)->fieldInfo->name);
 }
 
 void NormsWriterPerField::finish() {
-    BOOST_ASSERT(docIDs.size() == norms.size());
+    assert(docIDs.size() == norms.size());
     if (fieldInfo->isIndexed && !fieldInfo->omitNorms) {
         if (docIDs.size() <= upto) {
-            BOOST_ASSERT(docIDs.size() == upto);
+            assert(docIDs.size() == upto);
             docIDs.resize(MiscUtils::getNextSize(1 + upto));
             norms.resize(MiscUtils::getNextSize(1 + upto));
         }

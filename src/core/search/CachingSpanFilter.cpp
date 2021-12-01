@@ -15,7 +15,7 @@ namespace Lucene {
 CachingSpanFilter::CachingSpanFilter(const SpanFilterPtr& filter, CachingWrapperFilter::DeletesMode deletesMode) {
     this->filter = filter;
     if (deletesMode == CachingWrapperFilter::DELETES_DYNAMIC) {
-        boost::throw_exception(IllegalArgumentException(L"DeletesMode::DYNAMIC is not supported"));
+        throw (IllegalArgumentException(L"DeletesMode::DYNAMIC is not supported"));
     }
     this->cache = newLucene<FilterCacheSpanFilterResult>(deletesMode);
     this->hitCount = 0;
@@ -34,7 +34,7 @@ SpanFilterResultPtr CachingSpanFilter::getCachedResult(const IndexReaderPtr& rea
     LuceneObjectPtr coreKey = reader->getFieldCacheKey();
     LuceneObjectPtr delCoreKey = reader->hasDeletions() ? reader->getDeletesCacheKey() : coreKey;
 
-    SpanFilterResultPtr result(boost::dynamic_pointer_cast<SpanFilterResult>(cache->get(reader, coreKey, delCoreKey)));
+    SpanFilterResultPtr result(std::dynamic_pointer_cast<SpanFilterResult>(cache->get(reader, coreKey, delCoreKey)));
     if (result) {
         ++hitCount;
         return result;
@@ -61,7 +61,7 @@ bool CachingSpanFilter::equals(const LuceneObjectPtr& other) {
         return true;
     }
 
-    CachingSpanFilterPtr otherCachingSpanFilter(boost::dynamic_pointer_cast<CachingSpanFilter>(other));
+    CachingSpanFilterPtr otherCachingSpanFilter(std::dynamic_pointer_cast<CachingSpanFilter>(other));
     if (!otherCachingSpanFilter) {
         return false;
     }
@@ -80,7 +80,7 @@ FilterCacheSpanFilterResult::~FilterCacheSpanFilterResult() {
 }
 
 LuceneObjectPtr FilterCacheSpanFilterResult::mergeDeletes(const IndexReaderPtr& reader, const LuceneObjectPtr& value) {
-    boost::throw_exception(IllegalStateException(L"DeletesMode::DYNAMIC is not supported"));
+    throw (IllegalStateException(L"DeletesMode::DYNAMIC is not supported"));
     return LuceneObjectPtr();
 }
 

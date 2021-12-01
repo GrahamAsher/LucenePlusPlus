@@ -14,7 +14,7 @@ ReadOnlySegmentReader::~ReadOnlySegmentReader() {
 }
 
 void ReadOnlySegmentReader::noWrite() {
-    boost::throw_exception(UnsupportedOperationException(L"This IndexReader cannot make any changes to the index (it was opened with readOnly = true)"));
+    throw (UnsupportedOperationException(L"This IndexReader cannot make any changes to the index (it was opened with readOnly = true)"));
 }
 
 void ReadOnlySegmentReader::acquireWriteLock() {

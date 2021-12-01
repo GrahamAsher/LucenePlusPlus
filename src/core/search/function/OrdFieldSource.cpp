@@ -33,7 +33,7 @@ bool OrdFieldSource::equals(const LuceneObjectPtr& other) {
     if (!MiscUtils::equalTypes(shared_from_this(), other)) {
         return false;
     }
-    OrdFieldSourcePtr otherSource(boost::dynamic_pointer_cast<OrdFieldSource>(other));
+    OrdFieldSourcePtr otherSource(std::dynamic_pointer_cast<OrdFieldSource>(other));
     if (!otherSource) {
         return false;
     }
@@ -54,7 +54,7 @@ OrdDocValues::~OrdDocValues() {
 
 double OrdDocValues::doubleVal(int32_t doc) {
     if (doc < 0 || doc >= arr.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     return (double)arr[doc];
 }
@@ -62,7 +62,7 @@ double OrdDocValues::doubleVal(int32_t doc) {
 String OrdDocValues::strVal(int32_t doc) {
     // the string value of the ordinal, not the string itself
     if (doc < 0 || doc >= arr.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     return StringUtils::toString(arr[doc]);
 }

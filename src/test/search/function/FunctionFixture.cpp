@@ -38,7 +38,7 @@ FunctionFixture::FunctionFixture(bool doMultiSegment) {
     int32_t i = 0;
     while (remaining > 0) {
         if (done[i]) {
-            boost::throw_exception(RuntimeException(L"to set this test correctly N_DOCS=" + StringUtils::toString(N_DOCS) + L" must be primary and greater than 2!"));
+            throw (RuntimeException(L"to set this test correctly N_DOCS=" + StringUtils::toString(N_DOCS) + L" must be primary and greater than 2!"));
         }
         addDoc(iw, i);
         done[i] = true;

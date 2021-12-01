@@ -1159,7 +1159,7 @@ void QueryParserTokenManager::ReInit(const QueryParserCharStreamPtr& stream, int
 
 void QueryParserTokenManager::SwitchTo(int32_t lexState) {
     if (lexState >= 4 || lexState < 0) {
-        boost::throw_exception(QueryParserError(L"Error: Ignoring invalid lexical state : " +
+        throw (QueryParserError(L"Error: Ignoring invalid lexical state : " +
                                                 StringUtils::toString(lexState) + L". State unchanged."));
     } else {
         curLexState = lexState;
@@ -1259,7 +1259,7 @@ QueryParserTokenPtr QueryParserTokenManager::getNextToken() {
             error_after = curPos <= 1 ? L"" : input_stream->GetImage();
         }
 
-        boost::throw_exception(QueryParserError(QueryParseError::lexicalError(EOFSeen, curLexState, error_line, error_column, error_after, curChar)));
+        throw (QueryParserError(QueryParseError::lexicalError(EOFSeen, curLexState, error_line, error_column, error_after, curChar)));
     }
 }
 

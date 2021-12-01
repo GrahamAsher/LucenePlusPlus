@@ -29,7 +29,7 @@ MergeDocIDRemapper::MergeDocIDRemapper(const SegmentInfosPtr& infos, Collection<
     int32_t numDocs = 0;
     for (int32_t j = 0; j < docMaps.size(); ++i, ++j) {
         numDocs += infos->info(i)->docCount;
-        BOOST_ASSERT(infos->info(i)->equals(merge->segments->info(j)));
+        assert(infos->info(i)->equals(merge->segments->info(j)));
     }
     this->maxDocID = minDocID + numDocs;
 
@@ -47,10 +47,10 @@ MergeDocIDRemapper::MergeDocIDRemapper(const SegmentInfosPtr& infos, Collection<
 
     // There are rare cases when docShift is 0.  It happens if you try to delete a docID that's
     // out of bounds, because the SegmentReader still allocates deletedDocs and pretends it has
-    // deletions ... so we can't make this assert here: BOOST_ASSERT(docShift > 0);
+    // deletions ... so we can't make this assert here: assert(docShift > 0);
 
     // Make sure it all adds up
-    BOOST_ASSERT(docShift == maxDocID - (newStarts[docMaps.size() - 1] + merge->segments->info(docMaps.size() - 1)->docCount - delCounts[docMaps.size() - 1]));
+    assert(docShift == maxDocID - (newStarts[docMaps.size() - 1] + merge->segments->info(docMaps.size() - 1)->docCount - delCounts[docMaps.size() - 1]));
 }
 
 MergeDocIDRemapper::~MergeDocIDRemapper() {
@@ -66,7 +66,7 @@ int32_t MergeDocIDRemapper::remap(int32_t oldDocID) {
     } else {
         // Binary search to locate this document & find its new docID
         Collection<int32_t>::iterator doc = std::upper_bound(starts.begin(), starts.begin() + docMaps.size(), oldDocID);
-        int32_t docMap = std::distance(starts.begin(), doc) - 1;
+        int32_t docMap = (int32_t)std::distance(starts.begin(), doc) - 1;
 
         if (docMaps[docMap]) {
             return newStarts[docMap] + docMaps[docMap][oldDocID - starts[docMap]];

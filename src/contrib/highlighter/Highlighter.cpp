@@ -114,7 +114,7 @@ Collection<TextFragmentPtr> Highlighter::getBestTextFragments(const TokenStreamP
 
         for (bool next = _tokenStream->incrementToken(); next && offsetAtt->startOffset() < maxDocCharsToAnalyze; next = _tokenStream->incrementToken()) {
             if (offsetAtt->endOffset() > (int32_t)text.length() || offsetAtt->startOffset() > (int32_t)text.length()) {
-                boost::throw_exception(RuntimeException(L"InvalidTokenOffsets: Token " + termAtt->term() + L" exceeds length of provided text sized " + StringUtils::toString(text.length())));
+                throw (RuntimeException(L"InvalidTokenOffsets: Token " + termAtt->term() + L" exceeds length of provided text sized " + StringUtils::toString(text.length())));
             }
 
             if (tokenGroup->numTokens > 0 && tokenGroup->isDistinct()) {

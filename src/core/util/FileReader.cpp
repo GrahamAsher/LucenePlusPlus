@@ -19,7 +19,7 @@ const int32_t FileReader::FILE_ERROR = -1;
 FileReader::FileReader(const String& fileName) {
     this->file = newInstance<boost::filesystem::ifstream>(fileName, std::ios::binary | std::ios::in);
     if (!file->is_open()) {
-        boost::throw_exception(FileNotFoundException(fileName));
+        throw (FileNotFoundException(fileName));
     }
     _length = FileUtils::fileLength(fileName);
 }

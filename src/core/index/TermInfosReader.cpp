@@ -20,7 +20,7 @@ TermInfosReader::TermInfosReader(const DirectoryPtr& dir, const String& seg, con
     bool success = false;
 
     if (indexDivisor < 1 && indexDivisor != -1) {
-        boost::throw_exception(IllegalArgumentException(L"indexDivisor must be -1 (don't load terms index) or greater than 0: got " + StringUtils::toString(indexDivisor)));
+        throw (IllegalArgumentException(L"indexDivisor must be -1 (don't load terms index) or greater than 0: got " + StringUtils::toString(indexDivisor)));
     }
 
     LuceneException finally;
@@ -186,7 +186,7 @@ TermInfoPtr TermInfosReader::get(const TermPtr& term, bool useCache) {
 
 void TermInfosReader::ensureIndexIsRead() {
     if (!indexTerms) {
-        boost::throw_exception(IllegalStateException(L"terms index was not loaded when this reader was created"));
+        throw (IllegalStateException(L"terms index was not loaded when this reader was created"));
     }
 }
 
@@ -208,13 +208,13 @@ int64_t TermInfosReader::getPosition(const TermPtr& term) {
 }
 
 SegmentTermEnumPtr TermInfosReader::terms() {
-    return boost::static_pointer_cast<SegmentTermEnum>(origEnum->clone());
+    return std::static_pointer_cast<SegmentTermEnum>(origEnum->clone());
 }
 
 SegmentTermEnumPtr TermInfosReader::terms(const TermPtr& term) {
     // don't use the cache in this call because we want to reposition the enumeration
     get(term, false);
-    return boost::static_pointer_cast<SegmentTermEnum>(getThreadResources()->termEnum->clone());
+    return std::static_pointer_cast<SegmentTermEnum>(getThreadResources()->termEnum->clone());
 }
 
 TermInfosReaderThreadResources::~TermInfosReaderThreadResources() {

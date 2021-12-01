@@ -37,13 +37,13 @@ MemoryIndex::~MemoryIndex() {
 
 void MemoryIndex::addField(const String& fieldName, const String& text, const AnalyzerPtr& analyzer) {
     if (fieldName.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"fieldName must not be empty"));
+        throw (IllegalArgumentException(L"fieldName must not be empty"));
     }
     if (text.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"text must not be empty"));
+        throw (IllegalArgumentException(L"text must not be empty"));
     }
     if (!analyzer) {
-        boost::throw_exception(IllegalArgumentException(L"analyzer must not be null"));
+        throw (IllegalArgumentException(L"analyzer must not be null"));
     }
 
     TokenStreamPtr stream(analyzer->tokenStream(fieldName, newLucene<StringReader>(text)));
@@ -54,16 +54,16 @@ void MemoryIndex::addField(const String& fieldName, const TokenStreamPtr& stream
     LuceneException finally;
     try {
         if (fieldName.empty()) {
-            boost::throw_exception(IllegalArgumentException(L"fieldName must not be empty"));
+            throw (IllegalArgumentException(L"fieldName must not be empty"));
         }
         if (!stream) {
-            boost::throw_exception(IllegalArgumentException(L"token stream must not be null"));
+            throw (IllegalArgumentException(L"token stream must not be null"));
         }
         if (boost <= 0.0) {
-            boost::throw_exception(IllegalArgumentException(L"boost factor must be greater than 0.0"));
+            throw (IllegalArgumentException(L"boost factor must be greater than 0.0"));
         }
         if (fields.contains(fieldName)) {
-            boost::throw_exception(IllegalArgumentException(L"field must not be added more than once"));
+            throw (IllegalArgumentException(L"field must not be added more than once"));
         }
 
         MapStringIntCollection terms(MapStringIntCollection::newInstance());
@@ -110,7 +110,7 @@ void MemoryIndex::addField(const String& fieldName, const TokenStreamPtr& stream
         }
     } catch (IOException& e) {
         // can never happen
-        boost::throw_exception(RuntimeException(e.getError()));
+        throw (RuntimeException(e.getError()));
     } catch (LuceneException& e) {
         finally = e;
     }
@@ -119,7 +119,7 @@ void MemoryIndex::addField(const String& fieldName, const TokenStreamPtr& stream
             stream->close();
         }
     } catch (IOException& e) {
-        boost::throw_exception(RuntimeException(e.getError()));
+        throw (RuntimeException(e.getError()));
     }
     finally.throwException();
 }
@@ -133,7 +133,7 @@ IndexSearcherPtr MemoryIndex::createSearcher() {
 
 double MemoryIndex::search(const QueryPtr& query) {
     if (!query) {
-        boost::throw_exception(IllegalArgumentException(L"query must not be null"));
+        throw (IllegalArgumentException(L"query must not be null"));
     }
 
     SearcherPtr searcher(createSearcher());
@@ -145,7 +145,7 @@ double MemoryIndex::search(const QueryPtr& query) {
         return scores[0];
     } catch (IOException& e) {
         // can never happen
-        boost::throw_exception(RuntimeException(e.getError()));
+        throw (RuntimeException(e.getError()));
     } catch (LuceneException& e) {
         finally = e;
     }
@@ -373,7 +373,7 @@ void MemoryIndexReader::norms(const String& field, ByteArray norms, int32_t offs
 }
 
 void MemoryIndexReader::doSetNorm(int32_t doc, const String& field, uint8_t value) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
 }
 
 int32_t MemoryIndexReader::numDocs() {
@@ -401,11 +401,11 @@ bool MemoryIndexReader::hasDeletions() {
 }
 
 void MemoryIndexReader::doDelete(int32_t docNum) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
 }
 
 void MemoryIndexReader::doUndeleteAll() {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
 }
 
 void MemoryIndexReader::doCommit(MapStringString commitUserData) {
@@ -595,11 +595,11 @@ int32_t MemoryIndexTermPositions::nextPosition() {
 }
 
 int32_t MemoryIndexTermPositions::getPayloadLength() {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
 }
 
 ByteArray MemoryIndexTermPositions::getPayload(ByteArray data, int32_t offset) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
     return ByteArray();
 }
 

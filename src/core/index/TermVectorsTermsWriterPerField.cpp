@@ -70,12 +70,12 @@ bool TermVectorsTermsWriterPerField::start(Collection<FieldablePtr> fields, int3
         if (!perThread->doc) {
             perThread->doc = TermVectorsTermsWriterPtr(_termsWriter)->getPerDoc();
             perThread->doc->docID = docState->docID;
-            BOOST_ASSERT(perThread->doc->numVectorFields == 0);
-            BOOST_ASSERT(perThread->doc->perDocTvf->length() == 0);
-            BOOST_ASSERT(perThread->doc->perDocTvf->getFilePointer() == 0);
+            assert(perThread->doc->numVectorFields == 0);
+            assert(perThread->doc->perDocTvf->length() == 0);
+            assert(perThread->doc->perDocTvf->getFilePointer() == 0);
         }
 
-        BOOST_ASSERT(perThread->doc->docID == docState->docID);
+        assert(perThread->doc->docID == docState->docID);
 
         TermsHashPerFieldPtr termsHashPerField(_termsHashPerField);
 
@@ -94,12 +94,12 @@ void TermVectorsTermsWriterPerField::abort() {
 }
 
 void TermVectorsTermsWriterPerField::finish() {
-    BOOST_ASSERT(DocStatePtr(_docState)->testPoint(L"TermVectorsTermsWriterPerField.finish start"));
+    assert(DocStatePtr(_docState)->testPoint(L"TermVectorsTermsWriterPerField.finish start"));
 
     TermsHashPerFieldPtr termsHashPerField(_termsHashPerField);
     int32_t numPostings = termsHashPerField->numPostings;
 
-    BOOST_ASSERT(numPostings >= 0);
+    assert(numPostings >= 0);
 
     if (!doVectors || numPostings == 0) {
         return;
@@ -115,8 +115,8 @@ void TermVectorsTermsWriterPerField::finish() {
     // This is called once, after inverting all occurrences of a given field in the doc.  At this point we flush
     // our hash into the DocWriter.
 
-    BOOST_ASSERT(fieldInfo->storeTermVector);
-    BOOST_ASSERT(perThread->vectorFieldsInOrder(fieldInfo));
+    assert(fieldInfo->storeTermVector);
+    assert(perThread->vectorFieldsInOrder(fieldInfo));
 
     perThread->doc->addField(termsHashPerField->fieldInfo->number);
 
@@ -139,7 +139,7 @@ void TermVectorsTermsWriterPerField::finish() {
     Collection<CharArray> charBuffers(TermsHashPerThreadPtr(perThread->_termsHashPerThread)->charPool->buffers);
 
     for (int32_t j = 0; j < numPostings; ++j) {
-        TermVectorsTermsWriterPostingListPtr posting(boost::static_pointer_cast<TermVectorsTermsWriterPostingList>(postings[j]));
+        TermVectorsTermsWriterPostingListPtr posting(std::static_pointer_cast<TermVectorsTermsWriterPostingList>(postings[j]));
         int32_t freq = posting->freq;
 
         CharArray text2(charBuffers[posting->textStart >> DocumentsWriter::CHAR_BLOCK_SHIFT]);
@@ -205,9 +205,9 @@ void TermVectorsTermsWriterPerField::start(const FieldablePtr& field) {
 }
 
 void TermVectorsTermsWriterPerField::newTerm(const RawPostingListPtr& p0) {
-    BOOST_ASSERT(DocStatePtr(_docState)->testPoint(L"TermVectorsTermsWriterPerField.newTerm start"));
+    assert(DocStatePtr(_docState)->testPoint(L"TermVectorsTermsWriterPerField.newTerm start"));
 
-    TermVectorsTermsWriterPostingListPtr p(boost::static_pointer_cast<TermVectorsTermsWriterPostingList>(p0));
+    TermVectorsTermsWriterPostingListPtr p(std::static_pointer_cast<TermVectorsTermsWriterPostingList>(p0));
 
     p->freq = 1;
 
@@ -230,9 +230,9 @@ void TermVectorsTermsWriterPerField::newTerm(const RawPostingListPtr& p0) {
 }
 
 void TermVectorsTermsWriterPerField::addTerm(const RawPostingListPtr& p0) {
-    BOOST_ASSERT(DocStatePtr(_docState)->testPoint(L"TermVectorsTermsWriterPerField.newTerm start"));
+    assert(DocStatePtr(_docState)->testPoint(L"TermVectorsTermsWriterPerField.newTerm start"));
 
-    TermVectorsTermsWriterPostingListPtr p(boost::static_pointer_cast<TermVectorsTermsWriterPostingList>(p0));
+    TermVectorsTermsWriterPostingListPtr p(std::static_pointer_cast<TermVectorsTermsWriterPostingList>(p0));
 
     ++p->freq;
 

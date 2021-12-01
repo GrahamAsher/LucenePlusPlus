@@ -91,20 +91,20 @@ void MultipleTermPositions::close() {
 }
 
 void MultipleTermPositions::seek(const TermPtr& term) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
 }
 
 void MultipleTermPositions::seek(const TermEnumPtr& termEnum) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
 }
 
 int32_t MultipleTermPositions::read(Collection<int32_t>& docs, Collection<int32_t>& freqs) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
     return 0;
 }
 
 ByteArray MultipleTermPositions::getPayload(ByteArray data, int32_t offset) {
-    boost::throw_exception(UnsupportedOperationException());
+    throw (UnsupportedOperationException());
     return ByteArray();
 }
 

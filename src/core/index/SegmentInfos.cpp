@@ -5,7 +5,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LuceneInc.h"
-#include <boost/algorithm/string.hpp>
 #include "SegmentInfos.h"
 #include "_SegmentInfos.h"
 #include "SegmentInfo.h"
@@ -84,7 +83,7 @@ int64_t SegmentInfos::getCurrentSegmentGeneration(HashSet<String> files) {
     }
     int64_t max = -1;
     for (HashSet<String>::iterator file = files.begin(); file != files.end(); ++file) {
-        if (boost::starts_with(*file, IndexFileNames::SEGMENTS()) && *file != IndexFileNames::SEGMENTS_GEN()) {
+        if (boost_copy::starts_with(*file, IndexFileNames::SEGMENTS()) && *file != IndexFileNames::SEGMENTS_GEN()) {
             max = std::max(generationFromSegmentsFileName(*file), max);
         }
     }
@@ -114,10 +113,10 @@ String SegmentInfos::getCurrentSegmentFileName() {
 int64_t SegmentInfos::generationFromSegmentsFileName(const String& fileName) {
     if (fileName == IndexFileNames::SEGMENTS()) {
         return 0;
-    } else if (boost::starts_with(fileName, IndexFileNames::SEGMENTS())) {
+    } else if (boost_copy::starts_with(fileName, IndexFileNames::SEGMENTS())) {
         return StringUtils::toLong(fileName.substr(wcslen(IndexFileNames::SEGMENTS().c_str()) + 1), StringUtils::CHARACTER_MAX_RADIX);
     } else {
-        boost::throw_exception(IllegalArgumentException(L"FileName '" + fileName + L"' is not a segments file"));
+        throw (IllegalArgumentException(L"FileName '" + fileName + L"' is not a segments file"));
     }
     return 0;
 }
@@ -142,7 +141,7 @@ void SegmentInfos::read(const DirectoryPtr& directory, const String& segmentFile
 
         if (format < 0) { // file contains explicit format info
             if (format < CURRENT_FORMAT) {
-                boost::throw_exception(CorruptIndexException(L"Unknown format version: " + StringUtils::toString(format)));
+                throw (CorruptIndexException(L"Unknown format version: " + StringUtils::toString(format)));
             }
             version = input->readLong(); // read version
             counter = input->readInt(); // read counter
@@ -183,7 +182,7 @@ void SegmentInfos::read(const DirectoryPtr& directory, const String& segmentFile
             int64_t checksumNow = input->getChecksum();
             int64_t checksumThen = input->readLong();
             if (checksumNow != checksumThen) {
-                boost::throw_exception(CorruptIndexException(L"Checksum mismatch in segments file"));
+                throw (CorruptIndexException(L"Checksum mismatch in segments file"));
             }
         }
 
@@ -259,14 +258,14 @@ void SegmentInfos::write(const DirectoryPtr& directory) {
 
 LuceneObjectPtr SegmentInfos::clone(const LuceneObjectPtr& other) {
     LuceneObjectPtr clone = SegmentInfoCollection::clone(other ? other : newLucene<SegmentInfos>());
-    SegmentInfosPtr cloneInfos(boost::dynamic_pointer_cast<SegmentInfos>(clone));
+    SegmentInfosPtr cloneInfos(std::dynamic_pointer_cast<SegmentInfos>(clone));
     cloneInfos->counter = counter;
     cloneInfos->generation = generation;
     cloneInfos->lastGeneration = lastGeneration;
     cloneInfos->version = version;
     cloneInfos->pendingSegnOutput = pendingSegnOutput;
     for (int32_t i = 0; i < cloneInfos->size(); ++i) {
-        cloneInfos->segmentInfos[i] = boost::dynamic_pointer_cast<SegmentInfo>(cloneInfos->info(i)->clone());
+        cloneInfos->segmentInfos[i] = std::dynamic_pointer_cast<SegmentInfo>(cloneInfos->info(i)->clone());
     }
     cloneInfos->userData = MapStringString::newInstance();
     cloneInfos->userData.putAll(userData.begin(), userData.end());
@@ -348,7 +347,7 @@ FindSegmentsFile::~FindSegmentsFile() {
 void FindSegmentsFile::doRun(const IndexCommitPtr& commit) {
     if (commit) {
         if (directory != commit->getDirectory()) {
-            boost::throw_exception(IOException(L"The specified commit does not match the specified Directory"));
+            throw (IOException(L"The specified commit does not match the specified Directory"));
         }
         runBody(commit->getSegmentsFileName());
         return;
@@ -433,7 +432,7 @@ void FindSegmentsFile::doRun(const IndexCommitPtr& commit) {
 
             // neither approach found a generation
             if (gen == -1) {
-                boost::throw_exception(FileNotFoundException(L"No segments* file found in directory"));
+                throw (FileNotFoundException(L"No segments* file found in directory"));
             }
         }
 
@@ -547,7 +546,7 @@ void SegmentInfos::rollbackCommit(const DirectoryPtr& dir) {
 void SegmentInfos::prepareCommit(const DirectoryPtr& dir) {
     TestScope testScope(L"SegmentInfos", L"prepareCommit");
     if (pendingSegnOutput) {
-        boost::throw_exception(IllegalStateException(L"prepareCommit was already called"));
+        throw (IllegalStateException(L"prepareCommit was already called"));
     }
     write(dir);
 }
@@ -568,7 +567,7 @@ HashSet<String> SegmentInfos::files(const DirectoryPtr& dir, bool includeSegment
 
 void SegmentInfos::finishCommit(const DirectoryPtr& dir) {
     if (!pendingSegnOutput) {
-        boost::throw_exception(IllegalStateException(L"prepareCommit was not called"));
+        throw (IllegalStateException(L"prepareCommit was not called"));
     }
 
     bool success = false;

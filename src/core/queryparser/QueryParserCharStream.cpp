@@ -10,62 +10,62 @@
 namespace Lucene {
 
 wchar_t QueryParserCharStream::readChar() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 int32_t QueryParserCharStream::getColumn() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 int32_t QueryParserCharStream::getLine() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 int32_t QueryParserCharStream::getEndColumn() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 int32_t QueryParserCharStream::getEndLine() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 int32_t QueryParserCharStream::getBeginColumn() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 int32_t QueryParserCharStream::getBeginLine() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 void QueryParserCharStream::backup(int32_t amount) {
-    BOOST_ASSERT(false);
+    assert(false);
     // override
 }
 
 wchar_t QueryParserCharStream::BeginToken() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 String QueryParserCharStream::GetImage() {
-    BOOST_ASSERT(false);
+    assert(false);
     return L""; // override
 }
 
 CharArray QueryParserCharStream::GetSuffix(int32_t length) {
-    BOOST_ASSERT(false);
+    assert(false);
     return CharArray(); // override
 }
 
 void QueryParserCharStream::Done() {
-    BOOST_ASSERT(false);
+    assert(false);
     // override
 }
 

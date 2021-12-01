@@ -67,15 +67,15 @@ void TermsHashPerThread::abort() {
 }
 
 void TermsHashPerThread::morePostings() {
-    BOOST_ASSERT(freePostingsCount == 0);
+    assert(freePostingsCount == 0);
     TermsHashPtr(_termsHash)->getPostings(freePostings);
     freePostingsCount = freePostings.size();
-    BOOST_ASSERT(noNullPostings(freePostings, freePostingsCount, L"consumer=" + consumer->toString()));
+    assert(noNullPostings(freePostings, freePostingsCount, L"consumer=" + consumer->toString()));
 }
 
 bool TermsHashPerThread::noNullPostings(Collection<RawPostingListPtr> postings, int32_t count, const String& details) {
     for (int32_t i = 0; i < count; ++i) {
-        BOOST_ASSERT(postings[i]);
+        assert(postings[i]);
     }
     return true;
 }

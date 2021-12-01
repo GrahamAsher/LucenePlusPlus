@@ -40,7 +40,7 @@ int64_t ChecksumIndexInput::getFilePointer() {
 }
 
 void ChecksumIndexInput::seek(int64_t pos) {
-    boost::throw_exception(RuntimeException(L"Seek not allowed"));
+    throw (RuntimeException(L"Seek not allowed"));
 }
 
 int64_t ChecksumIndexInput::length() {
@@ -49,7 +49,7 @@ int64_t ChecksumIndexInput::length() {
 
 LuceneObjectPtr ChecksumIndexInput::clone(const LuceneObjectPtr& other) {
     LuceneObjectPtr clone = IndexInput::clone(other ? other : newLucene<ChecksumIndexInput>(main));
-    ChecksumIndexInputPtr cloneIndexInput(boost::dynamic_pointer_cast<ChecksumIndexInput>(clone));
+    ChecksumIndexInputPtr cloneIndexInput(std::dynamic_pointer_cast<ChecksumIndexInput>(clone));
     cloneIndexInput->main = main;
     cloneIndexInput->checksum = checksum;
     return cloneIndexInput;

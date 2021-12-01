@@ -16,9 +16,9 @@
 namespace Lucene {
 
 NumericRangeQuery::NumericRangeQuery(const String& field, int32_t precisionStep, int32_t valSize, NumericValue min, NumericValue max, bool minInclusive, bool maxInclusive) {
-    BOOST_ASSERT(valSize == 32 || valSize == 64);
+    assert(valSize == 32 || valSize == 64);
     if (precisionStep < 1) {
-        boost::throw_exception(IllegalArgumentException(L"precisionStep must be >=1"));
+        throw (IllegalArgumentException(L"precisionStep must be >=1"));
     }
     this->field = field;
     this->precisionStep = precisionStep;
@@ -40,7 +40,7 @@ NumericRangeQuery::NumericRangeQuery(const String& field, int32_t precisionStep,
         break;
     default:
         // should never happen
-        boost::throw_exception(IllegalArgumentException(L"valSize must be 32 or 64"));
+        throw (IllegalArgumentException(L"valSize must be 32 or 64"));
     }
 
     // shortcut if upper bound == lower bound
@@ -78,7 +78,7 @@ NumericRangeQueryPtr NumericRangeQuery::newDoubleRange(const String& field, doub
 
 NumericRangeQueryPtr NumericRangeQuery::newNumericRange(const String& field, int32_t precisionStep, NumericValue min, NumericValue max, bool minInclusive, bool maxInclusive) {
     if (!VariantUtils::equalsType(min, max)) {
-        boost::throw_exception(IllegalArgumentException(L"min/max must be of the same type"));
+        throw (IllegalArgumentException(L"min/max must be of the same type"));
     }
     int32_t valSize = VariantUtils::typeOf<int32_t>(min) ? 32 : 64;
     return newLucene<NumericRangeQuery>(field, precisionStep, valSize, min, max, minInclusive, maxInclusive);
@@ -114,7 +114,7 @@ NumericValue NumericRangeQuery::getMax() {
 
 LuceneObjectPtr NumericRangeQuery::clone(const LuceneObjectPtr& other) {
     LuceneObjectPtr clone = MultiTermQuery::clone(other ? other : newLucene<NumericRangeQuery>(field, precisionStep, valSize, min, max, minInclusive, maxInclusive));
-    NumericRangeQueryPtr cloneQuery(boost::dynamic_pointer_cast<NumericRangeQuery>(clone));
+    NumericRangeQueryPtr cloneQuery(std::dynamic_pointer_cast<NumericRangeQuery>(clone));
     cloneQuery->field = field;
     cloneQuery->precisionStep = precisionStep;
     cloneQuery->valSize = valSize;
@@ -155,7 +155,7 @@ bool NumericRangeQuery::equals(const LuceneObjectPtr& other) {
         return false;
     }
 
-    NumericRangeQueryPtr otherNumericRangeQuery(boost::dynamic_pointer_cast<NumericRangeQuery>(other));
+    NumericRangeQueryPtr otherNumericRangeQuery(std::dynamic_pointer_cast<NumericRangeQuery>(other));
     if (!otherNumericRangeQuery) {
         return false;
     }
@@ -253,7 +253,7 @@ NumericRangeTermEnum::NumericRangeTermEnum(const NumericRangeQueryPtr& query, co
 
     default:
         // should never happen
-        boost::throw_exception(IllegalArgumentException(L"valSize must be 32 or 64"));
+        throw (IllegalArgumentException(L"valSize must be 32 or 64"));
     }
 
     // seek to first term
@@ -268,12 +268,12 @@ double NumericRangeTermEnum::difference() {
 }
 
 bool NumericRangeTermEnum::endEnum() {
-    boost::throw_exception(UnsupportedOperationException(L"not implemented"));
+    throw (UnsupportedOperationException(L"not implemented"));
     return false;
 }
 
 void NumericRangeTermEnum::setEnum(const TermEnumPtr& actualEnum) {
-    boost::throw_exception(UnsupportedOperationException(L"not implemented"));
+    throw (UnsupportedOperationException(L"not implemented"));
 }
 
 bool NumericRangeTermEnum::termCompare(const TermPtr& term) {
@@ -284,7 +284,7 @@ bool NumericRangeTermEnum::next() {
     // if a current term exists, the actual enum is initialized: try change to next term, if no
     // such term exists, fall-through
     if (currentTerm) {
-        BOOST_ASSERT(actualEnum);
+        assert(actualEnum);
         if (actualEnum->next()) {
             currentTerm = actualEnum->term();
             if (termCompare(currentTerm)) {
@@ -296,7 +296,7 @@ bool NumericRangeTermEnum::next() {
     // if all above fails, we go forward to the next enum, if one is available
     currentTerm.reset();
     while (rangeBounds.size() >= 2) {
-        BOOST_ASSERT(rangeBounds.size() % 2 == 0);
+        assert(rangeBounds.size() % 2 == 0);
         // close the current enum and read next bounds
         if (actualEnum) {
             actualEnum->close();
@@ -315,7 +315,7 @@ bool NumericRangeTermEnum::next() {
     }
 
     // no more sub-range enums available
-    BOOST_ASSERT(rangeBounds.empty() && !currentTerm);
+    assert(rangeBounds.empty() && !currentTerm);
     return false;
 }
 

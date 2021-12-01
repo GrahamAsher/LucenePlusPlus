@@ -92,7 +92,7 @@ int32_t TermScorer::nextDoc() {
 }
 
 double TermScorer::score() {
-    BOOST_ASSERT(doc != -1);
+    assert(doc != -1);
     double raw = freq < SCORE_CACHE_SIZE ? scoreCache[freq] : similarity->tf(freq) * weightValue; // compute tf(f) * weight
     return norms ? raw * SIM_NORM_DECODER()[norms[doc] & 0xff] : raw; // normalize for field
 }

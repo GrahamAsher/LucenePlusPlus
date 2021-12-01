@@ -63,12 +63,12 @@ void TermVectorsTermsWriter::flush(MapTermsHashConsumerPerThreadCollectionTermsH
 
     for (MapTermsHashConsumerPerThreadCollectionTermsHashConsumerPerField::iterator entry = threadsAndFields.begin(); entry != threadsAndFields.end(); ++entry) {
         for (Collection<TermsHashConsumerPerFieldPtr>::iterator field = entry->second.begin(); field != entry->second.end(); ++field) {
-            TermVectorsTermsWriterPerFieldPtr perField(boost::static_pointer_cast<TermVectorsTermsWriterPerField>(*field));
+            TermVectorsTermsWriterPerFieldPtr perField(std::static_pointer_cast<TermVectorsTermsWriterPerField>(*field));
             TermsHashPerFieldPtr(perField->_termsHashPerField)->reset();
             perField->shrinkHash();
         }
 
-        TermVectorsTermsWriterPerThreadPtr perThread(boost::static_pointer_cast<TermVectorsTermsWriterPerThread>(entry->first));
+        TermVectorsTermsWriterPerThreadPtr perThread(std::static_pointer_cast<TermVectorsTermsWriterPerThread>(entry->first));
         TermsHashPerThreadPtr(perThread->_termsHashPerThread)->reset(true);
     }
 }
@@ -84,10 +84,10 @@ void TermVectorsTermsWriter::closeDocStore(const SegmentWriteStatePtr& state) {
         tvf->close();
         tvd->close();
         tvx.reset();
-        BOOST_ASSERT(!state->docStoreSegmentName.empty());
+        assert(!state->docStoreSegmentName.empty());
         String fileName(state->docStoreSegmentName + L"." + IndexFileNames::VECTORS_INDEX_EXTENSION());
         if (4 + ((int64_t)state->numDocsInStore) * 16 != state->directory->fileLength(fileName)) {
-            boost::throw_exception(RuntimeException(L"after flush: tvx size mismatch: " + StringUtils::toString(state->numDocsInStore) +
+            throw (RuntimeException(L"after flush: tvx size mismatch: " + StringUtils::toString(state->numDocsInStore) +
                                                     L" docs vs " + StringUtils::toString(state->directory->fileLength(fileName)) +
                                                     L" length in bytes of " + fileName + L" file exists?=" +
                                                     StringUtils::toString(state->directory->fileExists(fileName))));
@@ -111,7 +111,7 @@ TermVectorsTermsWriterPerDocPtr TermVectorsTermsWriter::getPerDoc() {
         if (++allocCount > docFreeList.size()) {
             // Grow our free list up front to make sure we have enough space to recycle all outstanding
             // PerDoc instances
-            BOOST_ASSERT(allocCount == 1 + docFreeList.size());
+            assert(allocCount == 1 + docFreeList.size());
             docFreeList.resize(MiscUtils::getNextSize(allocCount));
         }
         return newLucene<TermVectorsTermsWriterPerDoc>(shared_from_this());
@@ -166,7 +166,7 @@ void TermVectorsTermsWriter::finishDocument(const TermVectorsTermsWriterPerDocPt
     SyncLock syncLock(this);
     DocumentsWriterPtr docWriter(_docWriter);
 
-    BOOST_ASSERT(IndexWriterPtr(docWriter->_writer)->testPoint(L"TermVectorsTermsWriter.finishDocument start"));
+    assert(IndexWriterPtr(docWriter->_writer)->testPoint(L"TermVectorsTermsWriter.finishDocument start"));
 
     initTermVectorsWriter();
 
@@ -181,7 +181,7 @@ void TermVectorsTermsWriter::finishDocument(const TermVectorsTermsWriterPerDocPt
         for (int32_t i = 0; i < perDoc->numVectorFields; ++i) {
             tvd->writeVInt(perDoc->fieldNumbers[i]);
         }
-        BOOST_ASSERT(perDoc->fieldPointers[0] == 0);
+        assert(perDoc->fieldPointers[0] == 0);
         int64_t lastPos = perDoc->fieldPointers[0];
         for (int32_t i = 1; i < perDoc->numVectorFields; ++i) {
             int64_t pos = perDoc->fieldPointers[i];
@@ -192,13 +192,13 @@ void TermVectorsTermsWriter::finishDocument(const TermVectorsTermsWriterPerDocPt
         perDoc->numVectorFields = 0;
     }
 
-    BOOST_ASSERT(lastDocID == perDoc->docID + docWriter->getDocStoreOffset());
+    assert(lastDocID == perDoc->docID + docWriter->getDocStoreOffset());
 
     ++lastDocID;
 
     perDoc->reset();
     free(perDoc);
-    BOOST_ASSERT(IndexWriterPtr(docWriter->_writer)->testPoint(L"TermVectorsTermsWriter.finishDocument end"));
+    assert(IndexWriterPtr(docWriter->_writer)->testPoint(L"TermVectorsTermsWriter.finishDocument end"));
 }
 
 bool TermVectorsTermsWriter::freeRAM() {
@@ -233,7 +233,7 @@ void TermVectorsTermsWriter::abort() {
 
 void TermVectorsTermsWriter::free(const TermVectorsTermsWriterPerDocPtr& doc) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(freeCount < docFreeList.size());
+    assert(freeCount < docFreeList.size());
     docFreeList[freeCount++] = doc;
 }
 

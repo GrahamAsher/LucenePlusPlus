@@ -66,7 +66,7 @@ TopDocsPtr ParallelMultiSearcher::search(const WeightPtr& weight, const FilterPt
 
 TopFieldDocsPtr ParallelMultiSearcher::search(const WeightPtr& weight, const FilterPtr& filter, int32_t n, const SortPtr& sort) {
     if (!sort) {
-        boost::throw_exception(NullPointerException(L"sort must not be null"));
+        throw (NullPointerException(L"sort must not be null"));
     }
     FieldDocSortedHitQueuePtr hq(newLucene<FieldDocSortedHitQueue>(n));
     SynchronizePtr lock(newInstance<Synchronize>());

@@ -91,13 +91,13 @@ public:
     }
 
     virtual LuceneObjectPtr clone(const LuceneObjectPtr& other = LuceneObjectPtr()) {
-        return newLucene<FaultyIndexInput>(boost::dynamic_pointer_cast<IndexInput>(delegate->clone()));
+        return newLucene<FaultyIndexInput>(std::dynamic_pointer_cast<IndexInput>(delegate->clone()));
     }
 
 protected:
     void simOutage() {
         if (doFail && count++ % 2 == 1) {
-            boost::throw_exception(IOException(L"Simulated network outage"));
+            throw (IOException(L"Simulated network outage"));
         }
     }
 };

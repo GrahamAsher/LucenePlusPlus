@@ -57,7 +57,7 @@ void TermVectorsWriter::addAllDocVectors(Collection<TermFreqVectorPtr> vectors) 
             int32_t numTerms = vectors[i]->size();
             tvf->writeVInt(numTerms);
 
-            TermPositionVectorPtr tpVector(boost::dynamic_pointer_cast<TermPositionVector>(vectors[i]));
+            TermPositionVectorPtr tpVector(std::dynamic_pointer_cast<TermPositionVector>(vectors[i]));
 
             uint8_t bits;
             bool storePositions;
@@ -99,9 +99,9 @@ void TermVectorsWriter::addAllDocVectors(Collection<TermFreqVectorPtr> vectors) 
                 if (storePositions) {
                     Collection<int32_t> positions(tpVector->getTermPositions(j));
                     if (!positions) {
-                        boost::throw_exception(IllegalStateException(L"Trying to write positions that are null!"));
+                        throw (IllegalStateException(L"Trying to write positions that are null!"));
                     }
-                    BOOST_ASSERT(positions.size() == termFreq);
+                    assert(positions.size() == termFreq);
 
                     // use delta encoding for positions
                     int32_t lastPosition = 0;
@@ -115,9 +115,9 @@ void TermVectorsWriter::addAllDocVectors(Collection<TermFreqVectorPtr> vectors) 
                 if (storeOffsets) {
                     Collection<TermVectorOffsetInfoPtr> offsets(tpVector->getOffsets(j));
                     if (!offsets) {
-                        boost::throw_exception(IllegalStateException(L"Trying to write offsets that are null!"));
+                        throw (IllegalStateException(L"Trying to write offsets that are null!"));
                     }
-                    BOOST_ASSERT(offsets.size() == termFreq);
+                    assert(offsets.size() == termFreq);
 
                     // use delta encoding for offsets
                     int32_t lastEndOffset = 0;
@@ -159,8 +159,8 @@ void TermVectorsWriter::addRawDocuments(const TermVectorsReaderPtr& reader, Coll
     }
     tvd->copyBytes(reader->getTvdStream(), tvdPosition - tvdStart);
     tvf->copyBytes(reader->getTvfStream(), tvfPosition - tvfStart);
-    BOOST_ASSERT(tvd->getFilePointer() == tvdPosition);
-    BOOST_ASSERT(tvf->getFilePointer() == tvfPosition);
+    assert(tvd->getFilePointer() == tvdPosition);
+    assert(tvf->getFilePointer() == tvfPosition);
 }
 
 void TermVectorsWriter::close() {

@@ -34,7 +34,7 @@ SegmentTermDocs::SegmentTermDocs(const SegmentReaderPtr& parent) {
     this->currentFieldStoresPayloads = false;
     this->currentFieldOmitTermFreqAndPositions = false;
 
-    this->_freqStream = boost::dynamic_pointer_cast<IndexInput>(parent->core->freqStream->clone());
+    this->_freqStream = std::dynamic_pointer_cast<IndexInput>(parent->core->freqStream->clone());
     {
         SyncLock parentLock(parent);
         this->deletedDocs = parent->deletedDocs;
@@ -58,7 +58,7 @@ void SegmentTermDocs::seek(const TermEnumPtr& termEnum) {
     TermInfoPtr ti;
     TermPtr term;
 
-    SegmentTermEnumPtr segmentTermEnum(boost::dynamic_pointer_cast<SegmentTermEnum>(termEnum));
+    SegmentTermEnumPtr segmentTermEnum(std::dynamic_pointer_cast<SegmentTermEnum>(termEnum));
 
     // use comparison of fieldinfos to verify that termEnum belongs to the same segment as this SegmentTermDocs
     if (segmentTermEnum && segmentTermEnum->fieldInfos == __parent->core->fieldInfos) { // optimized case
@@ -140,7 +140,7 @@ bool SegmentTermDocs::next() {
 int32_t SegmentTermDocs::read(Collection<int32_t>& docs, Collection<int32_t>& freqs) {
     auto* __docs = docs.get();
     auto* __freqs = freqs.get();
-    int32_t length = __docs->size();
+    int32_t length = (int32_t)__docs->size();
     if (currentFieldOmitTermFreqAndPositions) {
         return readNoTf(docs, freqs, length);
     } else {
@@ -190,7 +190,7 @@ void SegmentTermDocs::skipProx(int64_t proxPointer, int32_t payloadLength) {
 bool SegmentTermDocs::skipTo(int32_t target) {
     if (df >= skipInterval) { // optimized case
         if (!skipListReader) {
-            skipListReader = newLucene<DefaultSkipListReader>(boost::dynamic_pointer_cast<IndexInput>(__freqStream->clone()), maxSkipLevels, skipInterval);    // lazily clone
+            skipListReader = newLucene<DefaultSkipListReader>(std::dynamic_pointer_cast<IndexInput>(__freqStream->clone()), maxSkipLevels, skipInterval);    // lazily clone
         }
 
         if (!haveSkipped) { // lazily initialize skip stream

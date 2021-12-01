@@ -40,7 +40,7 @@ DocIdSetPtr CachingWrapperFilter::getDocIdSet(const IndexReaderPtr& reader) {
     LuceneObjectPtr coreKey = reader->getFieldCacheKey();
     LuceneObjectPtr delCoreKey = reader->hasDeletions() ? reader->getDeletesCacheKey() : coreKey;
 
-    DocIdSetPtr docIdSet(boost::dynamic_pointer_cast<DocIdSet>(cache->get(reader, coreKey, delCoreKey)));
+    DocIdSetPtr docIdSet(std::dynamic_pointer_cast<DocIdSet>(cache->get(reader, coreKey, delCoreKey)));
     if (docIdSet) {
         ++hitCount;
         return docIdSet;
@@ -67,7 +67,7 @@ bool CachingWrapperFilter::equals(const LuceneObjectPtr& other) {
         return true;
     }
 
-    CachingWrapperFilterPtr otherCachingWrapperFilter(boost::dynamic_pointer_cast<CachingWrapperFilter>(other));
+    CachingWrapperFilterPtr otherCachingWrapperFilter(std::dynamic_pointer_cast<CachingWrapperFilter>(other));
     if (!otherCachingWrapperFilter) {
         return false;
     }
@@ -101,7 +101,7 @@ LuceneObjectPtr FilterCache::get(const IndexReaderPtr& reader, const LuceneObjec
         // key on deletes, if any, else core
         value = cache.get(delCoreKey);
     } else {
-        BOOST_ASSERT(deletesMode == CachingWrapperFilter::DELETES_DYNAMIC);
+        assert(deletesMode == CachingWrapperFilter::DELETES_DYNAMIC);
 
         // first try for exact match
         value = cache.get(delCoreKey);
@@ -138,7 +138,7 @@ FilterCacheDocIdSet::~FilterCacheDocIdSet() {
 }
 
 LuceneObjectPtr FilterCacheDocIdSet::mergeDeletes(const IndexReaderPtr& reader, const LuceneObjectPtr& value) {
-    return newLucene<FilteredCacheDocIdSet>(reader, boost::dynamic_pointer_cast<DocIdSet>(value));
+    return newLucene<FilteredCacheDocIdSet>(reader, std::dynamic_pointer_cast<DocIdSet>(value));
 }
 
 FilteredCacheDocIdSet::FilteredCacheDocIdSet(const IndexReaderPtr& reader, const DocIdSetPtr& innerSet) : FilteredDocIdSet(innerSet) {

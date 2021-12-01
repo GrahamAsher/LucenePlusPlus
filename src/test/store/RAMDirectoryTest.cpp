@@ -81,7 +81,7 @@ public:
             try {
                 writer->addDocument(doc);
             } catch (LuceneException& e) {
-                boost::throw_exception(RuntimeException(e.getError()));
+                throw (RuntimeException(e.getError()));
             }
         }
     }

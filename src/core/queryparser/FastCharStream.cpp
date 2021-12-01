@@ -49,7 +49,7 @@ void FastCharStream::refill() {
 
     int32_t charsRead = input->read(buffer.get(), newPosition, buffer.size() - newPosition); // fill space in buffer
     if (charsRead == -1) {
-        boost::throw_exception(IOException(L"read past eof"));
+        throw (IOException(L"read past eof"));
     } else {
         bufferLength += charsRead;
     }

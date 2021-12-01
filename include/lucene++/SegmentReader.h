@@ -17,6 +17,10 @@ class LPPAPI SegmentReader : public IndexReader {
     friend class AllTermDocs;
     friend class CheckIndex;
     friend class DirectoryReader;
+    friend class SegmentMerger;
+    friend class FieldsReaderLocal;
+    friend class SegmentTermDocs;
+    friend class SegmentTermPositions;
 
 public:
     SegmentReader();

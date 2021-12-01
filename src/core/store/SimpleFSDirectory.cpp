@@ -41,7 +41,7 @@ const int32_t InputFile::FILE_ERROR = FileReader::FILE_ERROR;
 InputFile::InputFile(const String& path) {
     file = newInstance<boost::filesystem::ifstream>(path, std::ios::binary | std::ios::in);
     if (!file->is_open()) {
-        boost::throw_exception(FileNotFoundException(path));
+        throw (FileNotFoundException(path));
     }
     position = 0;
     length = FileUtils::fileLength(path);
@@ -54,7 +54,7 @@ void InputFile::setPosition(int64_t position) {
     this->position = position;
     file->seekg((std::streamoff)position);
     if (!file->good()) {
-        boost::throw_exception(IOException());
+        throw (IOException());
     }
 }
 
@@ -120,7 +120,7 @@ void SimpleFSIndexInput::readInternal(uint8_t* b, int32_t offset, int32_t length
 
         int32_t i = file->read(b, offset + total, readLength);
         if (i == InputFile::FILE_EOF) {
-            boost::throw_exception(IOException(L"Read past EOF"));
+            throw (IOException(L"Read past EOF"));
         }
         total += i;
     }
@@ -145,7 +145,7 @@ bool SimpleFSIndexInput::isValid() {
 
 LuceneObjectPtr SimpleFSIndexInput::clone(const LuceneObjectPtr& other) {
     LuceneObjectPtr clone = BufferedIndexInput::clone(other ? other : newLucene<SimpleFSIndexInput>());
-    SimpleFSIndexInputPtr cloneIndexInput(boost::dynamic_pointer_cast<SimpleFSIndexInput>(clone));
+    SimpleFSIndexInputPtr cloneIndexInput(std::dynamic_pointer_cast<SimpleFSIndexInput>(clone));
     cloneIndexInput->path = path;
     cloneIndexInput->file = file;
     cloneIndexInput->chunkSize = chunkSize;
@@ -180,7 +180,7 @@ void OutputFile::close() {
 void OutputFile::setPosition(int64_t position) {
     file->seekp((std::streamoff)position);
     if (!file->good()) {
-        boost::throw_exception(IOException());
+        throw (IOException());
     }
 }
 

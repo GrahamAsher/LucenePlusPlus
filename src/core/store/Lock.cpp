@@ -25,7 +25,7 @@ bool Lock::obtain(int32_t lockWaitTimeout) {
     int32_t sleepCount = 0;
     while (!locked) {
         if (lockWaitTimeout != LOCK_OBTAIN_WAIT_FOREVER && sleepCount++ >= maxSleepCount) {
-            boost::throw_exception(LockObtainFailedException(L"Lock obtain timed out"));
+            throw (LockObtainFailedException(L"Lock obtain timed out"));
         }
         LuceneThread::threadSleep(LOCK_POLL_INTERVAL);
         locked = obtain();

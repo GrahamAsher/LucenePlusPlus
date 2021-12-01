@@ -37,12 +37,12 @@ void FuzzyQuery::ConstructQuery(const TermPtr& term, double minimumSimilarity, i
     this->term = term;
 
     if (minimumSimilarity >= 1.0) {
-        boost::throw_exception(IllegalArgumentException(L"minimumSimilarity >= 1"));
+        throw (IllegalArgumentException(L"minimumSimilarity >= 1"));
     } else if (minimumSimilarity < 0.0) {
-        boost::throw_exception(IllegalArgumentException(L"minimumSimilarity < 0"));
+        throw (IllegalArgumentException(L"minimumSimilarity < 0"));
     }
     if (prefixLength < 0) {
-        boost::throw_exception(IllegalArgumentException(L"prefixLength < 0"));
+        throw (IllegalArgumentException(L"prefixLength < 0"));
     }
 
     this->termLongEnough = ((int32_t)term->text().length() > (int32_t)(1.0 / (1.0 - minimumSimilarity)));
@@ -74,7 +74,7 @@ TermPtr FuzzyQuery::getTerm() {
 }
 
 void FuzzyQuery::setRewriteMethod(const RewriteMethodPtr& method) {
-    boost::throw_exception(UnsupportedOperationException(L"FuzzyQuery cannot change rewrite method"));
+    throw (UnsupportedOperationException(L"FuzzyQuery cannot change rewrite method"));
 }
 
 QueryPtr FuzzyQuery::rewrite(const IndexReaderPtr& reader) {
@@ -125,7 +125,7 @@ QueryPtr FuzzyQuery::rewrite(const IndexReaderPtr& reader) {
 
 LuceneObjectPtr FuzzyQuery::clone(const LuceneObjectPtr& other) {
     LuceneObjectPtr clone = MultiTermQuery::clone(other ? other : newLucene<FuzzyQuery>(term));
-    FuzzyQueryPtr cloneQuery(boost::dynamic_pointer_cast<FuzzyQuery>(clone));
+    FuzzyQueryPtr cloneQuery(std::dynamic_pointer_cast<FuzzyQuery>(clone));
     cloneQuery->minimumSimilarity = minimumSimilarity;
     cloneQuery->prefixLength = prefixLength;
     cloneQuery->termLongEnough = termLongEnough;
@@ -161,7 +161,7 @@ bool FuzzyQuery::equals(const LuceneObjectPtr& other) {
     if (!MiscUtils::equalTypes(shared_from_this(), other)) {
         return false;
     }
-    FuzzyQueryPtr otherFuzzyQuery(boost::dynamic_pointer_cast<FuzzyQuery>(other));
+    FuzzyQueryPtr otherFuzzyQuery(std::dynamic_pointer_cast<FuzzyQuery>(other));
     if (!otherFuzzyQuery) {
         return false;
     }

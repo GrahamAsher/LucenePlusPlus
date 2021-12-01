@@ -13,22 +13,22 @@ HighlighterScorer::~HighlighterScorer() {
 }
 
 TokenStreamPtr HighlighterScorer::init(const TokenStreamPtr& tokenStream) {
-    BOOST_ASSERT(false);
+    assert(false);
     return TokenStreamPtr(); // override
 }
 
 void HighlighterScorer::startFragment(const TextFragmentPtr& newFragment) {
-    BOOST_ASSERT(false);
+    assert(false);
     // override
 }
 
 double HighlighterScorer::getTokenScore() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 double HighlighterScorer::getFragmentScore() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 

@@ -28,7 +28,7 @@ TermVectorsTermsWriterPerThread::~TermVectorsTermsWriterPerThread() {
 }
 
 void TermVectorsTermsWriterPerThread::startDocument() {
-    BOOST_ASSERT(clearLastVectorFieldName());
+    assert(clearLastVectorFieldName());
     if (doc) {
         doc->reset();
         doc->docID = DocStatePtr(_docState)->docID;

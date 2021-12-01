@@ -29,7 +29,7 @@ RAMInputStream::RAMInputStream(const RAMFilePtr& f) {
     file = f;
     _length = file->length;
     if (_length / BUFFER_SIZE >= INT_MAX) {
-        boost::throw_exception(IOException(L"Too large RAMFile: " + StringUtils::toString(_length)));
+        throw (IOException(L"Too large RAMFile: " + StringUtils::toString(_length)));
     }
 
     // make sure that we switch to the first needed buffer lazily
@@ -78,7 +78,7 @@ void RAMInputStream::switchCurrentBuffer(bool enforceEOF) {
     if (currentBufferIndex >= file->numBuffers()) {
         // end of file reached, no more buffers left
         if (enforceEOF) {
-            boost::throw_exception(IOException(L"Read past EOF"));
+            throw (IOException(L"Read past EOF"));
         } else {
             // force eof if a read takes place at this position
             --currentBufferIndex;
@@ -107,7 +107,7 @@ void RAMInputStream::seek(int64_t pos) {
 
 LuceneObjectPtr RAMInputStream::clone(const LuceneObjectPtr& other) {
     LuceneObjectPtr clone = IndexInput::clone(other ? other : newLucene<RAMInputStream>());
-    RAMInputStreamPtr cloneInputStream(boost::dynamic_pointer_cast<RAMInputStream>(clone));
+    RAMInputStreamPtr cloneInputStream(std::dynamic_pointer_cast<RAMInputStream>(clone));
     cloneInputStream->file = file;
     cloneInputStream->_length = _length;
     cloneInputStream->currentBuffer = currentBuffer;

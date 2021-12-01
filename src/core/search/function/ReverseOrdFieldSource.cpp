@@ -35,7 +35,7 @@ bool ReverseOrdFieldSource::equals(const LuceneObjectPtr& other) {
     if (!MiscUtils::equalTypes(shared_from_this(), other)) {
         return false;
     }
-    ReverseOrdFieldSourcePtr otherSource(boost::dynamic_pointer_cast<ReverseOrdFieldSource>(other));
+    ReverseOrdFieldSourcePtr otherSource(std::dynamic_pointer_cast<ReverseOrdFieldSource>(other));
     if (!otherSource) {
         return false;
     }
@@ -57,14 +57,14 @@ ReverseOrdDocValues::~ReverseOrdDocValues() {
 
 double ReverseOrdDocValues::doubleVal(int32_t doc) {
     if (doc < 0 || doc >= arr.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     return (double)(end - arr[doc]);
 }
 
 int32_t ReverseOrdDocValues::intVal(int32_t doc) {
     if (doc < 0 || doc >= arr.size()) {
-        boost::throw_exception(IndexOutOfBoundsException());
+        throw (IndexOutOfBoundsException());
     }
     return (end - arr[doc]);
 }

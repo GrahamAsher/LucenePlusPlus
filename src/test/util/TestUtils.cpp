@@ -26,7 +26,7 @@ void setTestDir(const String& dir) {
 
 String getTestDir() {
     if (testDir.empty()) {
-        boost::throw_exception(RuntimeException(L"test directory not set"));
+        throw (RuntimeException(L"test directory not set"));
     }
     return testDir;
 }
@@ -52,7 +52,7 @@ void syncConcurrentMerges(const IndexWriterPtr& writer) {
 
 void syncConcurrentMerges(const MergeSchedulerPtr& ms) {
     if (MiscUtils::typeOf<ConcurrentMergeScheduler>(ms)) {
-        boost::dynamic_pointer_cast<ConcurrentMergeScheduler>(ms)->sync();
+        std::dynamic_pointer_cast<ConcurrentMergeScheduler>(ms)->sync();
     }
 }
 
@@ -187,7 +187,7 @@ bool checkIndex(const DirectoryPtr& dir) {
     CheckIndexPtr checker = newLucene<CheckIndex>(dir);
     IndexStatusPtr indexStatus = checker->checkIndex();
     if (!indexStatus || !indexStatus->clean) {
-        boost::throw_exception(RuntimeException(L"CheckIndex failed"));
+        throw (RuntimeException(L"CheckIndex failed"));
         return false;
     }
     return true;

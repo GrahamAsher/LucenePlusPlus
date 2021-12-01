@@ -106,7 +106,7 @@ public:
             }
             writer->close();
         } catch (LuceneException& e) {
-            boost::throw_exception(RuntimeException(L"Unexpected exception: " + e.getError()));
+            throw (RuntimeException(L"Unexpected exception: " + e.getError()));
         }
         return dir;
     }

@@ -77,7 +77,7 @@ void StoredFieldsWriter::closeDocStore(const SegmentWriteStatePtr& state) {
         fieldsWriter->close();
         fieldsWriter.reset();
         lastDocID = 0;
-        BOOST_ASSERT(!state->docStoreSegmentName.empty());
+        assert(!state->docStoreSegmentName.empty());
         state->flushedFiles.add(state->docStoreSegmentName + L"." + IndexFileNames::FIELDS_EXTENSION());
         state->flushedFiles.add(state->docStoreSegmentName + L"." + IndexFileNames::FIELDS_INDEX_EXTENSION());
 
@@ -88,7 +88,7 @@ void StoredFieldsWriter::closeDocStore(const SegmentWriteStatePtr& state) {
         String fileName(state->docStoreSegmentName + L"." + IndexFileNames::FIELDS_INDEX_EXTENSION());
 
         if (4 + ((int64_t)state->numDocsInStore) * 8 != state->directory->fileLength(fileName)) {
-            boost::throw_exception(RuntimeException(L"after flush: fdx size mismatch: " + StringUtils::toString(state->numDocsInStore) +
+            throw (RuntimeException(L"after flush: fdx size mismatch: " + StringUtils::toString(state->numDocsInStore) +
                                                     L" docs vs " + StringUtils::toString(state->directory->fileLength(fileName)) +
                                                     L" length in bytes of " + fileName + L" file exists?=" +
                                                     StringUtils::toString(state->directory->fileExists(fileName))));
@@ -103,7 +103,7 @@ StoredFieldsWriterPerDocPtr StoredFieldsWriter::getPerDoc() {
         if (allocCount > docFreeList.size()) {
             // Grow our free list up front to make sure we have enough space to recycle all
             // outstanding StoredFieldsWriterPerDoc instances
-            BOOST_ASSERT(allocCount == docFreeList.size() + 1);
+            assert(allocCount == docFreeList.size() + 1);
             docFreeList.resize(MiscUtils::getNextSize(allocCount));
         }
         return newLucene<StoredFieldsWriterPerDoc>(shared_from_this());
@@ -138,7 +138,7 @@ void StoredFieldsWriter::fill(int32_t docID) {
 void StoredFieldsWriter::finishDocument(const StoredFieldsWriterPerDocPtr& perDoc) {
     SyncLock syncLock(this);
     IndexWriterPtr writer(DocumentsWriterPtr(_docWriter)->_writer);
-    BOOST_ASSERT(writer->testPoint(L"StoredFieldsWriter.finishDocument start"));
+    assert(writer->testPoint(L"StoredFieldsWriter.finishDocument start"));
     initFieldsWriter();
 
     fill(perDoc->docID);
@@ -148,7 +148,7 @@ void StoredFieldsWriter::finishDocument(const StoredFieldsWriterPerDocPtr& perDo
     ++lastDocID;
     perDoc->reset();
     free(perDoc);
-    BOOST_ASSERT(writer->testPoint(L"StoredFieldsWriter.finishDocument end"));
+    assert(writer->testPoint(L"StoredFieldsWriter.finishDocument end"));
 }
 
 bool StoredFieldsWriter::freeRAM() {
@@ -157,10 +157,10 @@ bool StoredFieldsWriter::freeRAM() {
 
 void StoredFieldsWriter::free(const StoredFieldsWriterPerDocPtr& perDoc) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(freeCount < docFreeList.size());
-    BOOST_ASSERT(perDoc->numStoredFields == 0);
-    BOOST_ASSERT(perDoc->fdt->length() == 0);
-    BOOST_ASSERT(perDoc->fdt->getFilePointer() == 0);
+    assert(freeCount < docFreeList.size());
+    assert(perDoc->numStoredFields == 0);
+    assert(perDoc->fdt->length() == 0);
+    assert(perDoc->fdt->getFilePointer() == 0);
     docFreeList[freeCount++] = perDoc;
 }
 

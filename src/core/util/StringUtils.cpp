@@ -121,26 +121,26 @@ Collection<String> StringUtils::split(const String& str, const String& delim) {
 
 int32_t StringUtils::toInt(const String& value) {
     if (value.empty()) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
     if (value.size() > 1 && value[0] == L'-' && !UnicodeUtil::isDigit(value[1])) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
     if (value[0] != L'-' && !UnicodeUtil::isDigit(value[0])) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
     return (int32_t)std::wcstol(value.c_str(), NULL, 10);
 }
 
 int64_t StringUtils::toLong(const String& value) {
     if (value.empty()) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
     if (value.size() > 1 && value[0] == L'-' && !UnicodeUtil::isDigit(value[1])) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
     if (value[0] != L'-' && !UnicodeUtil::isDigit(value[0])) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
 #if defined(_WIN32) || defined(_WIN64)
     return _wcstoi64(value.c_str(), 0, 10);
@@ -159,13 +159,13 @@ int64_t StringUtils::toLong(const String& value, int32_t base) {
 
 double StringUtils::toDouble(const String& value) {
     if (value.empty()) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
     if (value.length() > 1 && (value[0] == L'-' || value[0] == L'.') && !UnicodeUtil::isDigit(value[1])) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
     if (value[0] != L'-' && value[0] != L'.' && !UnicodeUtil::isDigit(value[0])) {
-        boost::throw_exception(NumberFormatException());
+        throw (NumberFormatException());
     }
     return std::wcstod(value.c_str(), NULL);
 }

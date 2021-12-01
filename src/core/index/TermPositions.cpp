@@ -16,22 +16,22 @@ TermPositions::~TermPositions() {
 }
 
 int32_t TermPositions::nextPosition() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 int32_t TermPositions::getPayloadLength() {
-    BOOST_ASSERT(false);
+    assert(false);
     return 0; // override
 }
 
 ByteArray TermPositions::getPayload(ByteArray data, int32_t offset) {
-    BOOST_ASSERT(false);
+    assert(false);
     return ByteArray(); // override
 }
 
 bool TermPositions::isPayloadAvailable() {
-    BOOST_ASSERT(false);
+    assert(false);
     return false; // override
 }
 

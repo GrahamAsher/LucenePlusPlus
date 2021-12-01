@@ -29,7 +29,7 @@ FieldValueHitQueue::~FieldValueHitQueue() {
 
 FieldValueHitQueuePtr FieldValueHitQueue::create(Collection<SortFieldPtr> fields, int32_t size) {
     if (fields.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"Sort must contain at least one field"));
+        throw (IllegalArgumentException(L"Sort must contain at least one field"));
     }
 
     if (fields.size() == 1) {
@@ -75,7 +75,7 @@ String FieldValueHitQueueEntry::toString() {
 
 OneComparatorFieldValueHitQueue::OneComparatorFieldValueHitQueue(Collection<SortFieldPtr> fields, int32_t size) : FieldValueHitQueue(fields, size) {
     if (fields.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"Sort must contain at least one field"));
+        throw (IllegalArgumentException(L"Sort must contain at least one field"));
     }
 
     SortFieldPtr field(fields[0]);
@@ -90,11 +90,11 @@ OneComparatorFieldValueHitQueue::~OneComparatorFieldValueHitQueue() {
 }
 
 bool OneComparatorFieldValueHitQueue::lessThan(const ScoreDocPtr& first, const ScoreDocPtr& second) {
-    FieldValueHitQueueEntryPtr firstEntry(boost::static_pointer_cast<FieldValueHitQueueEntry>(first));
-    FieldValueHitQueueEntryPtr secondEntry(boost::static_pointer_cast<FieldValueHitQueueEntry>(second));
+    FieldValueHitQueueEntryPtr firstEntry(std::static_pointer_cast<FieldValueHitQueueEntry>(first));
+    FieldValueHitQueueEntryPtr secondEntry(std::static_pointer_cast<FieldValueHitQueueEntry>(second));
 
-    BOOST_ASSERT(firstEntry != secondEntry);
-    BOOST_ASSERT(firstEntry->slot != secondEntry->slot);
+    assert(firstEntry != secondEntry);
+    assert(firstEntry->slot != secondEntry->slot);
 
     int32_t c = oneReverseMul * comparator->compare(firstEntry->slot, secondEntry->slot);
 
@@ -115,11 +115,11 @@ MultiComparatorsFieldValueHitQueue::~MultiComparatorsFieldValueHitQueue() {
 }
 
 bool MultiComparatorsFieldValueHitQueue::lessThan(const ScoreDocPtr& first, const ScoreDocPtr& second) {
-    FieldValueHitQueueEntryPtr firstEntry(boost::static_pointer_cast<FieldValueHitQueueEntry>(first));
-    FieldValueHitQueueEntryPtr secondEntry(boost::static_pointer_cast<FieldValueHitQueueEntry>(second));
+    FieldValueHitQueueEntryPtr firstEntry(std::static_pointer_cast<FieldValueHitQueueEntry>(first));
+    FieldValueHitQueueEntryPtr secondEntry(std::static_pointer_cast<FieldValueHitQueueEntry>(second));
 
-    BOOST_ASSERT(firstEntry != secondEntry);
-    BOOST_ASSERT(firstEntry->slot != secondEntry->slot);
+    assert(firstEntry != secondEntry);
+    assert(firstEntry->slot != secondEntry->slot);
 
     int32_t numComparators = comparators.size();
     for (int32_t i = 0; i < numComparators; ++i) {

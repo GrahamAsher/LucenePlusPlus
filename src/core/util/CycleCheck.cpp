@@ -27,7 +27,7 @@ void CycleCheck::addRef(const String& className, int32_t ref) {
     } else {
         classRef->second += ref;
         if (classRef->second < 0) {
-            boost::throw_exception(RuntimeException(L"invalid class reference"));
+            throw (RuntimeException(L"invalid class reference"));
         }
     }
 }

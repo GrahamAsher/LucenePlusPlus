@@ -13,7 +13,7 @@ Formatter::~Formatter() {
 }
 
 String Formatter::highlightTerm(const String& originalText, const TokenGroupPtr& tokenGroup) {
-    BOOST_ASSERT(false);
+    assert(false);
     return L""; // override
 }
 

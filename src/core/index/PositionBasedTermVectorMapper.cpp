@@ -33,7 +33,7 @@ void PositionBasedTermVectorMapper::map(const String& term, int32_t frequency, C
 
 void PositionBasedTermVectorMapper::setExpectations(const String& field, int32_t numTerms, bool storeOffsets, bool storePositions) {
     if (storePositions == false) {
-        boost::throw_exception(RuntimeException(L"You must store positions in order to use this Mapper"));
+        throw (RuntimeException(L"You must store positions in order to use this Mapper"));
     }
     if (storeOffsets == true) {
         // ignoring offsets
