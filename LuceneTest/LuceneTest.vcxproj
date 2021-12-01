@@ -338,6 +338,18 @@
     <ClCompile Include="..\src\core\queryparser\QueryParserConstants.cpp" />
     <ClCompile Include="..\src\core\queryparser\QueryParserToken.cpp" />
     <ClCompile Include="..\src\core\queryparser\QueryParserTokenManager.cpp" />
+    <ClCompile Include="..\src\core\search\function\ByteFieldSource.cpp" />
+    <ClCompile Include="..\src\core\search\function\CustomScoreProvider.cpp" />
+    <ClCompile Include="..\src\core\search\function\CustomScoreQuery.cpp" />
+    <ClCompile Include="..\src\core\search\function\DocValues.cpp" />
+    <ClCompile Include="..\src\core\search\function\DoubleFieldSource.cpp" />
+    <ClCompile Include="..\src\core\search\function\FieldCacheSource.cpp" />
+    <ClCompile Include="..\src\core\search\function\FieldScoreQuery.cpp" />
+    <ClCompile Include="..\src\core\search\function\IntFieldSource.cpp" />
+    <ClCompile Include="..\src\core\search\function\OrdFieldSource.cpp" />
+    <ClCompile Include="..\src\core\search\function\ReverseOrdFieldSource.cpp" />
+    <ClCompile Include="..\src\core\search\function\ValueSource.cpp" />
+    <ClCompile Include="..\src\core\search\function\ValueSourceQuery.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\lucene++\AbstractAllTermDocs.h" />

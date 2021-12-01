@@ -25,6 +25,12 @@
     <Filter Include="core\queryparser">
       <UniqueIdentifier>{73660994-6b95-4517-b398-8705cb28f619}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\search">
+      <UniqueIdentifier>{a2362aa8-7791-4e81-910f-0c13a8afcae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\search\function">
+      <UniqueIdentifier>{50234faa-d530-4649-a764-1d94d742b124}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp">
@@ -599,6 +605,42 @@
     </ClCompile>
     <ClCompile Include="..\src\core\queryparser\QueryParserTokenManager.cpp">
       <Filter>core\queryparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\ByteFieldSource.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\CustomScoreProvider.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\CustomScoreQuery.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\DocValues.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\DoubleFieldSource.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\FieldCacheSource.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\FieldScoreQuery.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\IntFieldSource.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\OrdFieldSource.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\ReverseOrdFieldSource.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\ValueSource.cpp">
+      <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\function\ValueSourceQuery.cpp">
+      <Filter>core\search\function</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
