@@ -54,7 +54,7 @@ int32_t SegmentTermVector::indexOf(const String& term) {
         return -1;
     }
     Collection<String>::iterator search = std::lower_bound(terms.begin(), terms.end(), term);
-    return (search == terms.end() || term < *search) ? -1 : std::distance(terms.begin(), search);
+    return (search == terms.end() || term < *search) ? -1 : (int32_t)std::distance(terms.begin(), search);
 }
 
 Collection<int32_t> SegmentTermVector::indexesOf(Collection<String> termNumbers, int32_t start, int32_t length) {

@@ -241,7 +241,9 @@ typedef HashSet< QueryPtr, luceneHash<QueryPtr>, luceneEquals<QueryPtr> > SetQue
 typedef HashSet< TermPtr, luceneHash<TermPtr>, luceneEquals<TermPtr> > SetTerm;
 typedef HashSet< BooleanClausePtr, luceneHash<BooleanClausePtr>, luceneEquals<BooleanClausePtr> > SetBooleanClause;
 typedef HashSet< ReaderFieldPtr, luceneHash<ReaderFieldPtr>, luceneEquals<ReaderFieldPtr> > SetReaderField;
-typedef HashSet<ByteArray> SetByteArray;
+
+template <class TYPE> struct luceneArrayHash { std::size_t operator()(const TYPE& type) const { return type.hashCode(); } };
+typedef HashSet< ByteArray, luceneArrayHash<ByteArray> > SetByteArray;
 
 typedef HashMap< String, String > MapStringString;
 typedef HashMap< wchar_t, NormalizeCharMapPtr > MapCharNormalizeCharMap;

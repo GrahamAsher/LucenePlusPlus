@@ -113,7 +113,7 @@ TermInfosReaderThreadResourcesPtr TermInfosReader::getThreadResources() {
 int32_t TermInfosReader::getIndexOffset(const TermPtr& term) {
     // binary search indexTerms
     Collection<TermPtr>::iterator indexTerm = std::upper_bound(indexTerms.begin(), indexTerms.end(), term, luceneCompare<TermPtr>());
-    return (std::distance(indexTerms.begin(), indexTerm) - 1);
+    return (int32_t)std::distance(indexTerms.begin(), indexTerm) - 1;
 }
 
 void TermInfosReader::seekEnum(const SegmentTermEnumPtr& enumerator, int32_t indexOffset) {

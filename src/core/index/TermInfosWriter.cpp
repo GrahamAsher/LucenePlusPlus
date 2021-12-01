@@ -69,7 +69,7 @@ void TermInfosWriter::initialize(const DirectoryPtr& directory, const String& se
 }
 
 void TermInfosWriter::add(const TermPtr& term, const TermInfoPtr& ti) {
-    StringUtils::toUTF8(term->_text.c_str(), term->_text.size(), utf8Result);
+    StringUtils::toUTF8(term->_text.c_str(),(int32_t)term->_text.size(), utf8Result);
     add(fieldInfos->fieldNumber(term->_field), utf8Result->result, utf8Result->length, ti);
 }
 

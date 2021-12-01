@@ -357,6 +357,19 @@
     <ClCompile Include="..\src\core\search\payloads\PayloadNearQuery.cpp" />
     <ClCompile Include="..\src\core\search\payloads\PayloadSpanUtil.cpp" />
     <ClCompile Include="..\src\core\search\payloads\PayloadTermQuery.cpp" />
+    <ClCompile Include="..\src\core\search\spans\FieldMaskingSpanQuery.cpp" />
+    <ClCompile Include="..\src\core\search\spans\NearSpansOrdered.cpp" />
+    <ClCompile Include="..\src\core\search\spans\NearSpansUnordered.cpp" />
+    <ClCompile Include="..\src\core\search\spans\SpanFirstQuery.cpp" />
+    <ClCompile Include="..\src\core\search\spans\SpanNearQuery.cpp" />
+    <ClCompile Include="..\src\core\search\spans\SpanNotQuery.cpp" />
+    <ClCompile Include="..\src\core\search\spans\SpanOrQuery.cpp" />
+    <ClCompile Include="..\src\core\search\spans\SpanQuery.cpp" />
+    <ClCompile Include="..\src\core\search\spans\Spans.cpp" />
+    <ClCompile Include="..\src\core\search\spans\SpanScorer.cpp" />
+    <ClCompile Include="..\src\core\search\spans\SpanTermQuery.cpp" />
+    <ClCompile Include="..\src\core\search\spans\SpanWeight.cpp" />
+    <ClCompile Include="..\src\core\search\spans\TermSpans.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\lucene++\AbstractAllTermDocs.h" />

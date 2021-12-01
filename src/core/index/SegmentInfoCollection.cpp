@@ -56,7 +56,7 @@ bool SegmentInfoCollection::equals(const LuceneObjectPtr& other) {
 
 int32_t SegmentInfoCollection::find(const SegmentInfoPtr& info) {
     Collection<SegmentInfoPtr>::iterator idx = segmentInfos.find_if(luceneEqualTo<SegmentInfoPtr>(info));
-    return idx == segmentInfos.end() ? -1 : std::distance(segmentInfos.begin(), idx);
+    return idx == segmentInfos.end() ? -1 : (int32_t)std::distance(segmentInfos.begin(), idx);
 }
 
 bool SegmentInfoCollection::contains(const SegmentInfoPtr& info) {

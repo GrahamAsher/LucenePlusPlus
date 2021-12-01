@@ -72,7 +72,7 @@ void TermBuffer::set(const TermPtr& term) {
         return;
     }
     String termText(term->text());
-    int32_t termLen = termText.length();
+    int32_t termLen = (int32_t)termText.length();
     text->setLength(termLen);
     MiscUtils::arrayCopy(termText.begin(), 0, text->result.get(), 0, termLen);
     field = term->field();

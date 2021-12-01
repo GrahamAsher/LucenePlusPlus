@@ -34,6 +34,9 @@
     <Filter Include="core\search\payloads">
       <UniqueIdentifier>{2e5ed571-012a-4657-9ef0-f4e1c2cd9e91}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\search\spans">
+      <UniqueIdentifier>{4460aa52-15c1-4230-8276-a2eb97826700}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp">
@@ -665,6 +668,45 @@
     </ClCompile>
     <ClCompile Include="..\src\core\search\payloads\PayloadTermQuery.cpp">
       <Filter>core\search\payloads</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\FieldMaskingSpanQuery.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\NearSpansOrdered.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\NearSpansUnordered.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\SpanFirstQuery.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\SpanNearQuery.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\SpanNotQuery.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\SpanOrQuery.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\SpanQuery.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\Spans.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\SpanScorer.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\SpanTermQuery.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\SpanWeight.cpp">
+      <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\spans\TermSpans.cpp">
+      <Filter>core\search\spans</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -20,7 +20,7 @@ ReusableStringReader::~ReusableStringReader() {
 
 void ReusableStringReader::init(const String& s) {
     this->s = s;
-    left = s.length();
+    left = (int32_t)s.length();
     this->upto = 0;
 }
 
@@ -37,7 +37,7 @@ int32_t ReusableStringReader::read(wchar_t* buffer, int32_t offset, int32_t leng
         MiscUtils::arrayCopy(s.begin(), upto, buffer, offset, left);
         int32_t r = left;
         left = 0;
-        upto = s.length();
+        upto = (int32_t)s.length();
         return r;
     }
 }
