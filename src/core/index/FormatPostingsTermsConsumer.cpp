@@ -15,7 +15,7 @@ FormatPostingsTermsConsumer::~FormatPostingsTermsConsumer() {
 }
 
 FormatPostingsDocsConsumerPtr FormatPostingsTermsConsumer::addTerm(const String& text) {
-    int32_t len = text.length();
+    int32_t len = int32_t(text.length());
     if (!termBuffer) {
         termBuffer = CharArray::newInstance(MiscUtils::getNextSize(len + 1));
     }

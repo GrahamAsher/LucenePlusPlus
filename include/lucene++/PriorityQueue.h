@@ -77,7 +77,7 @@ public:
     TYPE add(const TYPE& type) {
         ++_size;
         if (_size < 0 || _size >= (int32_t)heap.size()) {
-            boost::throw_exception(IndexOutOfBoundsException());
+            throw IndexOutOfBoundsException();
         }
         heap[_size] = type;
         upHeap();

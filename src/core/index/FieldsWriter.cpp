@@ -164,7 +164,7 @@ void FieldsWriter::addRawDocuments(const IndexInputPtr& stream, Collection<int32
         position += lengths[i];
     }
     fieldsStream->copyBytes(stream, position - start);
-    BOOST_ASSERT(fieldsStream->getFilePointer() == position);
+    assert(fieldsStream->getFilePointer() == position);
 }
 
 void FieldsWriter::addDocument(const DocumentPtr& doc) {

@@ -150,7 +150,7 @@ void DocumentsWriter::initialize() {
     flushedDocCount = writer->maxDoc();
 
     consumer = indexingChain->getChain(shared_from_this());
-    docFieldProcessor = boost::dynamic_pointer_cast<DocFieldProcessor>(consumer);
+    docFieldProcessor = std::dynamic_pointer_cast<DocFieldProcessor>(consumer);
 }
 
 PerDocBufferPtr DocumentsWriter::newPerDocBuffer() {
@@ -261,7 +261,7 @@ int32_t DocumentsWriter::getDocStoreOffset() {
 String DocumentsWriter::closeDocStore() {
     TestScope testScope(L"DocumentsWriter", L"closeDocStore");
     SyncLock syncLock(this);
-    BOOST_ASSERT(allThreadsIdle());
+    assert(allThreadsIdle());
 
     if (infoStream) {
         message(L"closeDocStore: " + StringUtils::toString(_openFiles.size()) + L" files to flush to segment " +
@@ -276,7 +276,7 @@ String DocumentsWriter::closeDocStore() {
         _closedFiles.clear();
 
         consumer->closeDocStore(flushState);
-        BOOST_ASSERT(_openFiles.empty());
+        assert(_openFiles.empty());
 
         s = docStoreSegment;
         docStoreSegment.clear();
@@ -315,13 +315,13 @@ HashSet<String> DocumentsWriter::closedFiles() {
 
 void DocumentsWriter::addOpenFile(const String& name) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(!_openFiles.contains(name));
+    assert(!_openFiles.contains(name));
     _openFiles.add(name);
 }
 
 void DocumentsWriter::removeOpenFile(const String& name) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(_openFiles.contains(name));
+    assert(_openFiles.contains(name));
     _openFiles.remove(name);
     _closedFiles.add(name);
 }
@@ -347,7 +347,7 @@ void DocumentsWriter::abort() {
         pauseAllThreads();
 
         try {
-            BOOST_ASSERT(waitQueue->numWaiting == 0);
+            assert(waitQueue->numWaiting == 0);
 
             waitQueue->waitingBytes = 0;
 
@@ -398,7 +398,7 @@ void DocumentsWriter::abort() {
 
 void DocumentsWriter::doAfterFlush() {
     // All ThreadStates should be idle when we are called
-    BOOST_ASSERT(allThreadsIdle());
+    assert(allThreadsIdle());
     threadBindings.clear();
     waitQueue->reset();
     segment.clear();
@@ -424,7 +424,7 @@ bool DocumentsWriter::pauseAllThreads() {
 void DocumentsWriter::resumeAllThreads() {
     SyncLock syncLock(this);
     --pauseThreads;
-    BOOST_ASSERT(pauseThreads >= 0);
+    assert(pauseThreads >= 0);
     if (pauseThreads == 0) {
         notifyAll();
     }
@@ -453,13 +453,13 @@ void DocumentsWriter::initFlushState(bool onlyDocStore) {
 
 int32_t DocumentsWriter::flush(bool _closeDocStore) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(allThreadsIdle());
+    assert(allThreadsIdle());
 
-    BOOST_ASSERT(numDocsInRAM > 0);
+    assert(numDocsInRAM > 0);
 
-    BOOST_ASSERT(nextDocID == numDocsInRAM);
-    BOOST_ASSERT(waitQueue->numWaiting == 0);
-    BOOST_ASSERT(waitQueue->waitingBytes == 0);
+    assert(nextDocID == numDocsInRAM);
+    assert(waitQueue->numWaiting == 0);
+    assert(waitQueue->waitingBytes == 0);
 
     initFlushState(false);
 
@@ -474,8 +474,8 @@ int32_t DocumentsWriter::flush(bool _closeDocStore) {
 
     try {
         if (_closeDocStore) {
-            BOOST_ASSERT(!flushState->docStoreSegmentName.empty());
-            BOOST_ASSERT(flushState->docStoreSegmentName == flushState->segmentName);
+            assert(!flushState->docStoreSegmentName.empty());
+            assert(flushState->docStoreSegmentName == flushState->segmentName);
 
             closeDocStore();
             flushState->numDocsInStore = 0;
@@ -511,7 +511,7 @@ int32_t DocumentsWriter::flush(bool _closeDocStore) {
     }
     finally.throwException();
 
-    BOOST_ASSERT(waitQueue->waitingBytes == 0);
+    assert(waitQueue->waitingBytes == 0);
 
     return flushState->numDocs;
 }
@@ -560,11 +560,11 @@ void DocumentsWriter::initSegmentName(bool onlyDocStore) {
     SyncLock syncLock(this);
     if (segment.empty() && (!onlyDocStore || docStoreSegment.empty())) {
         segment = IndexWriterPtr(_writer)->newSegmentName();
-        BOOST_ASSERT(numDocsInRAM == 0);
+        assert(numDocsInRAM == 0);
     }
     if (docStoreSegment.empty()) {
         docStoreSegment = segment;
-        BOOST_ASSERT(numDocsInStore == 0);
+        assert(numDocsInStore == 0);
     }
 }
 
@@ -606,14 +606,14 @@ DocumentsWriterThreadStatePtr DocumentsWriter::getThreadState(const DocumentPtr&
     try {
         state->docState->docID = nextDocID;
 
-        BOOST_ASSERT(IndexWriterPtr(_writer)->testPoint(L"DocumentsWriter.ThreadState.init start"));
+        assert(IndexWriterPtr(_writer)->testPoint(L"DocumentsWriter.ThreadState.init start"));
 
         if (delTerm) {
             addDeleteTerm(delTerm, state->docState->docID);
             state->doFlushAfter = timeToFlushDeletes();
         }
 
-        BOOST_ASSERT(IndexWriterPtr(_writer)->testPoint(L"DocumentsWriter.ThreadState.init after delTerm"));
+        assert(IndexWriterPtr(_writer)->testPoint(L"DocumentsWriter.ThreadState.init after delTerm"));
 
         ++nextDocID;
         ++numDocsInRAM;
@@ -750,7 +750,7 @@ void DocumentsWriter::waitReady(const DocumentsWriterThreadStatePtr& state) {
         wait(1000);
     }
     if (closed) {
-        boost::throw_exception(AlreadyClosedException(L"this IndexWriter is closed"));
+        throw AlreadyClosedException(L"this IndexWriter is closed");
     }
 }
 
@@ -813,7 +813,7 @@ bool DocumentsWriter::timeToFlushDeletes() {
 
 bool DocumentsWriter::checkDeleteTerm(const TermPtr& term) {
     if (term) {
-        BOOST_ASSERT(!lastDeleteTerm || term->compareTo(lastDeleteTerm) > 0);
+        assert(!lastDeleteTerm || term->compareTo(lastDeleteTerm) > 0);
     }
     lastDeleteTerm = term;
     return true;
@@ -853,7 +853,7 @@ bool DocumentsWriter::applyDeletes(const SegmentInfosPtr& infos) {
 
     for (int32_t i = 0; i < infosEnd; ++i) {
         // Make sure we never attempt to apply deletes to segment in external dir
-        BOOST_ASSERT(infos->info(i)->dir == directory);
+        assert(infos->info(i)->dir == directory);
 
         SegmentReaderPtr reader(writer->readerPool->get(infos->info(i), false));
         LuceneException finally;
@@ -879,7 +879,7 @@ bool DocumentsWriter::applyDeletes(const IndexReaderPtr& reader, int32_t docIDSt
     int32_t docEnd = docIDStart + reader->maxDoc();
     bool any = false;
 
-    BOOST_ASSERT(checkDeleteTerm(TermPtr()));
+    assert(checkDeleteTerm(TermPtr()));
 
     // Delete by term
     TermDocsPtr docs(reader->termDocs());
@@ -887,7 +887,7 @@ bool DocumentsWriter::applyDeletes(const IndexReaderPtr& reader, int32_t docIDSt
     try {
         for (MapTermNum::iterator entry = deletesFlushed->terms.begin(); entry != deletesFlushed->terms.end(); ++entry) {
             // we should be iterating a Map here, so terms better be in order
-            BOOST_ASSERT(checkDeleteTerm(entry->first));
+            assert(checkDeleteTerm(entry->first));
             docs->seek(entry->first);
             int32_t limit = entry->second->getNum();
             while (docs->next()) {
@@ -974,7 +974,7 @@ void DocumentsWriter::finishDocument(const DocumentsWriterThreadStatePtr& perThr
 
     {
         SyncLock syncLock(this);
-        BOOST_ASSERT(!docWriter || docWriter->docID == perThread->docState->docID);
+        assert(!docWriter || docWriter->docID == perThread->docState->docID);
 
         if (aborting) {
             // We are currently aborting, and another thread is waiting for me to become idle.  We
@@ -1041,7 +1041,7 @@ IntArray DocumentsWriter::getIntBlock(bool trackAllocations) {
     if (trackAllocations) {
         numBytesUsed += INT_BLOCK_SIZE * INT_NUM_BYTE;
     }
-    BOOST_ASSERT(numBytesUsed <= numBytesAlloc);
+    assert(numBytesUsed <= numBytesAlloc);
     return b;
 }
 
@@ -1053,7 +1053,7 @@ void DocumentsWriter::bytesAllocated(int64_t numBytes) {
 void DocumentsWriter::bytesUsed(int64_t numBytes) {
     SyncLock syncLock(this);
     numBytesUsed += numBytes;
-    BOOST_ASSERT(numBytesUsed <= numBytesAlloc);
+    assert(numBytesUsed <= numBytesAlloc);
 }
 
 void DocumentsWriter::recycleIntBlocks(Collection<IntArray> blocks, int32_t start, int32_t end) {
@@ -1077,7 +1077,7 @@ CharArray DocumentsWriter::getCharBlock() {
     // We always track allocations of char blocks for now because nothing that skips allocation tracking
     // (currently only term vectors) uses its own char blocks.
     numBytesUsed += CHAR_BLOCK_SIZE * CHAR_NUM_BYTE;
-    BOOST_ASSERT(numBytesUsed <= numBytesAlloc);
+    assert(numBytesUsed <= numBytesAlloc);
     return c;
 }
 
@@ -1133,7 +1133,7 @@ void DocumentsWriter::balanceRAM() {
                             message(L"    nothing to free");
                         }
                     }
-                    BOOST_ASSERT(numBytesUsed <= numBytesAlloc);
+                    assert(numBytesUsed <= numBytesAlloc);
                     break;
                 }
 
@@ -1219,7 +1219,7 @@ PerDocBuffer::~PerDocBuffer() {
 }
 
 ByteArray PerDocBuffer::newBuffer(int32_t size) {
-    BOOST_ASSERT(size == DocumentsWriter::PER_DOC_BLOCK_SIZE);
+    assert(size == DocumentsWriter::PER_DOC_BLOCK_SIZE);
     return DocumentsWriterPtr(_docWriter)->perDocAllocator->getByteBlock(false);
 }
 
@@ -1233,7 +1233,7 @@ void PerDocBuffer::recycle() {
         buffers.clear();
         sizeInBytes = 0;
 
-        BOOST_ASSERT(numBuffers() == 0);
+        assert(numBuffers() == 0);
     }
 }
 
@@ -1294,8 +1294,8 @@ WaitQueue::~WaitQueue() {
 void WaitQueue::reset() {
     SyncLock syncLock(this);
     // NOTE: nextWriteLoc doesn't need to be reset
-    BOOST_ASSERT(numWaiting == 0);
-    BOOST_ASSERT(waitingBytes == 0);
+    assert(numWaiting == 0);
+    assert(waitingBytes == 0);
     nextWriteDocID = 0;
 }
 
@@ -1320,13 +1320,13 @@ void WaitQueue::abort() {
         }
     }
     waitingBytes = 0;
-    BOOST_ASSERT(count == numWaiting);
+    assert(count == numWaiting);
     numWaiting = 0;
 }
 
 void WaitQueue::writeDocument(const DocWriterPtr& doc) {
     DocumentsWriterPtr docWriter(_docWriter);
-    BOOST_ASSERT(doc == DocumentsWriterPtr(docWriter)->skipDocWriter || nextWriteDocID == doc->docID);
+    assert(doc == DocumentsWriterPtr(docWriter)->skipDocWriter || nextWriteDocID == doc->docID);
     bool success = false;
     LuceneException finally;
     try {
@@ -1334,7 +1334,7 @@ void WaitQueue::writeDocument(const DocWriterPtr& doc) {
         ++nextWriteDocID;
         ++docWriter->numDocsInStore;
         ++nextWriteLoc;
-        BOOST_ASSERT(nextWriteLoc <= waiting.size());
+        assert(nextWriteLoc <= waiting.size());
         if (nextWriteLoc == waiting.size()) {
             nextWriteLoc = 0;
         }
@@ -1351,7 +1351,7 @@ void WaitQueue::writeDocument(const DocWriterPtr& doc) {
 bool WaitQueue::add(const DocWriterPtr& doc) {
     DocWriterPtr _doc(doc);
     SyncLock syncLock(this);
-    BOOST_ASSERT(_doc->docID >= nextWriteDocID);
+    assert(_doc->docID >= nextWriteDocID);
     if (_doc->docID == nextWriteDocID) {
         writeDocument(_doc);
         while (true) {
@@ -1373,7 +1373,7 @@ bool WaitQueue::add(const DocWriterPtr& doc) {
         if (gap >= waiting.size()) {
             // Grow queue
             Collection<DocWriterPtr> newArray(Collection<DocWriterPtr>::newInstance(MiscUtils::getNextSize(gap)));
-            BOOST_ASSERT(nextWriteLoc >= 0);
+            assert(nextWriteLoc >= 0);
             MiscUtils::arrayCopy(waiting.begin(), nextWriteLoc, newArray.begin(), 0, waiting.size() - nextWriteLoc);
             MiscUtils::arrayCopy(waiting.begin(), 0, newArray.begin(), waiting.size() - nextWriteLoc, nextWriteLoc);
             nextWriteLoc = 0;
@@ -1387,10 +1387,10 @@ bool WaitQueue::add(const DocWriterPtr& doc) {
         }
 
         // We should only wrap one time
-        BOOST_ASSERT(loc < waiting.size());
+        assert(loc < waiting.size());
 
         // Nobody should be in my spot!
-        BOOST_ASSERT(!waiting[loc]);
+        assert(!waiting[loc]);
         waiting[loc] = _doc;
         ++numWaiting;
         waitingBytes += _doc->sizeInBytes();
@@ -1425,7 +1425,7 @@ ByteArray ByteBlockAllocator::getByteBlock(bool trackAllocations) {
     if (trackAllocations) {
         docWriter->numBytesUsed += blockSize;
     }
-    BOOST_ASSERT(docWriter->numBytesUsed <= docWriter->numBytesAlloc);
+    assert(docWriter->numBytesUsed <= docWriter->numBytesAlloc);
     return b;
 }
 

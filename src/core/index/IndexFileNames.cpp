@@ -5,7 +5,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LuceneInc.h"
-#include <boost/algorithm/string.hpp>
 #include "IndexFileNames.h"
 #include "SegmentInfo.h"
 #include "StringUtils.h"
@@ -221,11 +220,11 @@ String IndexFileNames::fileNameFromGeneration(const String& base, const String& 
 }
 
 bool IndexFileNames::isDocStoreFile(const String& fileName) {
-    if (boost::ends_with(fileName, COMPOUND_FILE_STORE_EXTENSION())) {
+    if (boost_copy::ends_with(fileName, COMPOUND_FILE_STORE_EXTENSION())) {
         return true;
     }
     for (HashSet<String>::iterator index = STORE_INDEX_EXTENSIONS().begin(); index != STORE_INDEX_EXTENSIONS().end(); ++index) {
-        if (boost::ends_with(fileName, *index)) {
+        if (boost_copy::ends_with(fileName, *index)) {
             return true;
         }
     }

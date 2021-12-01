@@ -16,10 +16,10 @@ namespace Lucene {
 
 CompoundFileWriter::CompoundFileWriter(const DirectoryPtr& dir, const String& name, const CheckAbortPtr& checkAbort) {
     if (!dir) {
-        boost::throw_exception(IllegalArgumentException(L"directory cannot be empty"));
+        throw (IllegalArgumentException(L"directory cannot be empty"));
     }
     if (name.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"name cannot be empty"));
+        throw (IllegalArgumentException(L"name cannot be empty"));
     }
     this->checkAbort = checkAbort;
     _directory = dir;
@@ -42,15 +42,15 @@ String CompoundFileWriter::getName() {
 
 void CompoundFileWriter::addFile(const String& file) {
     if (merged) {
-        boost::throw_exception(IllegalStateException(L"Can't add extensions after merge has been called"));
+        throw (IllegalStateException(L"Can't add extensions after merge has been called"));
     }
 
     if (file.empty()) {
-        boost::throw_exception(IllegalArgumentException(L"file cannot be empty"));
+        throw (IllegalArgumentException(L"file cannot be empty"));
     }
 
     if (!ids.add(file)) {
-        boost::throw_exception(IllegalArgumentException(L"File " + file + L" already added"));
+        throw (IllegalArgumentException(L"File " + file + L" already added"));
     }
 
     FileEntry entry;
@@ -60,11 +60,11 @@ void CompoundFileWriter::addFile(const String& file) {
 
 void CompoundFileWriter::close() {
     if (merged) {
-        boost::throw_exception(IllegalStateException(L"Merge already performed"));
+        throw (IllegalStateException(L"Merge already performed"));
     }
 
     if (entries.empty()) {
-        boost::throw_exception(IllegalStateException(L"No entries to merge have been defined"));
+        throw (IllegalStateException(L"No entries to merge have been defined"));
     }
 
     merged = true;
@@ -109,7 +109,7 @@ void CompoundFileWriter::close() {
             os->writeLong(fe->dataOffset);
         }
 
-        BOOST_ASSERT(finalLength == os->length());
+        assert(finalLength == os->length());
 
         // Close the output stream. Set the os to null before trying to close so that if an exception occurs during
         // the close, the finally clause below will not attempt to close the stream the second time.
@@ -154,7 +154,7 @@ void CompoundFileWriter::copyFile(const FileEntry& source, const IndexOutputPtr&
 
         // Verify that remainder is 0
         if (remainder != 0) {
-            boost::throw_exception(IOException(L"Non-zero remainder length after copying: " + StringUtils::toString(remainder) +
+            throw (IOException(L"Non-zero remainder length after copying: " + StringUtils::toString(remainder) +
                                                L" (id: " + source.file + L", length: " + StringUtils::toString(length) +
                                                L", buffer size: " + StringUtils::toString(chunk) + L")"));
         }
@@ -163,7 +163,7 @@ void CompoundFileWriter::copyFile(const FileEntry& source, const IndexOutputPtr&
         int64_t endPtr = os->getFilePointer();
         int64_t diff = endPtr - startPtr;
         if (diff != length) {
-            boost::throw_exception(IOException(L"Difference in the output file offsets " + StringUtils::toString(diff) +
+            throw (IOException(L"Difference in the output file offsets " + StringUtils::toString(diff) +
                                                L" does not match the original file length " + StringUtils::toString(length)));
         }
     } catch (LuceneException& e) {

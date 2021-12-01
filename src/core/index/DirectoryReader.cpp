@@ -5,7 +5,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LuceneInc.h"
-#include <boost/algorithm/string.hpp>
 #include "DirectoryReader.h"
 #include "_DirectoryReader.h"
 #include "Directory.h"
@@ -93,7 +92,7 @@ DirectoryReader::DirectoryReader(const IndexWriterPtr& writer, const SegmentInfo
     this->_directory = writer->getDirectory();
     this->readOnly = true;
     this->segmentInfos = infos;
-    this->segmentInfosStart = boost::dynamic_pointer_cast<SegmentInfos>(infos->clone());
+    this->segmentInfosStart = std::dynamic_pointer_cast<SegmentInfos>(infos->clone());
     this->termInfosIndexDivisor = termInfosIndexDivisor;
 
     if (!readOnly) {
@@ -115,7 +114,7 @@ DirectoryReader::DirectoryReader(const IndexWriterPtr& writer, const SegmentInfo
         try {
             SegmentInfoPtr info(infos->info(i));
             if (info->dir == dir) {
-                readers[upto++] = boost::dynamic_pointer_cast<SegmentReader>(writer->readerPool->getReadOnlyClone(info, true, termInfosIndexDivisor));
+                readers[upto++] = std::dynamic_pointer_cast<SegmentReader>(writer->readerPool->getReadOnlyClone(info, true, termInfosIndexDivisor));
             }
             success = true;
         } catch (LuceneException& e) {
@@ -200,7 +199,7 @@ DirectoryReader::DirectoryReader(const DirectoryPtr& directory, const SegmentInf
             SegmentReaderPtr newReader;
             if (!newReaders[i] || infos->info(i)->getUseCompoundFile() != newReaders[i]->getSegmentInfo()->getUseCompoundFile()) {
                 // We should never see a totally new segment during cloning
-                BOOST_ASSERT(!doClone);
+                assert(!doClone);
 
                 // this is a new reader; in case we hit an exception we can close it safely
                 newReader = SegmentReader::get(readOnly, infos->info(i), termInfosIndexDivisor);
@@ -300,14 +299,14 @@ LuceneObjectPtr DirectoryReader::clone(const LuceneObjectPtr& other) {
     try {
         return DirectoryReader::clone(readOnly, other); // Preserve current readOnly
     } catch (LuceneException& e) {
-        boost::throw_exception(RuntimeException(e.getError()));
+        throw (RuntimeException(e.getError()));
     }
     return DirectoryReaderPtr();
 }
 
 LuceneObjectPtr DirectoryReader::clone(bool openReadOnly, const LuceneObjectPtr& other) {
     SyncLock syncLock(this);
-    DirectoryReaderPtr newReader(doReopen(boost::dynamic_pointer_cast<SegmentInfos>(segmentInfos->clone()), true, openReadOnly));
+    DirectoryReaderPtr newReader(doReopen(std::dynamic_pointer_cast<SegmentInfos>(segmentInfos->clone()), true, openReadOnly));
 
     if (shared_from_this() != newReader) {
         newReader->deletionPolicy = deletionPolicy;
@@ -318,7 +317,7 @@ LuceneObjectPtr DirectoryReader::clone(bool openReadOnly, const LuceneObjectPtr&
     // If we're cloning a non-readOnly reader, move the writeLock (if there is one) to the new reader
     if (!openReadOnly && writeLock) {
         // In near real-time search, reader is always readonly
-        BOOST_ASSERT(_writer.expired());
+        assert(_writer.expired());
         newReader->writeLock = writeLock;
         newReader->_hasChanges = _hasChanges;
         newReader->_hasDeletions = _hasDeletions;
@@ -343,14 +342,14 @@ IndexReaderPtr DirectoryReader::reopen(const IndexCommitPtr& commit) {
 }
 
 IndexReaderPtr DirectoryReader::doReopenFromWriter(bool openReadOnly, const IndexCommitPtr& commit) {
-    BOOST_ASSERT(readOnly);
+    assert(readOnly);
 
     if (!openReadOnly) {
-        boost::throw_exception(IllegalArgumentException(L"a reader obtained from IndexWriter.getReader() can only be reopened with openReadOnly=true (got false)"));
+        throw (IllegalArgumentException(L"a reader obtained from IndexWriter.getReader() can only be reopened with openReadOnly=true (got false)"));
     }
 
     if (commit) {
-        boost::throw_exception(IllegalArgumentException(L"a reader obtained from IndexWriter.getReader() cannot currently accept a commit"));
+        throw (IllegalArgumentException(L"a reader obtained from IndexWriter.getReader() cannot currently accept a commit"));
     }
 
     return IndexWriterPtr(_writer)->getReader();
@@ -359,7 +358,7 @@ IndexReaderPtr DirectoryReader::doReopenFromWriter(bool openReadOnly, const Inde
 IndexReaderPtr DirectoryReader::doReopen(bool openReadOnly, const IndexCommitPtr& commit) {
     ensureOpen();
 
-    BOOST_ASSERT(!commit || openReadOnly);
+    assert(!commit || openReadOnly);
 
     IndexWriterPtr writer(_writer.lock());
 
@@ -376,33 +375,33 @@ IndexReaderPtr DirectoryReader::doReopenNoWriter(bool openReadOnly, const IndexC
     if (!commit) {
         if (_hasChanges) {
             // We have changes, which means we are not readOnly
-            BOOST_ASSERT(!readOnly);
+            assert(!readOnly);
             // and we hold the write lock
-            BOOST_ASSERT(writeLock);
+            assert(writeLock);
             // so no other writer holds the write lock, which means no changes could have been done to the index
-            BOOST_ASSERT(isCurrent());
+            assert(isCurrent());
 
             if (openReadOnly) {
-                return boost::dynamic_pointer_cast<IndexReader>(clone(openReadOnly));
+                return std::dynamic_pointer_cast<IndexReader>(clone(openReadOnly));
             } else {
                 return shared_from_this();
             }
         } else if (isCurrent()) {
             if (openReadOnly != readOnly) {
                 // Just fallback to clone
-                return boost::dynamic_pointer_cast<IndexReader>(clone(openReadOnly));
+                return std::dynamic_pointer_cast<IndexReader>(clone(openReadOnly));
             } else {
                 return shared_from_this();
             }
         }
     } else {
         if (_directory != commit->getDirectory()) {
-            boost::throw_exception(IOException(L"the specified commit does not match the specified Directory"));
+            throw (IOException(L"the specified commit does not match the specified Directory"));
         }
         if (segmentInfos && commit->getSegmentsFileName() == segmentInfos->getCurrentSegmentFileName()) {
             if (readOnly != openReadOnly) {
                 // Just fallback to clone
-                return boost::dynamic_pointer_cast<IndexReader>(clone(openReadOnly));
+                return std::dynamic_pointer_cast<IndexReader>(clone(openReadOnly));
             } else {
                 return shared_from_this();
             }
@@ -608,13 +607,13 @@ void DirectoryReader::acquireWriteLock() {
     if (segmentInfos) {
         ensureOpen();
         if (stale) {
-            boost::throw_exception(StaleReaderException(L"IndexReader out of date and no longer valid for delete, undelete, or setNorm operations"));
+            throw (StaleReaderException(L"IndexReader out of date and no longer valid for delete, undelete, or setNorm operations"));
         }
 
         if (!writeLock) {
             LockPtr writeLock(_directory->makeLock(IndexWriter::WRITE_LOCK_NAME));
             if (!writeLock->obtain((int32_t)IndexWriter::WRITE_LOCK_TIMEOUT)) { // obtain write lock
-                boost::throw_exception(LockObtainFailedException(L"Index locked for write: " + writeLock->toString()));
+                throw (LockObtainFailedException(L"Index locked for write: " + writeLock->toString()));
             }
             this->writeLock = writeLock;
 
@@ -624,7 +623,7 @@ void DirectoryReader::acquireWriteLock() {
                 stale = true;
                 this->writeLock->release();
                 this->writeLock.reset();
-                boost::throw_exception(StaleReaderException(L"IndexReader out of date and no longer valid for delete, undelete, or setNorm operations"));
+                throw (StaleReaderException(L"IndexReader out of date and no longer valid for delete, undelete, or setNorm operations"));
             }
         }
     }
@@ -652,7 +651,7 @@ void DirectoryReader::doCommit(MapStringString commitUserData) {
             HashSet<String> files(segmentInfos->files(_directory, false));
             for (HashSet<String>::iterator fileName = files.begin(); fileName != files.end(); ++fileName) {
                 if (!synced.contains(*fileName)) {
-                    BOOST_ASSERT(_directory->fileExists(*fileName));
+                    assert(_directory->fileExists(*fileName));
                     _directory->sync(*fileName);
                     synced.add(*fileName);
                 }
@@ -789,7 +788,7 @@ Collection<IndexCommitPtr> DirectoryReader::listCommits(const DirectoryPtr& dir)
     commits.add(newLucene<ReaderCommit>(latest, dir));
 
     for (HashSet<String>::iterator fileName = files.begin(); fileName != files.end(); ++fileName) {
-        if (boost::starts_with(*fileName, IndexFileNames::SEGMENTS()) &&
+        if (boost_copy::starts_with(*fileName, IndexFileNames::SEGMENTS()) &&
                 *fileName != IndexFileNames::SEGMENTS_GEN() &&
                 SegmentInfos::generationFromSegmentsFileName(*fileName) < currentGen) {
             SegmentInfosPtr sis(newLucene<SegmentInfos>());
@@ -954,7 +953,7 @@ void MultiTermDocs::seek(const TermPtr& term) {
 
 void MultiTermDocs::seek(const TermEnumPtr& termEnum) {
     seek(termEnum->term());
-    MultiTermEnumPtr multiTermEnum(boost::dynamic_pointer_cast<MultiTermEnum>(termEnum));
+    MultiTermEnumPtr multiTermEnum(std::dynamic_pointer_cast<MultiTermEnum>(termEnum));
     if (multiTermEnum) {
         tenum = multiTermEnum;
         if (IndexReaderPtr(_topReader) != IndexReaderPtr(tenum->_topReader)) {
@@ -1042,8 +1041,8 @@ TermDocsPtr MultiTermDocs::termDocs(int32_t i) {
         result = readerTermDocs[i];
     }
     if (smi) {
-        BOOST_ASSERT(smi->ord == i);
-        BOOST_ASSERT(smi->termEnum->term()->equals(term));
+        assert(smi->ord == i);
+        assert(smi->termEnum->term()->equals(term));
         result->seek(smi->termEnum);
     } else {
         result->seek(term);
@@ -1074,19 +1073,19 @@ TermDocsPtr MultiTermPositions::termDocs(const IndexReaderPtr& reader) {
 }
 
 int32_t MultiTermPositions::nextPosition() {
-    return boost::static_pointer_cast<TermPositions>(current)->nextPosition();
+    return std::static_pointer_cast<TermPositions>(current)->nextPosition();
 }
 
 int32_t MultiTermPositions::getPayloadLength() {
-    return boost::static_pointer_cast<TermPositions>(current)->getPayloadLength();
+    return std::static_pointer_cast<TermPositions>(current)->getPayloadLength();
 }
 
 ByteArray MultiTermPositions::getPayload(ByteArray data, int32_t offset) {
-    return boost::static_pointer_cast<TermPositions>(current)->getPayload(data, offset);
+    return std::static_pointer_cast<TermPositions>(current)->getPayload(data, offset);
 }
 
 bool MultiTermPositions::isPayloadAvailable() {
-    return boost::static_pointer_cast<TermPositions>(current)->isPayloadAvailable();
+    return std::static_pointer_cast<TermPositions>(current)->isPayloadAvailable();
 }
 
 ReaderCommit::ReaderCommit(const SegmentInfosPtr& infos, const DirectoryPtr& dir) {
@@ -1140,7 +1139,7 @@ MapStringString ReaderCommit::getUserData() {
 }
 
 void ReaderCommit::deleteCommit() {
-    boost::throw_exception(UnsupportedOperationException(L"This IndexCommit does not support deletions."));
+    throw (UnsupportedOperationException(L"This IndexCommit does not support deletions."));
 }
 
 }

@@ -44,8 +44,8 @@ FormatPostingsPositionsWriter::~FormatPostingsPositionsWriter() {
 }
 
 void FormatPostingsPositionsWriter::addPosition(int32_t position, ByteArray payload, int32_t payloadOffset, int32_t payloadLength) {
-    BOOST_ASSERT(!omitTermFreqAndPositions);
-    BOOST_ASSERT(out);
+    assert(!omitTermFreqAndPositions);
+    assert(out);
 
     int32_t delta = position - lastPosition;
     lastPosition = position;

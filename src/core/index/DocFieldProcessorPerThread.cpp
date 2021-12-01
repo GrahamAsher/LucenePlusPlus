@@ -75,7 +75,7 @@ Collection<DocFieldConsumerPerFieldPtr> DocFieldProcessorPerThread::fields() {
             current = current->next;
         }
     }
-    BOOST_ASSERT(fields.size() == totalFieldCount);
+    assert(fields.size() == totalFieldCount);
     return fields;
 }
 
@@ -114,7 +114,7 @@ void DocFieldProcessorPerThread::trimFields(const SegmentWriteStatePtr& state) {
 
 void DocFieldProcessorPerThread::rehash() {
     int32_t newHashSize = (fieldHash.size() * 2);
-    BOOST_ASSERT(newHashSize > fieldHash.size());
+    assert(newHashSize > fieldHash.size());
 
     Collection<DocFieldProcessorPerFieldPtr> newHashArray(Collection<DocFieldProcessorPerFieldPtr>::newInstance(newHashSize));
 
@@ -150,7 +150,7 @@ DocWriterPtr DocFieldProcessorPerThread::processDocument() {
     DocFieldProcessorPtr docFieldProcessor(_docFieldProcessor);
     DocumentsWriterPtr docWriter(docFieldProcessor->_docWriter);
     bool testPoint = IndexWriterPtr(docWriter->_writer)->testPoint(L"DocumentsWriter.ThreadState.init start");
-    BOOST_ASSERT(testPoint);
+    assert(testPoint);
 
     fieldCount = 0;
     int32_t thisFieldGen = fieldGen++;
@@ -237,8 +237,8 @@ DocWriterPtr DocFieldProcessorPerThread::processDocument() {
     } else {
         DocFieldProcessorPerThreadPerDocPtr both(getPerDoc());
         both->docID = docState->docID;
-        BOOST_ASSERT(one->docID == docState->docID);
-        BOOST_ASSERT(two->docID == docState->docID);
+        assert(one->docID == docState->docID);
+        assert(two->docID == docState->docID);
         both->one = one;
         both->two = two;
         return both;
@@ -252,7 +252,7 @@ DocFieldProcessorPerThreadPerDocPtr DocFieldProcessorPerThread::getPerDoc() {
         if (allocCount > docFreeList.size()) {
             // Grow our free list up front to make sure we have enough space to recycle all
             // outstanding PerDoc instances
-            BOOST_ASSERT(allocCount == docFreeList.size() + 1);
+            assert(allocCount == docFreeList.size() + 1);
             docFreeList.resize(MiscUtils::getNextSize(allocCount));
         }
         return newLucene<DocFieldProcessorPerThreadPerDoc>(shared_from_this());
@@ -263,7 +263,7 @@ DocFieldProcessorPerThreadPerDocPtr DocFieldProcessorPerThread::getPerDoc() {
 
 void DocFieldProcessorPerThread::freePerDoc(const DocFieldProcessorPerThreadPerDocPtr& perDoc) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(freeCount < docFreeList.size());
+    assert(freeCount < docFreeList.size());
     docFreeList[freeCount++] = perDoc;
 }
 

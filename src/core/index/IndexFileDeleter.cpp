@@ -5,7 +5,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LuceneInc.h"
-#include <boost/algorithm/string.hpp>
 #include "IndexFileDeleter.h"
 #include "IndexFileNameFilter.h"
 #include "IndexFileNames.h"
@@ -53,7 +52,7 @@ IndexFileDeleter::IndexFileDeleter(const DirectoryPtr& directory, const IndexDel
             // Add this file to refCounts with initial count 0
             getRefCount(*fileName);
 
-            if (boost::starts_with(*fileName, IndexFileNames::SEGMENTS())) {
+            if (boost_copy::starts_with(*fileName, IndexFileNames::SEGMENTS())) {
                 // This is a commit (segments or segments_N), and it's valid (<= the max gen).
                 // Load it, then incref all files it refers to
                 if (infoStream) {
@@ -64,7 +63,7 @@ IndexFileDeleter::IndexFileDeleter(const DirectoryPtr& directory, const IndexDel
                     sis->read(directory, *fileName);
                 } catch (IOException& e) {
                     if (SegmentInfos::generationFromSegmentsFileName(*fileName) <= currentGen) {
-                        boost::throw_exception(e);
+                        throw e;
                     } else {
                         // Most likely we are opening an index that has an aborted "future" commit,
                         // so suppress exc in this case
@@ -101,7 +100,7 @@ IndexFileDeleter::IndexFileDeleter(const DirectoryPtr& directory, const IndexDel
         try {
             sis->read(directory, segmentInfos->getCurrentSegmentFileName());
         } catch (LuceneException&) {
-            boost::throw_exception(CorruptIndexException(L"failed to locate current segments_N file"));
+            throw CorruptIndexException(L"failed to locate current segments_N file");
         }
         if (infoStream) {
             message(L"forced open of current segments file " + segmentInfos->getCurrentSegmentFileName());
@@ -171,7 +170,7 @@ void IndexFileDeleter::deleteCommits() {
         int32_t readFrom = 0;
         int32_t writeTo = 0;
         while (readFrom < size) {
-            CommitPointPtr commit(boost::dynamic_pointer_cast<CommitPoint>(commits[readFrom]));
+            CommitPointPtr commit(std::dynamic_pointer_cast<CommitPoint>(commits[readFrom]));
             if (!commit->deleted) {
                 if (writeTo != readFrom) {
                     commits[writeTo] = commits[readFrom];
@@ -196,7 +195,7 @@ void IndexFileDeleter::refresh(const String& segmentName) {
 
     for (HashSet<String>::iterator fileName = files.begin(); fileName != files.end(); ++fileName) {
         if (filter->accept(L"", *fileName) &&
-                (segmentName.empty() || boost::starts_with(*fileName, segmentPrefix1) || boost::starts_with(*fileName, segmentPrefix2)) &&
+                (segmentName.empty() || boost_copy::starts_with(*fileName, segmentPrefix1) || boost_copy::starts_with(*fileName, segmentPrefix2)) &&
                 !refCounts.contains(*fileName) && *fileName != IndexFileNames::SEGMENTS_GEN()) {
             // Unreferenced file, so remove it
             if (infoStream) {
@@ -396,13 +395,13 @@ int32_t RefCount::IncRef() {
     if (!initDone) {
         initDone = true;
     } else {
-        BOOST_ASSERT(count > 0);
+        assert(count > 0);
     }
     return ++count;
 }
 
 int32_t RefCount::DecRef() {
-    BOOST_ASSERT(count > 0);
+    assert(count > 0);
     return --count;
 }
 
@@ -420,7 +419,7 @@ CommitPoint::CommitPoint(Collection<CommitPointPtr> commitsToDelete, const Direc
     gen = segmentInfos->getGeneration();
     _isOptimized = (segmentInfos->size() == 1 && !segmentInfos->info(0)->hasDeletions());
 
-    BOOST_ASSERT(!segmentInfos->hasExternalSegments(directory));
+    assert(!segmentInfos->hasExternalSegments(directory));
 }
 
 CommitPoint::~CommitPoint() {
@@ -470,7 +469,7 @@ bool CommitPoint::isDeleted() {
 }
 
 int32_t CommitPoint::compareTo(const LuceneObjectPtr& other) {
-    CommitPointPtr otherCommit(boost::static_pointer_cast<CommitPoint>(other));
+    CommitPointPtr otherCommit(std::static_pointer_cast<CommitPoint>(other));
     if (gen < otherCommit->gen) {
         return -1;
     }

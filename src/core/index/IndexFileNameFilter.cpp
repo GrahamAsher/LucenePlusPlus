@@ -5,10 +5,9 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LuceneInc.h"
-#include <boost/algorithm/string.hpp>
-#include <boost/regex.hpp>
 #include "IndexFileNameFilter.h"
 #include "IndexFileNames.h"
+#include <regex>
 
 namespace Lucene {
 
@@ -19,10 +18,10 @@ bool IndexFileNameFilter::accept(const String& directory, const String& name) {
         if (IndexFileNames::INDEX_EXTENSIONS().contains(extension)) {
             return true;
         } else if (!extension.empty()) {
-            if (extension[0] == L'f' && boost::regex_search(extension, boost::wregex(L"f\\d+"))) {
+            if (extension[0] == L'f' && std::regex_search(extension, std::wregex(L"f\\d+"))) {
                 return true;
             }
-            if (extension[0] == L's' && boost::regex_search(extension, boost::wregex(L"s\\d+"))) {
+            if (extension[0] == L's' && std::regex_search(extension, std::wregex(L"s\\d+"))) {
                 return true;
             }
         }
@@ -30,7 +29,7 @@ bool IndexFileNameFilter::accept(const String& directory, const String& name) {
         if (name == IndexFileNames::DELETABLE()) {
             return true;
         }
-        if (boost::starts_with(name, IndexFileNames::SEGMENTS())) {
+        if (boost_copy::starts_with(name, IndexFileNames::SEGMENTS())) {
             return true;
         }
     }
@@ -43,7 +42,7 @@ bool IndexFileNameFilter::isCFSFile(const String& name) {
         String extension(name.substr(i+1));
         if (IndexFileNames::INDEX_EXTENSIONS_IN_COMPOUND_FILE().contains(extension)) {
             return true;
-        } else if (!extension.empty() && extension[0] == L'f' && boost::regex_search(extension, boost::wregex(L"f\\d+"))) {
+        } else if (!extension.empty() && extension[0] == L'f' && std::regex_search(extension, std::wregex(L"f\\d+"))) {
             return true;
         }
     }

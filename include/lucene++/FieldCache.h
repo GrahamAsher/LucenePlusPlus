@@ -7,7 +7,7 @@
 #ifndef FIELDCACHE_H
 #define FIELDCACHE_H
 
-#include <boost/any.hpp>
+#include <any>
 #include "LuceneObject.h"
 
 namespace Lucene {
@@ -173,7 +173,7 @@ public:
     LUCENE_CLASS(CreationPlaceholder);
 
 public:
-    boost::any value;
+    std::any value;
 };
 
 /// Stores term text values and document ordering data.
@@ -261,8 +261,8 @@ public:
     virtual LuceneObjectPtr getReaderKey() = 0;
     virtual String getFieldName() = 0;
     virtual int32_t getCacheType() = 0;
-    virtual boost::any getCustom() = 0;
-    virtual boost::any getValue() = 0;
+    virtual std::any getCustom() = 0;
+    virtual std::any getValue() = 0;
 
     virtual String toString();
 };

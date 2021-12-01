@@ -14,6 +14,10 @@ namespace Lucene {
 /// This class tracks the number and position / offset parameters of terms being added to the index.
 /// The information collected in this class is also used to calculate the normalization factor for a field.
 class LPPAPI FieldInvertState : public LuceneObject {
+
+    friend class DocInverterPerField;
+    friend class FreqProxTermsWriterPerField;
+
 public:
     FieldInvertState(int32_t position = 0, int32_t length = 0, int32_t numOverlap = 0, int32_t offset = 0, double boost = 0);
     virtual ~FieldInvertState();

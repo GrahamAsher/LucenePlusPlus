@@ -39,12 +39,12 @@ void DocFieldConsumers::flush(MapDocFieldConsumerPerThreadCollectionDocFieldCons
         Collection<DocFieldConsumerPerFieldPtr> twoFields(Collection<DocFieldConsumerPerFieldPtr>::newInstance());
 
         for (Collection<DocFieldConsumerPerFieldPtr>::iterator perField = entry->second.begin(); perField != entry->second.end(); ++perField) {
-            oneFields.add(boost::static_pointer_cast<DocFieldConsumersPerField>(*perField)->one);
-            twoFields.add(boost::static_pointer_cast<DocFieldConsumersPerField>(*perField)->two);
+            oneFields.add(std::static_pointer_cast<DocFieldConsumersPerField>(*perField)->one);
+            twoFields.add(std::static_pointer_cast<DocFieldConsumersPerField>(*perField)->two);
         }
 
-        oneThreadsAndFields.put(boost::static_pointer_cast<DocFieldConsumersPerThread>(entry->first)->one, oneFields);
-        twoThreadsAndFields.put(boost::static_pointer_cast<DocFieldConsumersPerThread>(entry->first)->two, oneFields);
+        oneThreadsAndFields.put(std::static_pointer_cast<DocFieldConsumersPerThread>(entry->first)->one, oneFields);
+        twoThreadsAndFields.put(std::static_pointer_cast<DocFieldConsumersPerThread>(entry->first)->two, oneFields);
     }
 
     one->flush(oneThreadsAndFields, state);
@@ -81,7 +81,7 @@ DocFieldConsumersPerDocPtr DocFieldConsumers::getPerDoc() {
         if (allocCount > docFreeList.size()) {
             // Grow our free list up front to make sure we have enough space to recycle all outstanding
             // PerDoc instances
-            BOOST_ASSERT(allocCount == 1 + docFreeList.size());
+            assert(allocCount == 1 + docFreeList.size());
             docFreeList.resize(MiscUtils::getNextSize(allocCount));
         }
         return newLucene<DocFieldConsumersPerDoc>(shared_from_this());
@@ -92,7 +92,7 @@ DocFieldConsumersPerDocPtr DocFieldConsumers::getPerDoc() {
 
 void DocFieldConsumers::freePerDoc(const DocFieldConsumersPerDocPtr& perDoc) {
     SyncLock syncLock(this);
-    BOOST_ASSERT(freeCount < docFreeList.size());
+    assert(freeCount < docFreeList.size());
     docFreeList[freeCount++] = perDoc;
 }
 

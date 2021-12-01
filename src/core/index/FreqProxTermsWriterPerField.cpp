@@ -43,7 +43,7 @@ void FreqProxTermsWriterPerField::skippingLongTerm() {
 }
 
 int32_t FreqProxTermsWriterPerField::compareTo(const LuceneObjectPtr& other) {
-    return fieldInfo->name.compare(boost::static_pointer_cast<FreqProxTermsWriterPerField>(other)->fieldInfo->name);
+    return fieldInfo->name.compare(std::static_pointer_cast<FreqProxTermsWriterPerField>(other)->fieldInfo->name);
 }
 
 void FreqProxTermsWriterPerField::reset() {
@@ -90,8 +90,8 @@ void FreqProxTermsWriterPerField::writeProx(const FreqProxTermsWriterPostingList
 
 void FreqProxTermsWriterPerField::newTerm(const RawPostingListPtr& p) {
     // First time we're seeing this term since the last flush
-    BOOST_ASSERT(docState->testPoint(L"FreqProxTermsWriterPerField.newTerm start"));
-    FreqProxTermsWriterPostingListPtr newPostingList(boost::static_pointer_cast<FreqProxTermsWriterPostingList>(p));
+    assert(docState->testPoint(L"FreqProxTermsWriterPerField.newTerm start"));
+    FreqProxTermsWriterPostingListPtr newPostingList(std::static_pointer_cast<FreqProxTermsWriterPostingList>(p));
     newPostingList->lastDocID = docState->docID;
     if (omitTermFreqAndPositions) {
         newPostingList->lastDocCode = docState->docID;
@@ -103,23 +103,23 @@ void FreqProxTermsWriterPerField::newTerm(const RawPostingListPtr& p) {
 }
 
 void FreqProxTermsWriterPerField::addTerm(const RawPostingListPtr& p) {
-    BOOST_ASSERT(docState->testPoint(L"FreqProxTermsWriterPerField.addTerm start"));
+    assert(docState->testPoint(L"FreqProxTermsWriterPerField.addTerm start"));
 
-    FreqProxTermsWriterPostingListPtr addPostingList(boost::static_pointer_cast<FreqProxTermsWriterPostingList>(p));
+    FreqProxTermsWriterPostingListPtr addPostingList(std::static_pointer_cast<FreqProxTermsWriterPostingList>(p));
 
-    BOOST_ASSERT(omitTermFreqAndPositions || addPostingList->docFreq > 0);
+    assert(omitTermFreqAndPositions || addPostingList->docFreq > 0);
     TermsHashPerFieldPtr termsHashPerField(_termsHashPerField);
 
     if (omitTermFreqAndPositions) {
         if (docState->docID != addPostingList->lastDocID) {
-            BOOST_ASSERT(docState->docID > addPostingList->lastDocID);
+            assert(docState->docID > addPostingList->lastDocID);
             termsHashPerField->writeVInt(0, addPostingList->lastDocCode);
             addPostingList->lastDocCode = docState->docID - addPostingList->lastDocID;
             addPostingList->lastDocID = docState->docID;
         }
     } else {
         if (docState->docID != addPostingList->lastDocID) {
-            BOOST_ASSERT(docState->docID > addPostingList->lastDocID);
+            assert(docState->docID > addPostingList->lastDocID);
             // Term not yet seen in the current doc but previously seen in other doc(s) since
             // the last flush
 

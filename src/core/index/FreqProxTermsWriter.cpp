@@ -71,7 +71,7 @@ void FreqProxTermsWriter::flush(MapTermsHashConsumerPerThreadCollectionTermsHash
 
     for (MapTermsHashConsumerPerThreadCollectionTermsHashConsumerPerField::iterator entry = threadsAndFields.begin(); entry != threadsAndFields.end(); ++entry) {
         for (Collection<TermsHashConsumerPerFieldPtr>::iterator perField = entry->second.begin(); perField != entry->second.end(); ++perField) {
-            FreqProxTermsWriterPerFieldPtr freqProxPerField(boost::static_pointer_cast<FreqProxTermsWriterPerField>(*perField));
+            FreqProxTermsWriterPerFieldPtr freqProxPerField(std::static_pointer_cast<FreqProxTermsWriterPerField>(*perField));
             if (TermsHashPerFieldPtr(freqProxPerField->_termsHashPerField)->numPostings > 0) {
                 allFields.add(freqProxPerField);
             }
@@ -130,7 +130,7 @@ void FreqProxTermsWriter::flush(MapTermsHashConsumerPerThreadCollectionTermsHash
     }
 
     for (MapTermsHashConsumerPerThreadCollectionTermsHashConsumerPerField::iterator entry = threadsAndFields.begin(); entry != threadsAndFields.end(); ++entry) {
-        TermsHashPerThreadPtr(boost::static_pointer_cast<FreqProxTermsWriterPerThread>(entry->first)->_termsHashPerThread)->reset(true);
+        TermsHashPerThreadPtr(std::static_pointer_cast<FreqProxTermsWriterPerThread>(entry->first)->_termsHashPerThread)->reset(true);
     }
 
     consumer->finish();
@@ -146,11 +146,11 @@ void FreqProxTermsWriter::appendPostings(Collection<FreqProxTermsWriterPerFieldP
         FreqProxFieldMergeStatePtr fms(newLucene<FreqProxFieldMergeState>(fields[i]));
         mergeStates[i] = fms;
 
-        BOOST_ASSERT(fms->field->fieldInfo == fields[0]->fieldInfo);
+        assert(fms->field->fieldInfo == fields[0]->fieldInfo);
 
         // Should always be true
         bool result = fms->nextTerm();
-        BOOST_ASSERT(result);
+        assert(result);
     }
 
     FormatPostingsTermsConsumerPtr termsConsumer(consumer->addField(fields[0]->fieldInfo));
@@ -235,7 +235,7 @@ void FreqProxTermsWriter::appendPostings(Collection<FreqProxTermsWriterPerFieldP
                     }
                 }
                 --numToMerge;
-                BOOST_ASSERT(upto == numToMerge);
+                assert(upto == numToMerge);
 
                 // Advance this state to the next term
 
@@ -248,7 +248,7 @@ void FreqProxTermsWriter::appendPostings(Collection<FreqProxTermsWriterPerFieldP
                         }
                     }
                     --numFields;
-                    BOOST_ASSERT(upto == numFields);
+                    assert(upto == numFields);
                 }
             }
         }

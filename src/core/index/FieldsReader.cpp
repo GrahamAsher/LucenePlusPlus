@@ -35,8 +35,8 @@ FieldsReader::FieldsReader(const FieldInfosPtr& fieldInfos, int32_t numTotalDocs
     this->docStoreOffset = docStoreOffset;
     this->cloneableFieldsStream = cloneableFieldsStream;
     this->cloneableIndexStream = cloneableIndexStream;
-    fieldsStream = boost::dynamic_pointer_cast<IndexInput>(cloneableFieldsStream->clone());
-    indexStream = boost::dynamic_pointer_cast<IndexInput>(cloneableIndexStream->clone());
+    fieldsStream = std::dynamic_pointer_cast<IndexInput>(cloneableFieldsStream->clone());
+    indexStream = std::dynamic_pointer_cast<IndexInput>(cloneableIndexStream->clone());
 }
 
 FieldsReader::FieldsReader(const DirectoryPtr& d, const String& segment, const FieldInfosPtr& fn) {
@@ -70,7 +70,7 @@ void FieldsReader::ConstructReader(const DirectoryPtr& d, const String& segment,
         format = cloneableIndexStream->readInt();
 
         if (format > FieldsWriter::FORMAT_CURRENT) {
-            boost::throw_exception(CorruptIndexException(L"Incompatible format version: " + StringUtils::toString(format) +
+            throw (CorruptIndexException(L"Incompatible format version: " + StringUtils::toString(format) +
                                    L" expected " + StringUtils::toString(FieldsWriter::FORMAT_CURRENT) +
                                    L" or lower"));
         }
@@ -81,7 +81,7 @@ void FieldsReader::ConstructReader(const DirectoryPtr& d, const String& segment,
             cloneableFieldsStream->setModifiedUTF8StringsMode();
         }
 
-        fieldsStream = boost::dynamic_pointer_cast<IndexInput>(cloneableFieldsStream->clone());
+        fieldsStream = std::dynamic_pointer_cast<IndexInput>(cloneableFieldsStream->clone());
 
         int64_t indexSize = cloneableIndexStream->length() - formatSize;
 
@@ -91,13 +91,13 @@ void FieldsReader::ConstructReader(const DirectoryPtr& d, const String& segment,
             this->_size = size;
 
             // Verify the file is long enough to hold all of our docs
-            BOOST_ASSERT(((int32_t)((double)indexSize / 8.0)) >= _size + this->docStoreOffset);
+            assert(((int32_t)((double)indexSize / 8.0)) >= _size + this->docStoreOffset);
         } else {
             this->docStoreOffset = 0;
             this->_size = (int32_t)(indexSize >> 3);
         }
 
-        indexStream = boost::dynamic_pointer_cast<IndexInput>(cloneableIndexStream->clone());
+        indexStream = std::dynamic_pointer_cast<IndexInput>(cloneableIndexStream->clone());
         numTotalDocs = (int32_t)(indexSize >> 3);
         success = true;
     } catch (LuceneException& e) {
@@ -118,7 +118,7 @@ LuceneObjectPtr FieldsReader::clone(const LuceneObjectPtr& other) {
 
 void FieldsReader::ensureOpen() {
     if (closed) {
-        boost::throw_exception(AlreadyClosedException(L"this FieldsReader is closed"));
+        throw (AlreadyClosedException(L"this FieldsReader is closed"));
     }
 }
 
@@ -171,12 +171,12 @@ DocumentPtr FieldsReader::doc(int32_t n, const FieldSelectorPtr& fieldSelector) 
         FieldSelector::FieldSelectorResult acceptField = fieldSelector ? fieldSelector->accept(fi->name) : FieldSelector::SELECTOR_LOAD;
 
         uint8_t bits = fieldsStream->readByte();
-        BOOST_ASSERT(bits <= FieldsWriter::FIELD_IS_COMPRESSED + FieldsWriter::FIELD_IS_TOKENIZED + FieldsWriter::FIELD_IS_BINARY);
+        assert(bits <= FieldsWriter::FIELD_IS_COMPRESSED + FieldsWriter::FIELD_IS_TOKENIZED + FieldsWriter::FIELD_IS_BINARY);
 
         bool compressed = ((bits & FieldsWriter::FIELD_IS_COMPRESSED) != 0);
 
         // compressed fields are only allowed in indexes of version <= 2.9
-        BOOST_ASSERT(compressed ? (format < FieldsWriter::FORMAT_LUCENE_3_0_NO_COMPRESSED_FIELDS) : true);
+        assert(compressed ? (format < FieldsWriter::FORMAT_LUCENE_3_0_NO_COMPRESSED_FIELDS) : true);
 
         bool tokenize = ((bits & FieldsWriter::FIELD_IS_TOKENIZED) != 0);
         bool binary = ((bits & FieldsWriter::FIELD_IS_BINARY) != 0);
@@ -208,7 +208,7 @@ IndexInputPtr FieldsReader::rawDocs(Collection<int32_t> lengths, int32_t startDo
     int32_t count = 0;
     while (count < numDocs) {
         int32_t docID = docStoreOffset + startDocID + count + 1;
-        BOOST_ASSERT(docID <= numTotalDocs);
+        assert(docID <= numTotalDocs);
         int64_t offset = docID < numTotalDocs ? indexStream->readLong() : fieldsStream->length();
         lengths[count++] = (int32_t)(offset - lastOffset);
         lastOffset = offset;
@@ -321,7 +321,7 @@ ByteArray FieldsReader::uncompress(ByteArray b) {
     try {
         return CompressionTools::decompress(b);
     } catch (LuceneException& e) {
-        boost::throw_exception(CorruptIndexException(L"field data are in wrong format [" + e.getError() + L"]"));
+        throw (CorruptIndexException(L"field data are in wrong format [" + e.getError() + L"]"));
     }
     return ByteArray();
 }
@@ -330,7 +330,7 @@ String FieldsReader::uncompressString(ByteArray b) {
     try {
         return CompressionTools::decompressString(b);
     } catch (LuceneException& e) {
-        boost::throw_exception(CorruptIndexException(L"field data are in wrong format [" + e.getError() + L"]"));
+        throw (CorruptIndexException(L"field data are in wrong format [" + e.getError() + L"]"));
     }
     return L"";
 }
@@ -368,7 +368,7 @@ IndexInputPtr LazyField::getFieldStream() {
     FieldsReaderPtr reader(_reader);
     IndexInputPtr localFieldsStream = reader->fieldsStreamTL.get();
     if (!localFieldsStream) {
-        localFieldsStream = boost::static_pointer_cast<IndexInput>(reader->cloneableFieldsStream->clone());
+        localFieldsStream = std::static_pointer_cast<IndexInput>(reader->cloneableFieldsStream->clone());
         reader->fieldsStreamTL.set(localFieldsStream);
     }
     return localFieldsStream;
@@ -411,7 +411,7 @@ String LazyField::stringValue() {
                     }
                 }
             } catch (IOException& e) {
-                boost::throw_exception(FieldReaderException(e.getError()));
+                throw (FieldReaderException(e.getError()));
             }
         }
         return VariantUtils::get<String>(fieldsData);
@@ -466,7 +466,7 @@ ByteArray LazyField::getBinaryValue(ByteArray result) {
                     fieldsData = b;
                 }
             } catch (IOException& e) {
-                boost::throw_exception(FieldReaderException(e.getError()));
+                throw (FieldReaderException(e.getError()));
             }
 
             binaryOffset = 0;

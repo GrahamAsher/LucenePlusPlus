@@ -36,7 +36,7 @@ void ConcurrentMergeScheduler::initialize() {
 
 void ConcurrentMergeScheduler::setMaxThreadCount(int32_t count) {
     if (count < 1) {
-        boost::throw_exception(IllegalArgumentException(L"count should be at least 1"));
+        throw (IllegalArgumentException(L"count should be at least 1"));
     }
     maxThreadCount = count;
 }
@@ -54,7 +54,7 @@ int32_t ConcurrentMergeScheduler::getMergeThreadPriority() {
 void ConcurrentMergeScheduler::setMergeThreadPriority(int32_t pri) {
     SyncLock syncLock(this);
     if (pri > LuceneThread::MAX_THREAD_PRIORITY || pri < LuceneThread::MIN_THREAD_PRIORITY) {
-        boost::throw_exception(IllegalArgumentException(L"priority must be in range " + StringUtils::toString(LuceneThread::MIN_THREAD_PRIORITY) +
+        throw (IllegalArgumentException(L"priority must be in range " + StringUtils::toString(LuceneThread::MIN_THREAD_PRIORITY) +
                                L" .. " + StringUtils::toString(LuceneThread::MAX_THREAD_PRIORITY) + L" inclusive"));
     }
     mergeThreadPriority = pri;
@@ -108,7 +108,7 @@ int32_t ConcurrentMergeScheduler::mergeThreadCount() {
 }
 
 void ConcurrentMergeScheduler::merge(const IndexWriterPtr& writer) {
-    BOOST_ASSERT(!writer->holdsLock());
+    assert(!writer->holdsLock());
 
     this->_writer = writer;
 
@@ -145,7 +145,7 @@ void ConcurrentMergeScheduler::merge(const IndexWriterPtr& writer) {
 
             message(L"  consider merge " + merge->segString(dir));
 
-            BOOST_ASSERT(mergeThreadCount() < maxThreadCount);
+            assert(mergeThreadCount() < maxThreadCount);
 
             // OK to spawn a new merge thread to handle this merge
             merger = getMergeThread(writer, merge);
@@ -181,12 +181,12 @@ void ConcurrentMergeScheduler::handleMergeException(const LuceneException& exc) 
     // allows another merge to run.  If whatever caused the error is not transient then the
     // exception will keep happening, so, we sleep here to avoid saturating CPU in such cases
     LuceneThread::threadSleep(250); // pause 250 msec
-    boost::throw_exception(MergeException());
+    throw (MergeException());
 }
 
 bool ConcurrentMergeScheduler::anyUnhandledExceptions() {
     if (!allInstances) {
-        boost::throw_exception(RuntimeException(L"setTestMode() was not called"));
+        throw (RuntimeException(L"setTestMode() was not called"));
     }
     SyncLock instancesLock(&allInstances);
     for (Collection<ConcurrentMergeSchedulerPtr>::iterator instance = allInstances.begin(); instance != allInstances.end(); ++instance) {
@@ -300,7 +300,7 @@ void MergeThread::run() {
         merger->notifyAll();
 
         bool removed = merger->mergeThreads.remove(shared_from_this());
-        BOOST_ASSERT(removed);
+        assert(removed);
     }
     finally.throwException();
 }

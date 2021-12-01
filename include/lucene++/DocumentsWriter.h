@@ -52,6 +52,13 @@ namespace Lucene {
 /// When this happens, we immediately mark the document as deleted so that the document is always atomically
 /// ("all or none") added to the index.
 class LPPAPI DocumentsWriter : public LuceneObject {
+
+    friend class DocFieldProcessorPerThread;
+    friend class DocState;
+    friend class PerDocBuffer;
+    friend class ByteBlockAllocator;
+    friend class DocumentsWriterThreadState;
+
 public:
     DocumentsWriter(const DirectoryPtr& directory, const IndexWriterPtr& writer, const IndexingChainPtr& indexingChain);
     virtual ~DocumentsWriter();

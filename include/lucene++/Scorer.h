@@ -63,7 +63,7 @@ public:
     void visitScorers(ScorerVisitor *visitor);
     
     virtual float termFreq(){
-        boost::throw_exception(RuntimeException(L"Freq not implemented"));
+        throw RuntimeException(L"Freq not implemented");
     }
 
 protected:

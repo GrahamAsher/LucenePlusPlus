@@ -64,7 +64,7 @@ FormatPostingsPositionsConsumerPtr FormatPostingsDocsWriter::addDoc(int32_t docI
     int32_t delta = docID - lastDocID;
 
     if (docID < 0 || (df > 0 && delta <= 0)) {
-        boost::throw_exception(CorruptIndexException(L"docs out of order (" + StringUtils::toString(docID) + L" <= " + StringUtils::toString(lastDocID) + L" )"));
+        throw CorruptIndexException(L"docs out of order (" + StringUtils::toString(docID) + L" <= " + StringUtils::toString(lastDocID) + L" )");
     }
 
     if ((++df % skipInterval) == 0) {
@@ -72,7 +72,7 @@ FormatPostingsPositionsConsumerPtr FormatPostingsDocsWriter::addDoc(int32_t docI
         skipListWriter->bufferSkip(df);
     }
 
-    BOOST_ASSERT(docID < totalNumDocs);
+    assert(docID < totalNumDocs);
 
     lastDocID = docID;
     if (omitTermFreqAndPositions) {

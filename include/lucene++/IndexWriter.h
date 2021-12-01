@@ -88,6 +88,10 @@ namespace Lucene {
 /// created since the last commit, but are no longer referenced by the "front" of the index). For this,
 /// IndexFileDeleter keeps track of the last non commit checkpoint.
 class LPPAPI IndexWriter : public LuceneObject {
+
+    friend class DirectoryReader;
+    friend class DocumentsWriter;
+
 protected:
     IndexWriter(const DirectoryPtr& d, const AnalyzerPtr& a, bool create, const IndexDeletionPolicyPtr& deletionPolicy, int32_t mfl, const IndexingChainPtr& indexingChain, const IndexCommitPtr& commit);
 

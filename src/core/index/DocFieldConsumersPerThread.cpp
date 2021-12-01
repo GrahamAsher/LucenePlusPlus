@@ -54,8 +54,8 @@ DocWriterPtr DocFieldConsumersPerThread::finishDocument() {
     } else {
         DocFieldConsumersPerDocPtr both(DocFieldConsumersPtr(_parent)->getPerDoc());
         both->docID = docState->docID;
-        BOOST_ASSERT(oneDoc->docID == docState->docID);
-        BOOST_ASSERT(twoDoc->docID == docState->docID);
+        assert(oneDoc->docID == docState->docID);
+        assert(twoDoc->docID == docState->docID);
         both->one = oneDoc;
         both->two = twoDoc;
         return both;

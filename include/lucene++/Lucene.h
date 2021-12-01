@@ -134,6 +134,11 @@ namespace Lucene
             return s.rfind(t,0) == 0;
             }
 
+        template<class T> inline bool ends_with(const std::basic_string<T>& s,const std::basic_string<T>& t)
+            {
+            return s.length() >= t.length() && s.find(t,s.length() - t.length()) == s.length() - t.length();
+            }
+
         using ptime = double;
         }
 

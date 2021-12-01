@@ -77,7 +77,7 @@ LuceneObjectPtr FieldInfos::clone(const LuceneObjectPtr& other) {
     SyncLock syncLock(this);
     FieldInfosPtr fis(newLucene<FieldInfos>());
     for (Collection<FieldInfoPtr>::iterator field = byNumber.begin(); field != byNumber.end(); ++field) {
-        FieldInfoPtr fi(boost::dynamic_pointer_cast<FieldInfo>((*field)->clone()));
+        FieldInfoPtr fi(std::dynamic_pointer_cast<FieldInfo>((*field)->clone()));
         fis->byNumber.add(fi);
         fis->byName.put(fi->name, fi);
     }
@@ -236,7 +236,7 @@ void FieldInfos::read(const IndexInputPtr& input, const String& fileName) {
     format = firstInt < 0 ? firstInt : FORMAT_PRE; // This is a real format?
 
     if (format != FORMAT_PRE && format != FORMAT_START) {
-        boost::throw_exception(CorruptIndexException(L"unrecognized format " + StringUtils::toString(format) + L" in file \"" + fileName + L"\""));
+        throw CorruptIndexException(L"unrecognized format " + StringUtils::toString(format) + L" in file \"" + fileName + L"\"");
     }
 
     int32_t size = format == FORMAT_PRE ? firstInt : input->readVInt(); // read in the size if required
@@ -250,9 +250,9 @@ void FieldInfos::read(const IndexInputPtr& input, const String& fileName) {
     }
 
     if (input->getFilePointer() != input->length()) {
-        boost::throw_exception(CorruptIndexException(L"did not read all bytes from file \"" + fileName + L"\": read " +
+        throw CorruptIndexException(L"did not read all bytes from file \"" + fileName + L"\": read " +
                                StringUtils::toString(input->getFilePointer()) + L" vs size " +
-                               StringUtils::toString(input->length())));
+                               StringUtils::toString(input->length()));
     }
 }
 
