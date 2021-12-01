@@ -22,6 +22,9 @@
     <Filter Include="core\index">
       <UniqueIdentifier>{e58ee03a-fb97-4c87-8d3c-37276db708f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\queryparser">
+      <UniqueIdentifier>{73660994-6b95-4517-b398-8705cb28f619}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp">
@@ -572,6 +575,30 @@
     </ClCompile>
     <ClCompile Include="..\src\core\index\TermVectorsWriter.cpp">
       <Filter>core\index</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\queryparser\FastCharStream.cpp">
+      <Filter>core\queryparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\queryparser\MultiFieldQueryParser.cpp">
+      <Filter>core\queryparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\queryparser\QueryParseError.cpp">
+      <Filter>core\queryparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\queryparser\QueryParser.cpp">
+      <Filter>core\queryparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\queryparser\QueryParserCharStream.cpp">
+      <Filter>core\queryparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\queryparser\QueryParserConstants.cpp">
+      <Filter>core\queryparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\queryparser\QueryParserToken.cpp">
+      <Filter>core\queryparser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\queryparser\QueryParserTokenManager.cpp">
+      <Filter>core\queryparser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

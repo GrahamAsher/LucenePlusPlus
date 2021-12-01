@@ -6,7 +6,6 @@
 
 #include "LuceneInc.h"
 #include <iostream>
-#include <boost/algorithm/string.hpp>
 #include "QueryParser.h"
 #include "QueryParserTokenManager.h"
 #include "QueryParserToken.h"
@@ -474,19 +473,18 @@ QueryPtr QueryParser::getRangeQuery(const String& field, const String& part1, co
         StringUtils::toLower(date2);
     }
     try {
-        boost::posix_time::ptime d1(DateTools::parseDate(date1, locale));
-        boost::posix_time::ptime d2;
+        boost_copy::ptime d1(DateTools::parseDate(date1, locale));
+        boost_copy::ptime d2;
 
         // The user can only specify the date, not the time, so make sure the time is set to
         // the latest possible time of that date to really include all documents
         if (inclusive) {
-            d2 = boost::posix_time::ptime(DateTools::parseDate(date2, locale) +
-                                          boost::posix_time::hours(23) +
-                                          boost::posix_time::minutes(59) +
-                                          boost::posix_time::seconds(59) +
-                                          boost::posix_time::millisec(999));
+            d2 = boost_copy::ptime(DateTools::parseDate(date2, locale) +
+                                          23 * 3600 +
+                                          59 * 60 +
+                                          59.999);
         } else {
-            d2 = boost::posix_time::ptime(DateTools::parseDate(date2, locale));
+            d2 = boost_copy::ptime(DateTools::parseDate(date2, locale));
         }
         DateTools::Resolution resolution = getDateResolution(field);
         if (resolution == DateTools::RESOLUTION_NULL) {
@@ -569,7 +567,7 @@ QueryPtr QueryParser::getWildcardQuery(const String& field, const String& termSt
     if (field == L"*" && termStr == L"*") {
         return newMatchAllDocsQuery();
     }
-    if (!allowLeadingWildcard && (boost::starts_with(termStr, L"*") || boost::starts_with(termStr, L"?"))) {
+    if (!allowLeadingWildcard && (boost_copy::starts_with(termStr, String(L"*")) || boost_copy::starts_with(termStr, String(L"?")))) {
         throw (QueryParserError(L"'*' or '?' not allowed as first character in WildcardQuery"));
     }
     String queryTerm(termStr);
@@ -581,7 +579,7 @@ QueryPtr QueryParser::getWildcardQuery(const String& field, const String& termSt
 }
 
 QueryPtr QueryParser::getPrefixQuery(const String& field, const String& termStr) {
-    if (!allowLeadingWildcard && boost::starts_with(termStr, L"*")) {
+    if (!allowLeadingWildcard && boost_copy::starts_with(termStr, String(L"*"))) {
         throw (QueryParserError(L"'*' not allowed as first character in PrefixQuery"));
     }
     String queryTerm(termStr);
@@ -603,7 +601,7 @@ QueryPtr QueryParser::getFuzzyQuery(const String& field, const String& termStr, 
 
 String QueryParser::discardEscapeChar(const String& input) {
     // Create char array to hold unescaped char sequence
-    CharArray output(CharArray::newInstance(input.length()));
+    CharArray output(CharArray::newInstance((int32_t)input.length()));
 
     // The length of the output can be less than the input due to discarded escape chars.
     // This variable holds the actual length of the output

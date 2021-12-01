@@ -330,6 +330,14 @@
     <ClCompile Include="..\src\core\index\TermVectorsTermsWriterPerField.cpp" />
     <ClCompile Include="..\src\core\index\TermVectorsTermsWriterPerThread.cpp" />
     <ClCompile Include="..\src\core\index\TermVectorsWriter.cpp" />
+    <ClCompile Include="..\src\core\queryparser\FastCharStream.cpp" />
+    <ClCompile Include="..\src\core\queryparser\MultiFieldQueryParser.cpp" />
+    <ClCompile Include="..\src\core\queryparser\QueryParseError.cpp" />
+    <ClCompile Include="..\src\core\queryparser\QueryParser.cpp" />
+    <ClCompile Include="..\src\core\queryparser\QueryParserCharStream.cpp" />
+    <ClCompile Include="..\src\core\queryparser\QueryParserConstants.cpp" />
+    <ClCompile Include="..\src\core\queryparser\QueryParserToken.cpp" />
+    <ClCompile Include="..\src\core\queryparser\QueryParserTokenManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\lucene++\AbstractAllTermDocs.h" />
