@@ -350,6 +350,13 @@
     <ClCompile Include="..\src\core\search\function\ReverseOrdFieldSource.cpp" />
     <ClCompile Include="..\src\core\search\function\ValueSource.cpp" />
     <ClCompile Include="..\src\core\search\function\ValueSourceQuery.cpp" />
+    <ClCompile Include="..\src\core\search\payloads\AveragePayloadFunction.cpp" />
+    <ClCompile Include="..\src\core\search\payloads\MaxPayloadFunction.cpp" />
+    <ClCompile Include="..\src\core\search\payloads\MinPayloadFunction.cpp" />
+    <ClCompile Include="..\src\core\search\payloads\PayloadFunction.cpp" />
+    <ClCompile Include="..\src\core\search\payloads\PayloadNearQuery.cpp" />
+    <ClCompile Include="..\src\core\search\payloads\PayloadSpanUtil.cpp" />
+    <ClCompile Include="..\src\core\search\payloads\PayloadTermQuery.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\lucene++\AbstractAllTermDocs.h" />

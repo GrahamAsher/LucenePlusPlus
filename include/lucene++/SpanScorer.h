@@ -34,7 +34,7 @@ public:
     virtual int32_t docID();
     virtual double score();
     virtual float termFreq(){
-        return freq;
+        return float(freq);
     }
 
 protected:

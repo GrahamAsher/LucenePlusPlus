@@ -31,6 +31,9 @@
     <Filter Include="core\search\function">
       <UniqueIdentifier>{50234faa-d530-4649-a764-1d94d742b124}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\search\payloads">
+      <UniqueIdentifier>{2e5ed571-012a-4657-9ef0-f4e1c2cd9e91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\analysis\standard\StandardAnalyzer.cpp">
@@ -641,6 +644,27 @@
     </ClCompile>
     <ClCompile Include="..\src\core\search\function\ValueSourceQuery.cpp">
       <Filter>core\search\function</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\payloads\AveragePayloadFunction.cpp">
+      <Filter>core\search\payloads</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\payloads\MaxPayloadFunction.cpp">
+      <Filter>core\search\payloads</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\payloads\MinPayloadFunction.cpp">
+      <Filter>core\search\payloads</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\payloads\PayloadFunction.cpp">
+      <Filter>core\search\payloads</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\payloads\PayloadNearQuery.cpp">
+      <Filter>core\search\payloads</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\payloads\PayloadSpanUtil.cpp">
+      <Filter>core\search\payloads</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\payloads\PayloadTermQuery.cpp">
+      <Filter>core\search\payloads</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
