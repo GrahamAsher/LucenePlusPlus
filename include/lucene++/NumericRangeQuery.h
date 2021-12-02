@@ -106,6 +106,9 @@ namespace Lucene {
 /// query type was developed for a geographic portal, where the performance for eg. bounding boxes or exact
 /// date/time stamps is important.
 class LPPAPI NumericRangeQuery : public MultiTermQuery {
+
+    friend class NumericRangeFilter;
+
 public:
     NumericRangeQuery(const String& field, int32_t precisionStep, int32_t valSize, NumericValue min, NumericValue max, bool minInclusive, bool maxInclusive);
     virtual ~NumericRangeQuery();

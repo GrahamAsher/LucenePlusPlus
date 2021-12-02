@@ -115,7 +115,7 @@ public:
         }
 
         // we only request the usage of termDocs, if the range contains 0
-        return newLucene< FieldCacheDocIdSetNumeric<TYPE> >(reader, (inclusiveLowerPoint <= 0 && inclusiveUpperPoint >= 0), getValues(reader), inclusiveLowerPoint, inclusiveUpperPoint);
+        return newLucene< FieldCacheDocIdSetNumeric<TYPE> >(reader, (inclusiveLowerPoint <= 0 && inclusiveUpperPoint >= 0), getValues(reader), (TYPE)inclusiveLowerPoint, (TYPE)inclusiveUpperPoint);
     }
 
     virtual Collection<TYPE> getValues(const IndexReaderPtr& reader) = 0;
@@ -132,7 +132,7 @@ public:
         if (Filter::equals(other)) {
             return true;
         }
-        boost::shared_ptr< FieldCacheRangeFilterNumeric<TYPE> > otherFilter(std::dynamic_pointer_cast< FieldCacheRangeFilterNumeric<TYPE> >(other));
+        std::shared_ptr< FieldCacheRangeFilterNumeric<TYPE> > otherFilter(std::dynamic_pointer_cast< FieldCacheRangeFilterNumeric<TYPE> >(other));
         if (!otherFilter) {
             return false;
         }

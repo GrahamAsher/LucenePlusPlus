@@ -108,7 +108,7 @@ InfoStreamPtr FieldCacheImpl::getInfoStream() {
     return infoStream;
 }
 
-Entry::Entry(const String& field, const boost::any& custom) {
+Entry::Entry(const String& field, const std::any& custom) {
     this->field = field;
     this->custom = custom;
 }
@@ -148,9 +148,9 @@ void Cache::purge(const IndexReaderPtr& r) {
     readerCache.remove(readerKey);
 }
 
-boost::any Cache::get(const IndexReaderPtr& reader, const EntryPtr& key) {
+std::any Cache::get(const IndexReaderPtr& reader, const EntryPtr& key) {
     MapEntryAny innerCache;
-    boost::any value;
+    std::any value;
     LuceneObjectPtr readerKey(reader->getFieldCacheKey());
     {
         SyncLock cacheLock(&readerCache);
@@ -192,7 +192,7 @@ boost::any Cache::get(const IndexReaderPtr& reader, const EntryPtr& key) {
     return value;
 }
 
-void Cache::printNewInsanity(const InfoStreamPtr& infoStream, const boost::any& value) {
+void Cache::printNewInsanity(const InfoStreamPtr& infoStream, const std::any& value) {
     Collection<InsanityPtr> insanities(FieldCacheSanityChecker::checkSanity(FieldCachePtr(_wrapper)));
     for (Collection<InsanityPtr>::iterator insanity = insanities.begin(); insanity != insanities.end(); ++insanity) {
         Collection<FieldCacheEntryPtr> entries((*insanity)->getCacheEntries());
@@ -212,7 +212,7 @@ ByteCache::ByteCache(const FieldCachePtr& wrapper) : Cache(wrapper) {
 ByteCache::~ByteCache() {
 }
 
-boost::any ByteCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
+std::any ByteCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
     EntryPtr entry(key);
     String field(entry->field);
     ByteParserPtr parser(VariantUtils::get<ByteParserPtr>(entry->custom));
@@ -251,13 +251,13 @@ IntCache::IntCache(const FieldCachePtr& wrapper) : Cache(wrapper) {
 IntCache::~IntCache() {
 }
 
-boost::any IntCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
+std::any IntCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
     EntryPtr entry(key);
     String field(entry->field);
     IntParserPtr parser(VariantUtils::get<IntParserPtr>(entry->custom));
     if (!parser) {
         FieldCachePtr wrapper(_wrapper);
-        boost::any ints;
+        std::any ints;
         try {
             ints = wrapper->getInts(reader, field, FieldCache::DEFAULT_INT_PARSER());
         } catch (NumberFormatException&) {
@@ -303,13 +303,13 @@ LongCache::LongCache(const FieldCachePtr& wrapper) : Cache(wrapper) {
 LongCache::~LongCache() {
 }
 
-boost::any LongCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
+std::any LongCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
     EntryPtr entry(key);
     String field(entry->field);
     LongParserPtr parser(VariantUtils::get<LongParserPtr>(entry->custom));
     if (!parser) {
         FieldCachePtr wrapper(_wrapper);
-        boost::any longs;
+        std::any longs;
         try {
             longs = wrapper->getLongs(reader, field, FieldCache::DEFAULT_LONG_PARSER());
         } catch (NumberFormatException&) {
@@ -355,13 +355,13 @@ DoubleCache::DoubleCache(const FieldCachePtr& wrapper) : Cache(wrapper) {
 DoubleCache::~DoubleCache() {
 }
 
-boost::any DoubleCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
+std::any DoubleCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
     EntryPtr entry(key);
     String field(entry->field);
     DoubleParserPtr parser(VariantUtils::get<DoubleParserPtr>(entry->custom));
     if (!parser) {
         FieldCachePtr wrapper(_wrapper);
-        boost::any doubles;
+        std::any doubles;
         try {
             doubles = wrapper->getDoubles(reader, field, FieldCache::DEFAULT_DOUBLE_PARSER());
         } catch (NumberFormatException&) {
@@ -407,7 +407,7 @@ StringCache::StringCache(const FieldCachePtr& wrapper) : Cache(wrapper) {
 StringCache::~StringCache() {
 }
 
-boost::any StringCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
+std::any StringCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
     EntryPtr entry(key);
     String field(entry->field);
     Collection<String> retArray(Collection<String>::newInstance(reader->maxDoc()));
@@ -441,7 +441,7 @@ StringIndexCache::StringIndexCache(const FieldCachePtr& wrapper) : Cache(wrapper
 StringIndexCache::~StringIndexCache() {
 }
 
-boost::any StringIndexCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
+std::any StringIndexCache::createValue(const IndexReaderPtr& reader, const EntryPtr& key) {
     EntryPtr entry(key);
     String field(entry->field);
     Collection<int32_t> retArray(Collection<int32_t>::newInstance(reader->maxDoc()));
@@ -491,7 +491,7 @@ boost::any StringIndexCache::createValue(const IndexReaderPtr& reader, const Ent
     return newLucene<StringIndex>(retArray, mterms);
 }
 
-FieldCacheEntryImpl::FieldCacheEntryImpl(const LuceneObjectPtr& readerKey, const String& fieldName, int32_t cacheType, const boost::any& custom, const boost::any& value) {
+FieldCacheEntryImpl::FieldCacheEntryImpl(const LuceneObjectPtr& readerKey, const String& fieldName, int32_t cacheType, const std::any& custom, const std::any& value) {
     this->readerKey = readerKey;
     this->fieldName = fieldName;
     this->cacheType = cacheType;
@@ -514,11 +514,11 @@ int32_t FieldCacheEntryImpl::getCacheType() {
     return cacheType;
 }
 
-boost::any FieldCacheEntryImpl::getCustom() {
+std::any FieldCacheEntryImpl::getCustom() {
     return custom;
 }
 
-boost::any FieldCacheEntryImpl::getValue() {
+std::any FieldCacheEntryImpl::getValue() {
     return value;
 }
 

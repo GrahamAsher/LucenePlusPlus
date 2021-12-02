@@ -77,7 +77,7 @@ NumericRangeQueryPtr NumericRangeQuery::newDoubleRange(const String& field, doub
 }
 
 NumericRangeQueryPtr NumericRangeQuery::newNumericRange(const String& field, int32_t precisionStep, NumericValue min, NumericValue max, bool minInclusive, bool maxInclusive) {
-    if (!VariantUtils::equalsType(min, max)) {
+    if (min.index() != max.index()) {
         throw (IllegalArgumentException(L"min/max must be of the same type"));
     }
     int32_t valSize = VariantUtils::typeOf<int32_t>(min) ? 32 : 64;

@@ -20,14 +20,19 @@ public:
         return var.type() == typeid(TYPE) ? std::any_cast<TYPE>(var) : TYPE();
         }
 
-    template <typename TYPE,typename VAR> static TYPE get(VAR var)
+    template <typename TYPE> static bool typeOf(const std::any& var)
+        {
+        return var.type() == typeid(TYPE);
+        }
+
+    template <typename TYPE, typename... VARIANT_TYPES> static TYPE get(const std::variant<VARIANT_TYPES...>& var)
         {
         if (std::holds_alternative<TYPE>(var))
-            return std::get<TYPE>(var);
+            return std::get<TYPE,VARIANT_TYPES...>(var);
         return TYPE();
         }
 
-    template <typename TYPE, typename VAR> static bool typeOf(VAR var)
+    template <typename TYPE,typename... VARIANT_TYPES> static bool typeOf(const std::variant<VARIANT_TYPES...>& var)
         {
         return std::holds_alternative<TYPE>(var);
         }
@@ -45,41 +50,70 @@ public:
         return typeOf<VariantNull>(var);
     }
 
-    template <typename VAR>
-    static int32_t hashCode(VAR var) {
-        if (typeOf<String>(var)) {
-            return StringUtils::hashCode(get<String>(var));
-        }
-        if (typeOf<int32_t>(var)) {
-            return get<int32_t>(var);
-        }
-        if (typeOf<int64_t>(var)) {
-            return (int32_t)get<int64_t>(var);
-        }
-        if (typeOf<double>(var)) {
-            int64_t longBits = MiscUtils::doubleToLongBits(get<double>(var));
+
+    template<typename... VARIANT_TYPES> static int32_t hashCode(const std::any& var)
+        {
+        const auto& T = var.type();
+        if (T == typeid(String))
+            return StringUtils::hashCode(std::any_cast<String>(var));
+        if (T == typeid(int32_t))
+            return std::any_cast<int32_t>(var);
+        if (T == typeid(int64_t))
+            return (int32_t)std::any_cast<int64_t>(var);
+        if (T == typeid(double))
+            {
+            int64_t longBits = MiscUtils::doubleToLongBits(std::any_cast<double>(var));
             return (int32_t)(longBits ^ (longBits >> 32));
-        }
-        if (typeOf< Collection<uint8_t> >(var)) {
-            return get< Collection<uint8_t> >(var).hashCode();
-        }
-        if (typeOf< Collection<int32_t> >(var)) {
-            return get< Collection<int32_t> >(var).hashCode();
-        }
-        if (typeOf< Collection<int64_t> >(var)) {
-            return get< Collection<int64_t> >(var).hashCode();
-        }
-        if (typeOf< Collection<double> >(var)) {
-            return get< Collection<double> >(var).hashCode();
-        }
-        if (typeOf< Collection<String> >(var)) {
-            return get< Collection<String> >(var).hashCode();
-        }
-        if (typeOf<LuceneObjectPtr>(var)) {
-            return get<LuceneObjectPtr>(var)->hashCode();
-        }
+            }
+        if (T == typeid(Collection<uint8_t>))
+            return std::any_cast<Collection<uint8_t>>(var).hashCode();
+        if (T == typeid(Collection<int32_t>))
+            return std::any_cast<Collection<int32_t>>(var).hashCode();
+        if (T == typeid(Collection<int64_t>))
+            return std::any_cast<Collection<int64_t>>(var).hashCode();
+        if (T == typeid(Collection<double>))
+            return std::any_cast<Collection<double>>(var).hashCode();
+        if (T == typeid(Collection<String>))
+            return std::any_cast<Collection<String>>(var).hashCode();
+        if (T == typeid(LuceneObjectPtr))
+            return std::any_cast<LuceneObjectPtr>(var)->hashCode();
+
         return 0;
-    }
+        }
+
+    template<typename... VARIANT_TYPES> static int32_t hashCode(const std::variant<VARIANT_TYPES...>& aValue)
+        {
+        auto visitor = [](auto&& var)->int32_t
+            {
+            using T = std::decay_t<decltype(var)>;
+            if constexpr (std::is_same_v<T,String>)
+                return StringUtils::hashCode(var);
+            if constexpr (std::is_same_v<T,int32_t>)
+                return var;
+            if constexpr (std::is_same_v<T,int64_t>)
+                return (int32_t)var;
+            if constexpr (std::is_same_v<T,double>)
+                {
+                int64_t longBits = MiscUtils::doubleToLongBits(var);
+                return (int32_t)(longBits ^ (longBits >> 32));
+                }
+            if constexpr (std::is_same_v<T,Collection<uint8_t>>)
+                return var.hashCode();
+            if constexpr (std::is_same_v<T,Collection<int32_t>>)
+                return var.hashCode();
+            if constexpr (std::is_same_v<T,Collection<int64_t>>)
+                return var.hashCode();
+            if constexpr (std::is_same_v<T,Collection<double>>)
+                return var.hashCode();
+            if constexpr (std::is_same_v<T,Collection<String>>)
+                return var.hashCode();
+            if constexpr (std::is_same_v<T,LuceneObjectPtr>)
+                return var->hashCode();
+
+            return 0;
+            };
+        return std::visit(visitor,aValue);
+        }
 
     template <typename FIRST, typename SECOND>
     static bool equalsType(FIRST first, SECOND second) {

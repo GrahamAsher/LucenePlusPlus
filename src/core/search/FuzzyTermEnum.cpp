@@ -5,7 +5,6 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "LuceneInc.h"
-#include <boost/algorithm/string.hpp>
 #include "FuzzyTermEnum.h"
 #include "FuzzyQuery.h"
 #include "Term.h"
@@ -47,20 +46,20 @@ void FuzzyTermEnum::ConstructTermEnum(const IndexReaderPtr& reader, const TermPt
 
     // The prefix could be longer than the word.
     // It's kind of silly though.  It means we must match the entire word.
-    int32_t fullSearchTermLength = searchTerm->text().length();
+    int32_t fullSearchTermLength = (int32_t)searchTerm->text().length();
     int32_t realPrefixLength = prefixLength > fullSearchTermLength ? fullSearchTermLength : prefixLength;
 
     this->text = searchTerm->text().substr(realPrefixLength);
     this->prefix = searchTerm->text().substr(0, realPrefixLength);
 
-    this->p = Collection<int32_t>::newInstance(this->text.length() + 1);
-    this->d = Collection<int32_t>::newInstance(this->text.length() + 1);
+    this->p = Collection<int32_t>::newInstance((int32_t)this->text.length() + 1);
+    this->d = Collection<int32_t>::newInstance((int32_t)this->text.length() + 1);
 
     setEnum(reader->terms(newLucene<Term>(searchTerm->field(), prefix)));
 }
 
 bool FuzzyTermEnum::termCompare(const TermPtr& term) {
-    if (field == term->field() && boost::starts_with(term->text(), prefix)) {
+    if (field == term->field() && boost_copy::starts_with(term->text(), prefix)) {
         String target(term->text().substr(prefix.length()));
         this->_similarity = similarity(target);
         return (_similarity > minimumSimilarity);
@@ -78,8 +77,8 @@ bool FuzzyTermEnum::endEnum() {
 }
 
 double FuzzyTermEnum::similarity(const String& target) {
-    int32_t m = target.length();
-    int32_t n = text.length();
+    int32_t m = (int32_t)target.length();
+    int32_t n = (int32_t)text.length();
     if (n == 0) {
         // We don't have anything to compare.  That means if we just add the letters for m we get the new word
         return prefix.empty() ? 0.0 : 1.0 - ((double)m / (double)prefix.length());

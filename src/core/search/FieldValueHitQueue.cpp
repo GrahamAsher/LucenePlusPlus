@@ -80,7 +80,7 @@ OneComparatorFieldValueHitQueue::OneComparatorFieldValueHitQueue(Collection<Sort
 
     SortFieldPtr field(fields[0]);
     comparator = field->getComparator(size, 0);
-    oneReverseMul = field->reverse ? -1 : 1;
+    oneReverseMul = field->getReverse() ? -1 : 1;
 
     comparators[0] = comparator;
     reverseMul[0] = oneReverseMul;
@@ -106,7 +106,7 @@ MultiComparatorsFieldValueHitQueue::MultiComparatorsFieldValueHitQueue(Collectio
     int32_t numComparators = comparators.size();
     for (int32_t i = 0; i < numComparators; ++i) {
         SortFieldPtr field(fields[i]);
-        reverseMul[i] = field->reverse ? -1 : 1;
+        reverseMul[i] = field->getReverse() ? -1 : 1;
         comparators[i] = field->getComparator(size, i);
     }
 }

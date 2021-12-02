@@ -96,7 +96,7 @@ public:
     int32_t freq;
     LUCENE_CLASS(BucketScorer);
     float termFreq(){
-        return freq;
+        return (float)freq;
     }
 
 

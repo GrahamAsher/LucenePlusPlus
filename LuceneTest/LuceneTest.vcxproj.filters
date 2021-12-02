@@ -4,6 +4,12 @@
     <Filter Include="core">
       <UniqueIdentifier>{d801806d-a201-4dd4-817c-86ba044334ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{b1ece147-5c2b-4a5e-9f18-679167847326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\queryparser">
+      <UniqueIdentifier>{73660994-6b95-4517-b398-8705cb28f619}</UniqueIdentifier>
+    </Filter>
     <Filter Include="core\analysis">
       <UniqueIdentifier>{cb4eec68-648f-4af8-90bd-2af4865cc9f8}</UniqueIdentifier>
     </Filter>
@@ -13,17 +19,11 @@
     <Filter Include="core\analysis\tokenattributes">
       <UniqueIdentifier>{154e83bc-7046-4cf2-bc0d-76e11c94bb2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include">
-      <UniqueIdentifier>{b1ece147-5c2b-4a5e-9f18-679167847326}</UniqueIdentifier>
-    </Filter>
     <Filter Include="core\document">
       <UniqueIdentifier>{d38ebb50-5be1-449b-9465-9f96f0218996}</UniqueIdentifier>
     </Filter>
     <Filter Include="core\index">
       <UniqueIdentifier>{e58ee03a-fb97-4c87-8d3c-37276db708f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="core\queryparser">
-      <UniqueIdentifier>{73660994-6b95-4517-b398-8705cb28f619}</UniqueIdentifier>
     </Filter>
     <Filter Include="core\search">
       <UniqueIdentifier>{a2362aa8-7791-4e81-910f-0c13a8afcae8}</UniqueIdentifier>
@@ -707,6 +707,267 @@
     </ClCompile>
     <ClCompile Include="..\src\core\search\spans\TermSpans.cpp">
       <Filter>core\search\spans</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\BooleanClause.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\BooleanQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\BooleanScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\BooleanScorer2.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\CachingSpanFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\CachingWrapperFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Collector.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\ComplexExplanation.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\ConjunctionScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\ConstantScoreQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\DefaultSimilarity.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\DisjunctionMaxQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\DisjunctionMaxScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\DisjunctionSumScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\DocIdSet.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\DocIdSetIterator.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\ExactPhraseScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Explanation.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FieldCache.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FieldCacheImpl.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FieldCacheRangeFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FieldCacheTermsFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FieldComparator.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FieldComparatorSource.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FieldDoc.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FieldDocSortedHitQueue.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FieldValueHitQueue.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Filter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FilteredDocIdSet.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FilteredDocIdSetIterator.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FilteredQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FilteredTermEnum.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FilterManager.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FuzzyQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\FuzzyTermEnum.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\HitQueue.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\HitQueueBase.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\IndexSearcher.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\MatchAllDocsQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\MultiPhraseQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\MultiSearcher.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\MultiTermQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\MultiTermQueryWrapperFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\NumericRangeFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\NumericRangeQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\ParallelMultiSearcher.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\PhrasePositions.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\PhraseQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\PhraseQueue.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\PhraseScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\PositiveScoresOnlyCollector.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\PrefixFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\PrefixQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\PrefixTermEnum.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Query.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\QueryTermVector.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\QueryWrapperFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\ReqExclScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\ReqOptSumScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\ScoreCachingWrappingScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\ScoreDoc.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Scorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Searchable.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Searcher.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Similarity.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\SimilarityDelegator.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\SingleTermEnum.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\SloppyPhraseScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Sort.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\SortField.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\SpanFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\SpanFilterResult.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\SpanQueryFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TermQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TermRangeFilter.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TermRangeQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TermRangeTermEnum.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TermScorer.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TimeLimitingCollector.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TopDocs.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TopDocsCollector.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TopFieldCollector.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TopFieldDocs.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\TopScoreDocCollector.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\Weight.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\WildcardQuery.cpp">
+      <Filter>core\search</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\search\WildcardTermEnum.cpp">
+      <Filter>core\search</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

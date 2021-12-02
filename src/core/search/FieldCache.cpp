@@ -164,7 +164,7 @@ StringIndex::~StringIndex() {
 
 int32_t StringIndex::binarySearchLookup(const String& key) {
     Collection<String>::iterator search = std::lower_bound(lookup.begin(), lookup.end(), key);
-    int32_t keyPos = std::distance(lookup.begin(), search);
+    int32_t keyPos = (int32_t)std::distance(lookup.begin(), search);
     return (search == lookup.end() || key < *search) ? -(keyPos + 1) : keyPos;
 }
 
